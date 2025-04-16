@@ -1,0 +1,97 @@
+.navBar {
+    background-color: #BBEAD3;
+    height: 50px;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+.navBar__ul {
+    display: grid;
+    grid-template-columns: 1fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr;
+    /* Ajusta según el contenido */
+    grid-template-rows: 1fr;
+    grid-column-gap: 0px;
+    grid-row-gap: 0px;
+    list-style: none;
+}
+
+.destacado {
+    grid-area: 1 / 2 / 2 / 3;
+}
+
+.hombre {
+    grid-area: 1 / 3 / 2 / 4;
+}
+
+.nombre {
+    grid-area: 1 / 4 / 2 / 5;
+}
+
+.mujer {
+    grid-area: 1 / 5 / 2 / 6;
+}
+
+.ninos {
+    grid-area: 1 / 6 / 2 / 7;
+}
+
+.carrito {
+    grid-area: 1 / 7 / 2 / 8;
+}
+
+.logo {
+    grid-area: 1 / 8 / 2 / 9;
+}
+
+.navBar__li {
+    margin: 0;
+    padding: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 50px;
+    font-size: 22px;
+    font-weight: bold;
+    color: #ffffff;
+    text-shadow: black 1px 1px 2px;
+    white-space: nowrap;
+    /* Evita que el texto se divida en varias líneas */
+    overflow: hidden;
+    /* Oculta el contenido que exceda el tamaño */
+    text-overflow: ellipsis;
+    /* Agrega puntos suspensivos si el texto es demasiado largo */
+}
+
+
+.navBar__li:hover {
+    background-color: #A3D9C5;
+    color: #000000;
+    text-shadow: none;
+    cursor: pointer;
+}
+
+.navBar__li:active {
+    background-color: #8CC2AF;
+    transform: scale(0.95);
+}
+
+.li_marca {
+    font-size: 30px;
+    font-weight: bold;
+    color: black;
+    text-shadow: black 1px 1px 2px;
+}
+
+
+.li_marca:hover {
+    color: #555555;
+    text-shadow: black 2px 2px 4px;
+    cursor: pointer;
+}
+
+.li_marca:active {
+    color: #333333;
+    transform: scale(0.95);
+}
