@@ -3,21 +3,18 @@
     display: flex;
     flex-direction: column;
     background-color: #BBEAD3;
-    padding: 20px;
+    padding: 10px;
     text-align: center;
     font-size: 14px;
-    /* Tamaño de fuente más legible */
-    gap: 15px;
-    /* Espaciado entre las secciones */
+    gap: 5px;
     border-top: 2px solid #A3D9C5;
-    /* Línea decorativa en la parte superior */
 }
 
 .pieDePagina__div1,
 .pieDePagina__div2,
 .pieDePagina__div3 {
-    margin: 10px 0;
-    padding: 10px;
+    margin: 5px 0;
+    padding: 5px;
     background-color: #FFFFFF;
     /* Fondo blanco para destacar las secciones */
     border-radius: 8px;

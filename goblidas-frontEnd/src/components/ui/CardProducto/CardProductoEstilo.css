@@ -1,0 +1,17 @@
+.CardProducto {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 200px;
+    height: 200px;
+    background-color: #7DF0B8;
+    border-radius: 10px;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.CardProducto__img img {
+    width: 100px;
+    height: 80px;
+    object-fit: cover;
+}

@@ -17,6 +17,7 @@ body,
   display: flex;
   flex-direction: column;
   height: 100%;
+  background-color: #CBECBE;
 }
 
 .NavBarApp {
@@ -31,6 +32,8 @@ body,
   flex-direction: column;
   justify-content: space-between;
   padding: 10px;
+  background-color: #CBECBE;
+  max-width: 100%;
 }
 
 .PieDePagina {
