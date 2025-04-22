@@ -1,6 +1,7 @@
 import Carousel from 'react-bootstrap/Carousel';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import React from 'react';
+import foto_carrusel from '../../img/1348314-800-800.webp';
 
 function CarruselHome() {
     return (
@@ -8,7 +9,7 @@ function CarruselHome() {
             <Carousel.Item>
                 <img
                     className="d-block w-100"
-                    src="../../img/1348314-800-800.webp"
+                    src={foto_carrusel}
                     alt="First slide"
                 />
                 <Carousel.Caption>
@@ -19,7 +20,7 @@ function CarruselHome() {
             <Carousel.Item>
                 <img
                     className="d-block w-100"
-                    src="https://via.placeholder.com/800x400"
+                    src={foto_carrusel}
                     alt="Second slide"
                 />
                 <Carousel.Caption>
@@ -30,7 +31,7 @@ function CarruselHome() {
             <Carousel.Item>
                 <img
                     className="d-block w-100"
-                    src="https://via.placeholder.com/800x400"
+                    src={foto_carrusel}
                     alt="Third slide"
                 />
                 <Carousel.Caption>

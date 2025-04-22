@@ -1,20 +1,61 @@
+/* Estilos base para móviles */
 .pieDePagina {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr);
-    grid-template-rows: 1fr;
-    grid-column-gap: 0px;
-    grid-row-gap: 0px;
+    display: flex;
+    flex-direction: column;
     background-color: #BBEAD3;
+    padding: 20px;
+    text-align: center;
+    font-size: 14px;
+    /* Tamaño de fuente más legible */
+    gap: 15px;
+    /* Espaciado entre las secciones */
+    border-top: 2px solid #A3D9C5;
+    /* Línea decorativa en la parte superior */
 }
 
-.pieDePagina__div1 {
-    grid-area: 1 / 1 / 2 / 2;
-}
-
-.pieDePagina__div2 {
-    grid-area: 1 / 2 / 2 / 3;
-}
-
+.pieDePagina__div1,
+.pieDePagina__div2,
 .pieDePagina__div3 {
-    grid-area: 1 / 3 / 2 / 4;
+    margin: 10px 0;
+    padding: 10px;
+    background-color: #FFFFFF;
+    /* Fondo blanco para destacar las secciones */
+    border-radius: 8px;
+    /* Bordes redondeados */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    /* Sombra ligera */
+}
+
+.pieDePagina__div1 a {
+    color: #007BFF;
+    /* Color del enlace */
+    text-decoration: none;
+}
+
+.pieDePagina__div1 a:hover {
+    text-decoration: underline;
+    /* Subrayado al pasar el cursor */
+}
+
+/* Estilos para pantallas más grandes */
+@media (min-width: 768px) {
+    .pieDePagina {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: 1fr;
+        grid-column-gap: 10px;
+        grid-row-gap: 0px;
+        text-align: left;
+        height: auto;
+        font-size: 16px;
+    }
+
+    .pieDePagina__div1,
+    .pieDePagina__div2,
+    .pieDePagina__div3 {
+        background-color: transparent;
+        box-shadow: none;
+        padding: 0;
+        margin: 0;
+    }
 }

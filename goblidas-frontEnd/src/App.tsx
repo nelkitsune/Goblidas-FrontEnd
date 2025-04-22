@@ -11,8 +11,10 @@ function App() {
     <>
       <div className="parent">
         <div className="NavBarApp"><NavBar /></div>
-        <div className="Pantalla"> <Home /> </div>
-        <div className="PieDePagina"> <PieDePagina /> </div>
+        <div className="Pantalla">
+          <Home />
+          <PieDePagina />
+        </div>
       </div>
     </>
   )

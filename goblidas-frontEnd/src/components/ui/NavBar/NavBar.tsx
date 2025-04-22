@@ -1,5 +1,7 @@
 import React from 'react'
 import './NavBarEstilo.css'
+import 'bootstrap-icons/font/bootstrap-icons.css';
+import fotoLogo from "../../img/goblinLogo.png"
 export const NavBar = () => {
     return (
         <>
@@ -16,11 +18,11 @@ export const NavBar = () => {
                     {/*Boton dedicado a llevarte a la pantalla con productos de niños*/}
                     <li className='navBar__li ninos'>Niños</li>
                     {/*Boton dedicado a llevarte a la pantalla carrito*/}
-                    <li className='navBar__li carrito'>Carrito</li>
+                    <li className='navBar__li carrito'><i className="bi bi-cart"></i></li>
                     {/*Boton dedicado a activar los modal de sesion*/}
                     <li className='navBar__li logo'>
                         <div className='navBar__ul__img'>
-                            <img src="/img/goblinLogo.png" alt="L" />
+                            <img src={fotoLogo} alt="L" />
                         </div>
                     </li>
                 </ul>
