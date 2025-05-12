@@ -13,7 +13,7 @@ function App() {
       <div className="parent">
         <div className="NavBarApp"><NavBar /></div>
         <div className="Pantalla">
-          <Home />
+          <Catalogo />
           <PieDePagina />
         </div>
       </div>
