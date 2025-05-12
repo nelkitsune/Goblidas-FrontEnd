@@ -1,6 +1,7 @@
 import React, { useState } from 'react'
 import { SideCatalogo } from '../../ui/SideCatalogo/SideCatalogo'
 import './CatalogoEstilo.css'
+import { MenuCategoria } from '../../ui/MenuCategoria/MenuCategoria'
 
 
 export const Catalogo = () => {
@@ -19,7 +20,6 @@ export const Catalogo = () => {
                 </button>
                 {sideCatalogo && <SideCatalogo />}
                 <h1>Catalogo</h1>
-                <p>Esta es la pantalla de catalogo</p>
                 <MenuCategoria />
             </div>
         </>

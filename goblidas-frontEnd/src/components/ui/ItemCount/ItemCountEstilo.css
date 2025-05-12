@@ -1,0 +1,43 @@
+.item-count {
+    display: flex;
+    align-items: center;
+    gap: 80px;
+}
+
+.controls {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.controls button {
+    color: white;
+    border: none;
+    padding: 5px 10px;
+    border-radius: 4px;
+    cursor: pointer;
+    background-color: #7DF0B8;
+    border-color: #7DF0B8;
+    box-shadow: 0px 0px 3px black;
+}
+
+.controls button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.add-to-cart {
+    background-color: #7DF0B8;
+    border-color: #7DF0B8;
+    box-shadow: 0px 0px 3px black;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 4px;
+    cursor: pointer;
+}
+
+.add-to-cart:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}

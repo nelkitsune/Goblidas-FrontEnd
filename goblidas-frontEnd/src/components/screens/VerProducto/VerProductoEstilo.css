@@ -1,0 +1,50 @@
+.VerProducto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    background-color: #A9FFD5;
+    margin-bottom: 40px;
+}
+
+.fotosVerProducto {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.ImagenPrincipalFotos {
+    height: 300px;
+}
+
+.ImagenesSecundarias {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #B7E2CD;
+    padding: 10px;
+}
+
+.ImagenesSecundarias img {
+    height: 50px;
+}
+
+
+
+.ContenedorDeProductosRecomendados {
+    display: flex;
+    justify-content: start;
+    overflow-x: auto;
+    /* Activa el scroll horizontal */
+    overflow-y: hidden;
+    /* Oculta el scroll vertical */
+    width: 100%;
+    /* Asegúrate de que ocupe todo el ancho disponible */
+    padding: 10px;
+    box-sizing: border-box;
+    /* Incluye el padding y el borde en el ancho total */
+    background-color: #B7E2CD;
+}

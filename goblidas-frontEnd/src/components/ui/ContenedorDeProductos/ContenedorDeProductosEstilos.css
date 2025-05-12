@@ -1,17 +1,27 @@
 .contenedor-productos {
     display: flex;
     justify-content: start;
+    flex-wrap: nowrap;
+    /* Evita que los elementos se envuelvan */
     gap: 20px;
-    padding: 20px;
+    padding: 10px;
     overflow-x: auto;
+    /* Activa el scroll horizontal */
     overflow-y: hidden;
+    /* Oculta el scroll vertical */
     white-space: nowrap;
+    /* Asegura que los elementos se mantengan en una sola línea */
     scroll-behavior: smooth;
+    /* Desplazamiento suave */
+    width: 100%;
+    /* Asegúrate de que no exceda el ancho del contenedor padre */
+    box-sizing: border-box;
+    /* Incluye el padding y el borde en el ancho total */
     background-color: #BBEAD3;
-    margin: 10px 0px 10px 0px;
-    border: 5px solid #A4D6A7;
+
 }
 
 .contenedor-productos::-webkit-scrollbar {
-    height: 8px;
+    display: none;
+    /* Altura de la barra de desplazamiento horizontal */
 }
