@@ -15,7 +15,7 @@ function App() {
       <div className="parent">
         <div className="NavBarApp"><NavBar /></div>
         <div className="Pantalla">
-          <VerProducto />
+          <Carrito />
           <PieDePagina />
         </div>
       </div>
