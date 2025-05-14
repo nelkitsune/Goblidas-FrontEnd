@@ -12,7 +12,7 @@ export const NavBar = () => {
                     {/*Boton dedicado a llevarte a la pantalla con productos de hombre*/}
                     <li className='navBar__li hombre'>Hombre</li>
                     {/*Boton dedicado a llevarte a la pantalla home*/}
-                    <li className='li_marca navBar__li nombre'>Goblidas</li>
+                    <li className='navBar__li li_marca'>Goblidas</li>
                     {/*Boton dedicado a llevarte a la pantalla con productos de mujer*/}
                     <li className='navBar__li mujer'>Mujer</li>
                     {/*Boton dedicado a llevarte a la pantalla con productos de niños*/}

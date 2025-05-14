@@ -1,0 +1,184 @@
+.tamblaResumendepago {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20px;
+    margin-bottom: 30px;
+}
+
+.botones {
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+}
+
+.botones button {
+    margin: 5px;
+    padding: 10px 20px;
+    background-color: #50bd88;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    margin-bottom: 15px;
+}
+
+.carritoScreen {
+    background-color: #A9FFD5;
+    text-align: center;
+}
+
+.listaProductos {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px;
+    margin-top: 20px;
+}
+
+/* Celulares pequeños (≤ 360px) */
+@media (max-width: 360px) {
+    .carritoScreen {
+        padding: 10px;
+    }
+
+    .tamblaResumendepago {
+        margin-top: 10px;
+        margin-bottom: 20px;
+    }
+
+    .botones button {
+        padding: 8px 15px;
+        font-size: 0.9rem;
+    }
+
+    .listaProductos {
+        gap: 10px;
+        margin-top: 10px;
+    }
+}
+
+/* Celulares comunes (361px a 480px) */
+@media (min-width: 361px) and (max-width: 480px) {
+    .carritoScreen {
+        padding: 15px;
+    }
+
+    .tamblaResumendepago {
+        margin-top: 15px;
+        margin-bottom: 25px;
+    }
+
+    .botones button {
+        padding: 10px 20px;
+        font-size: 1rem;
+    }
+
+    .listaProductos {
+        gap: 12px;
+        margin-top: 15px;
+    }
+}
+
+/* Celulares grandes (481px a 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+    .carritoScreen {
+        padding: 20px;
+    }
+
+    .tamblaResumendepago {
+        margin-top: 20px;
+        margin-bottom: 30px;
+    }
+
+    .botones button {
+        padding: 12px 25px;
+        font-size: 1.1rem;
+    }
+
+    .listaProductos {
+        gap: 15px;
+        margin-top: 20px;
+    }
+}
+
+/* Tablets (768px a 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .carritoScreen {
+        padding: 30px;
+    }
+
+    .tamblaResumendepago {
+        margin-top: 30px;
+        margin-bottom: 40px;
+    }
+
+    .botones button {
+        padding: 15px 30px;
+        font-size: 1.2rem;
+    }
+
+    .listaProductos {
+        gap: 20px;
+        margin-top: 25px;
+    }
+}
+
+/* Laptops (1025px a 1366px) */
+@media (min-width: 1025px) and (max-width: 1366px) {
+    .carritoScreen {
+        padding: 40px;
+    }
+
+    .carritoCuerpo {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .tamblaResumendepago {
+        margin-top: 40px;
+        margin-bottom: 50px;
+    }
+
+    .botones button {
+        padding: 18px 35px;
+        font-size: 1.3rem;
+    }
+
+    .listaProductos {
+        gap: 25px;
+        margin-top: 30px;
+    }
+}
+
+/* Desktops grandes (≥ 1367px) */
+@media (min-width: 1367px) {
+    .carritoScreen {
+        padding: 50px;
+    }
+
+    .carritoCuerpo {
+        display: flex;
+        flex-direction: row;
+        width: 100%;
+        justify-content: space-between;
+    }
+
+    .tamblaResumendepago {
+        margin-top: 50px;
+        margin-bottom: 60px;
+    }
+
+    .botones button {
+        padding: 20px 40px;
+        font-size: 1.4rem;
+    }
+
+    .listaProductos {
+        gap: 30px;
+        margin-top: 40px;
+    }
+}

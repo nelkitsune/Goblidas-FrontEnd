@@ -24,9 +24,11 @@ export const VerProducto = () => {
                 <h3>Descripcion</h3>
                 <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eum reprehenderit porro quam aspernatur, libero eos odio? Fuga quam soluta nulla eligendi at provident fugit pariatur. Eum aliquid vitae id. Cum.</p>
             </div>
-            <h5>Productos recomendados</h5>
-            <div className='ContenedorDeProductosRecomendados'>
-                <ContenedorDeProductos />
+            <div className='ProductosRecomendados'>
+                <h5>Productos recomendados</h5>
+                <div className='ContenedorDeProductosRecomendados'>
+                    <ContenedorDeProductos />
+                </div>
             </div>
         </div>
     )

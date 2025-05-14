@@ -7,17 +7,20 @@
     justify-content: space-between;
     align-items: center;
     box-sizing: border-box;
+    padding: 0 10px;
 }
 
 .navBar__ul {
     display: flex;
     flex-wrap: wrap;
+    /* Permite que los elementos se envuelvan si no caben */
     list-style: none;
     padding: 0;
     margin: 0;
     align-items: center;
-    margin-left: 10px;
-    gap: 2px;
+    gap: 10px;
+    width: 100%;
+    justify-content: space-between;
 }
 
 .navBar__li {
@@ -30,36 +33,6 @@
     text-overflow: ellipsis;
     padding: 5px;
     text-align: center;
-}
-
-.navBar__li:hover {
-    background-color: #A3D9C5;
-    color: #000000;
-    text-shadow: none;
-    cursor: pointer;
-}
-
-.navBar__li:active {
-    background-color: #8CC2AF;
-    transform: scale(0.95);
-}
-
-.li_marca {
-    font-size: 20px;
-    font-weight: bold;
-    color: black;
-    text-shadow: black 1px 1px 2px;
-}
-
-.li_marca:hover {
-    color: #555555;
-    text-shadow: black 2px 2px 4px;
-    cursor: pointer;
-}
-
-.li_marca:active {
-    color: #333333;
-    transform: scale(0.95);
 }
 
 .navBar__ul__img {
@@ -79,22 +52,168 @@
     border-radius: 50%;
 }
 
-/* Estilos para pantallas más grandes */
-@media (min-width: 768px) {
-    .navBar__ul {
-        display: grid;
-        grid-template-columns: 1fr 1fr 2fr 1fr 1fr 1fr 1fr 1fr;
-        grid-template-rows: 1fr;
-        gap: 0;
+.li_marca {
+    font-size: 25px;
+    font-weight: bold;
+    color: #000000;
+    text-shadow: black 1px 1px 2px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    padding: 5px;
+    text-align: center;
+}
 
+/* Celulares pequeños (≤ 360px) */
+@media (max-width: 360px) {
+    .navBar {
+        height: 45px;
+    }
+
+    .navBar__ul {
+        gap: 5px;
+        justify-content: center;
+        /* Centra los elementos */
+    }
+
+    .navBar__li {
+        font-size: 10px;
+        padding: 3px;
+    }
+
+    .navBar__ul__img {
+        width: 25px;
+        height: 25px;
+    }
+
+    .navBar__ul__img img {
+        height: 30px;
+    }
+}
+
+/* Celulares comunes (361px a 480px) */
+@media (min-width: 361px) and (max-width: 480px) {
+    .navBar {
+        height: 50px;
+    }
+
+    .navBar__ul {
+        gap: 0px;
+    }
+
+    .navBar__li {
+        font-size: 10px;
+        padding: 5px;
+    }
+
+    .navBar__ul__img {
+        width: 30px;
+        height: 30px;
+    }
+
+    .navBar__ul__img img {
+        height: 35px;
+    }
+}
+
+/* Celulares grandes (481px a 767px) */
+@media (min-width: 481px) and (max-width: 767px) {
+    .navBar {
+        height: 60px;
+    }
+
+    .navBar__ul {
+        gap: 0px;
+    }
+
+    .navBar__li {
+        font-size: 14px;
+        padding: 8px;
+    }
+
+    .navBar__ul__img {
+        width: 35px;
+        height: 35px;
+    }
+
+    .navBar__ul__img img {
+        height: 40px;
+    }
+}
+
+/* Tablets (768px a 1024px) */
+@media (min-width: 768px) and (max-width: 1024px) {
+    .navBar {
+        height: 70px;
+    }
+
+    .navBar__ul {
+        display: flex;
+        gap: 15px;
+    }
+
+    .navBar__li {
+        font-size: 20px;
+        padding: 10px;
+    }
+
+    .navBar__ul__img {
+        width: 40px;
+        height: 40px;
+    }
+
+    .navBar__ul__img img {
+        height: 45px;
+    }
+
+}
+
+/* Laptops (1025px a 1366px) */
+@media (min-width: 1025px) and (max-width: 1366px) {
+    .navBar {
+        height: 80px;
+    }
+
+    .navBar__ul {
+        gap: 20px;
+    }
+
+    .navBar__li {
+        font-size: 30px;
+        padding: 12px;
+    }
+
+    .navBar__ul__img {
+        width: 45px;
+        height: 45px;
+    }
+
+    .navBar__ul__img img {
+        height: 50px;
+    }
+}
+
+/* Desktops grandes (≥ 1367px) */
+@media (min-width: 1367px) {
+    .navBar {
+        height: 90px;
+    }
+
+    .navBar__ul {
+        gap: 25px;
     }
 
     .navBar__li {
         font-size: 22px;
-        padding: 10px;
+        padding: 15px;
     }
 
-    .li_marca {
-        font-size: 30px;
+    .navBar__ul__img {
+        width: 50px;
+        height: 50px;
+    }
+
+    .navBar__ul__img img {
+        height: 55px;
     }
 }
