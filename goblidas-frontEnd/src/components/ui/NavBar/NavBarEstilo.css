@@ -64,6 +64,15 @@
     text-align: center;
 }
 
+.navBar__li a {
+    color: inherit;
+    text-decoration: none;
+}
+
+.navBar__li a:visited {
+    color: inherit;
+}
+
 /* Celulares pequeños (≤ 360px) */
 @media (max-width: 360px) {
     .navBar {

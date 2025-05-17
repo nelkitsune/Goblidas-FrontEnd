@@ -1,0 +1,145 @@
+{
+    "productos": [
+        {
+            "id": 1,
+            "tipo_producto": 1,
+            "categoria_id": 1,
+            "nombre": "Zapatilla Runner",
+            "sexo": "M"
+        },
+        {
+            "id": 2,
+            "tipo_producto": 1,
+            "categoria_id": 2,
+            "nombre": "Sandalia Verano",
+            "sexo": "F"
+        }
+    ],
+    "detalles": [
+        {
+            "id": 1,
+            "precio_id": 1,
+            "producto_id": 1,
+            "talle_id": 1,
+            "color": "Rojo",
+            "marca": "Nike",
+            "stock": 10,
+            "estado": true
+        },
+        {
+            "id": 2,
+            "precio_id": 2,
+            "producto_id": 2,
+            "talle_id": 2,
+            "color": "Azul",
+            "marca": "Adidas",
+            "stock": 5,
+            "estado": true
+        }
+    ],
+    "precios": [
+        {
+            "id": 1,
+            "precio_compra": 5000,
+            "precio_venta": 8000
+        },
+        {
+            "id": 2,
+            "precio_compra": 3000,
+            "precio_venta": 5000
+        }
+    ],
+    "imagenes": [
+        {
+            "id": 1,
+            "url": "https://via.placeholder.com/150"
+        },
+        {
+            "id": 2,
+            "url": "https://via.placeholder.com/150"
+        }
+    ],
+    "detalleImagenes": [
+        {
+            "detalle_id": 1,
+            "imagen_id": 1
+        },
+        {
+            "detalle_id": 2,
+            "imagen_id": 2
+        }
+    ],
+    "talles": [
+        {
+            "id": 1,
+            "numero": "40"
+        },
+        {
+            "id": 2,
+            "numero": "38"
+        }
+    ],
+    "categorias": [
+        {
+            "id": 1,
+            "nombre": "Calzado"
+        },
+        {
+            "id": 2,
+            "nombre": "Sandalias"
+        }
+    ],
+    "usuarios": [
+        {
+            "id": 1,
+            "contrasena": "1234",
+            "email": "juan@mail.com",
+            "nombre": "Juan",
+            "dni": "12345678"
+        }
+    ],
+    "direcciones": [
+        {
+            "id": 1,
+            "departamento": "Capital",
+            "localidad": "Ciudad",
+            "pais": "Argentina",
+            "provincia": "Mendoza"
+        }
+    ],
+    "usuarioDirecciones": [
+        {
+            "id": 1,
+            "usuario_id": 1,
+            "direccion_id": 1
+        }
+    ],
+    "ordenesCompra": [
+        {
+            "id": 1,
+            "total": 8000,
+            "fecha_compra": "2024-05-16T12:00:00",
+            "id_usuario_direccion": 1
+        }
+    ],
+    "ordenesCompraDetalle": [
+        {
+            "detalle_id": 1,
+            "orden_compra_id": 1
+        }
+    ],
+    "precioDescuentos": [
+        {
+            "descuento_id": 1,
+            "precio_id": 1
+        }
+    ],
+    "descuentos": [
+        {
+            "id": 1,
+            "fecha_inicio": "2024-05-01T00:00:00",
+            "fecha_final": "2024-05-31T23:59:59",
+            "porcentaje": "10"
+        }
+    ]
+}

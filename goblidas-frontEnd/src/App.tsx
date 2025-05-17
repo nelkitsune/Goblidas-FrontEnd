@@ -7,18 +7,27 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 import { Catalogo } from './components/screens/Catalogo/Catalogo'
 import { VerProducto } from './components/screens/VerProducto/VerProducto'
 import { Carrito } from './components/screens/Carrito/Carrito'
+import { BrowserRouter, Route, Routes } from 'react-router-dom'
 
 function App() {
 
   return (
     <>
-      <div className="parent">
-        <div className="NavBarApp"><NavBar /></div>
-        <div className="Pantalla">
-          <Carrito />
-          <PieDePagina />
+      <BrowserRouter>
+        <div className="parent">
+          <div className="NavBarApp"><NavBar /></div>
+          <div className="Pantalla">
+
+            <Routes>
+              <Route path='/' element={<Home />} />
+              <Route path='/catalogo' element={<Catalogo />} />
+              <Route path='/verproducto' element={<VerProducto />} />
+              <Route path='/carrito' element={<Carrito />} />
+            </Routes>
+            <PieDePagina />
+          </div>
         </div>
-      </div>
+      </BrowserRouter>
     </>
   )
 }

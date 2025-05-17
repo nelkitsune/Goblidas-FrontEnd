@@ -1,12 +1,19 @@
 import React, { useState } from 'react';
 import './ItemCountEstilo.css';
+import { useCarritoStore } from '../../../store/useCarritoStore'
+import { Detalle } from '../../../types/detalle';
+
 interface ItemCountProps {
-    stock: number; // Cantidad máxima disponible
-    initial: number; // Cantidad inicial
-    onAdd: (quantity: number) => void; // Función para manejar la cantidad añadida
+    stock: number;
+    initial: number;
+    onAdd: (quantity: number) => void;
+    detalle: Detalle;
 }
 
-export const ItemCount: React.FC<ItemCountProps> = ({ stock, initial, onAdd }) => {
+export const ItemCount: React.FC<ItemCountProps> = ({ stock, initial, onAdd, detalle }) => {
+
+    const agregarProducto = useCarritoStore((state) => state.agregarProducto);
+
     const [count, setCount] = useState(initial);
 
     const handleIncrement = () => {
@@ -21,9 +28,17 @@ export const ItemCount: React.FC<ItemCountProps> = ({ stock, initial, onAdd }) =
         }
     };
 
-    const handleAddToCart = () => {
-        onAdd(count);
-    };
+    const handleAddToCart = (quantity: number) => {
+        if (detalle) {
+            const productoCarrito = {
+                ...detalle,
+                cantidad: quantity,
+            };
+            agregarProducto(productoCarrito);
+        }
+        onAdd(quantity);
+    }
+
 
     return (
         <div className="item-count">
@@ -36,7 +51,7 @@ export const ItemCount: React.FC<ItemCountProps> = ({ stock, initial, onAdd }) =
                     +
                 </button>
             </div>
-            <button className="add-to-cart" onClick={handleAddToCart} disabled={stock === 0}>
+            <button className="add-to-cart" onClick={() => handleAddToCart(count)} disabled={stock === 0}>
                 Añadir al carrito
             </button>
         </div>
