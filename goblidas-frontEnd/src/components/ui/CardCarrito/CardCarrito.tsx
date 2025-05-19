@@ -2,6 +2,7 @@ import React from 'react'
 import imagenEjemplo from '../../img/descarga.jpg'
 import { ItemCount } from '../ItemCount/ItemCount'
 import './CardCarritoEstilo.css'
+import { Detalle } from '../../../types/detalle'
 
 type Props = {
     id: number
@@ -11,9 +12,10 @@ type Props = {
         url: string
     }
     cantidad: number
+    detalle: Detalle
 }
 
-export const CardCarrito = ({ nombre, precio, imagen_id, cantidad }: Props) => {
+export const CardCarrito = ({ nombre, precio, imagen_id, cantidad,detalle}: Props) => {
     return (
         <div className="card">
             <div className='img'>
@@ -24,7 +26,13 @@ export const CardCarrito = ({ nombre, precio, imagen_id, cantidad }: Props) => {
                 <p>Talle:41</p>
             </div>
             <div className='cantidad'>
-                <p>{cantidad}</p>
+                <p><ItemCount 
+                stock={10}
+                initial={cantidad}
+                onAdd={() => {}}
+                detalle={detalle}
+                cosa={false}
+                ></ItemCount></p>
             </div>
             <div className='precio'>
                 <p>${precio.toLocaleString()}</p>

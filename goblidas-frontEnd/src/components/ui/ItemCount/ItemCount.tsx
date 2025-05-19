@@ -8,9 +8,10 @@ interface ItemCountProps {
     initial: number;
     onAdd: (quantity: number) => void;
     detalle: Detalle;
+    cosa?: boolean;
 }
 
-export const ItemCount: React.FC<ItemCountProps> = ({ stock, initial, onAdd, detalle }) => {
+export const ItemCount: React.FC<ItemCountProps> = ({ stock, initial, onAdd, detalle, cosa }) => {
 
     const agregarProducto = useCarritoStore((state) => state.agregarProducto);
 
@@ -20,11 +21,17 @@ export const ItemCount: React.FC<ItemCountProps> = ({ stock, initial, onAdd, det
         if (count < stock) {
             setCount(count + 1);
         }
+        if (!cosa){
+            handleAddToCart(count);
+        }
     };
 
     const handleDecrement = () => {
         if (count > 1) {
             setCount(count - 1);
+        }
+        if (!cosa){
+            handleAddToCart(count);
         }
     };
 
@@ -51,9 +58,12 @@ export const ItemCount: React.FC<ItemCountProps> = ({ stock, initial, onAdd, det
                     +
                 </button>
             </div>
-            <button className="add-to-cart" onClick={() => handleAddToCart(count)} disabled={stock === 0}>
-                Añadir al carrito
-            </button>
+            {cosa && (
+                <button className="add-to-cart" onClick={() => handleAddToCart(count)} disabled={stock === 0}>
+                    Añadir al carrito
+                </button>
+            ) 
+                }
         </div>
     );
 };

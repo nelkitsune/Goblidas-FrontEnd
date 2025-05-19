@@ -9,7 +9,6 @@ import { Detalle } from '../../../types/detalle'
 
 
 export const VerProducto = () => {
-
     const [detalle, setDetalle] = useState<Detalle | null>(null);
     useEffect(() => {
         const detalleActivo = useProductoStore.getState().detalleActivo;
@@ -35,6 +34,7 @@ export const VerProducto = () => {
                         initial={1}
                         onAdd={(quantity) => console.log(`Añadido ${quantity} productos al carrito`)}
                         detalle={detalle}
+                        cosa={true}
                     />
                 )}
                 <h3>Descripcion</h3>
