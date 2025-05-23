@@ -2,11 +2,13 @@ import React from 'react'
 import { CardCarrito } from '../../ui/CardCarrito/CardCarrito'
 import './CarritoEstilo.css'
 import { useCarritoStore } from '../../../store/useCarritoStore'
+import { Link } from 'react-router'
+
 
 export const Carrito = () => {
     // Usar el hook para obtener los productos y que el componente se actualice automáticamente
     const productos = useCarritoStore((state) => state.productos)
-
+    console.log('Productos en el carrito:', productos);
     return (
         <div className='carritoScreen'>
             <h1>Carrito</h1>
@@ -21,6 +23,7 @@ export const Carrito = () => {
                                     precio={producto.precio_id.precio_venta}
                                     imagen_id={{ url: producto.imagen_id.url }}
                                     cantidad={producto.cantidad}
+                                    detalle={producto}
                                 />
                             </li>
                         ))}
@@ -32,7 +35,7 @@ export const Carrito = () => {
                         <table>
                             <tbody style={{ fontSize: '1.2rem' }}>
                                 {productos.map((producto) => (
-                                    <tr key={producto.id}>
+                                    <tr key={producto.id + '-' + producto.cantidad}>
                                         <td>
                                             {producto.producto_id.nombre} x {producto.cantidad}
                                         </td>
@@ -45,7 +48,7 @@ export const Carrito = () => {
                                 </tr>
                                 <tr>
                                 </tr>
-                                <tr className="total">
+                                <tr className="total" key={'total-' + productos.map(p => p.id + '-' + p.cantidad).join('_')}>
                                     <td>Total</td>
                                     <td>
                                         ${productos.reduce((total, producto) => total + (producto.precio_id.precio_venta * producto.cantidad), 0).toLocaleString()}
@@ -56,7 +59,7 @@ export const Carrito = () => {
                     </div>
                     <div className="botones">
                         <button className="btn-pagar">Ir a pagar</button>
-                        <button className="btn-seguir">Seguir comprando</button>
+                        <button className="btn-seguir"><Link to="/catalogo">Seguir comprando</Link></button>
                     </div>
                 </div>
             </div>

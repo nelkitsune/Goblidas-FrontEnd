@@ -73,6 +73,31 @@
     color: inherit;
 }
 
+.modalSesion {
+    position: fixed;
+    top: 50px;
+    right: 0px;
+    width: 180px;
+    height: 120px;
+    background-color: #7ee9b5;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-sizing: border-box;
+    padding: 0 10px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.15);
+    z-index: 9999;
+}
+
+.modalSesionInterior {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 30px;
+}
+
+
 /* Celulares pequeños (≤ 360px) */
 @media (max-width: 360px) {
     .navBar {

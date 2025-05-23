@@ -3,11 +3,11 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './IniciarSesionModalEstilo.css'
 import fotoLogo from "../../../img/goblinLogo.png"
 
-export const IniciarSesionModal = () => {
+export const IniciarSesionModal = ({ onClose }: { onClose: () => void }) => {
     return (
         <div className='IniciarSesionModal'>
             <form>
-                <button className='botonCierre'><i className="bi bi-x-lg"></i></button>
+                <button className='botonCierre' onClick={onClose}><i className="bi bi-x-lg"></i></button>
                 <div className='ContenedorFoto'>
                     <img src={fotoLogo} alt="" />
                 </div>

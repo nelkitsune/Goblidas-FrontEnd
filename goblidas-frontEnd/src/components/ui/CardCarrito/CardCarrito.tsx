@@ -3,6 +3,7 @@ import imagenEjemplo from '../../img/descarga.jpg'
 import { ItemCount } from '../ItemCount/ItemCount'
 import './CardCarritoEstilo.css'
 import { Detalle } from '../../../types/detalle'
+import { useCarritoStore } from '../../../store/useCarritoStore'
 
 type Props = {
     id: number
@@ -15,7 +16,13 @@ type Props = {
     detalle: Detalle
 }
 
-export const CardCarrito = ({ nombre, precio, imagen_id, cantidad,detalle}: Props) => {
+export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle }: Props) => {
+    const quitarProducto = useCarritoStore((state) => state.quitarProducto)
+
+    const hanleDeleteProducto = () => {
+        quitarProducto(id)
+    }
+    const cambiarCantidad = useCarritoStore((state) => state.cambiarCantidad)
     return (
         <div className="card">
             <div className='img'>
@@ -26,19 +33,20 @@ export const CardCarrito = ({ nombre, precio, imagen_id, cantidad,detalle}: Prop
                 <p>Talle:41</p>
             </div>
             <div className='cantidad'>
-                <p><ItemCount 
-                stock={10}
-                initial={cantidad}
-                onAdd={() => {}}
-                detalle={detalle}
-                cosa={false}
-                ></ItemCount></p>
+                <ItemCount
+                    stock={10}
+                    initial={cantidad}
+                    onAdd={() => { }}
+                    detalle={detalle}
+                    cosa={false}
+                    onChangeCantidad={(nuevaCantidad) => cambiarCantidad(id, nuevaCantidad)}
+                ></ItemCount>
             </div>
             <div className='precio'>
                 <p>${precio.toLocaleString()}</p>
             </div>
             <div className='eliminar'>
-                <i className="bi bi-trash"></i>
+                <i className="bi bi-trash" onClick={hanleDeleteProducto}></i>
             </div>
         </div>
     )
