@@ -3,14 +3,11 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './RegistrarSesionModalEstilo.css';
 import fotoLogo from "../../../img/goblinLogo.png";
 import { useUsuarioStore } from '../../../../store/useUsuarioStore';
-// Importa la función createUser desde donde esté definida
 import { createUser } from '../../../../service/userService';
 import { Usuario } from '../../../../types/usuario';
 
 export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
     const { setUsuario } = useUsuarioStore();
-
-    // Estados para los campos del formulario
     const [nombre, setNombre] = useState('');
     const [documento, setDocumento] = useState('');
     const [email, setEmail] = useState('');
@@ -29,7 +26,6 @@ export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
             alert("Debes aceptar los términos y condiciones");
             return;
         }
-        // Usa los nombres correctos para el backend
         const nuevoUsuario = {
             nombre,
             dni: documento,
