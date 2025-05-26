@@ -1,7 +1,7 @@
 export type Producto = {
     id: number
-    tipo_producto: number
-    categoria_id: number
-    nombre: string
-    sexo: string
+    productType: string
+    categoryId: number
+    name: string
+    gender: string
 }

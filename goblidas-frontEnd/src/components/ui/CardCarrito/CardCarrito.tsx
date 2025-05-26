@@ -4,6 +4,7 @@ import { ItemCount } from '../ItemCount/ItemCount'
 import './CardCarritoEstilo.css'
 import { Detalle } from '../../../types/detalle'
 import { useCarritoStore } from '../../../store/useCarritoStore'
+import imgEj from '../../img/UTB8SVphXwnJXKJkSaelq6xUzXXaI.jpg_720x720q50.avif';
 
 type Props = {
     id: number
@@ -14,9 +15,10 @@ type Props = {
     }
     cantidad: number
     detalle: Detalle
+    talle: string | number
 }
 
-export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle }: Props) => {
+export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle, talle }: Props) => {
     const quitarProducto = useCarritoStore((state) => state.quitarProducto)
 
     const hanleDeleteProducto = () => {
@@ -26,11 +28,11 @@ export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle }
     return (
         <div className="card">
             <div className='img'>
-                <img src={imagen_id?.url || imagenEjemplo} alt={nombre} />
+                <img src={imgEj} alt={nombre} />
             </div>
             <div className='nombre'>
                 <p>{nombre}</p>
-                <p>Talle:41</p>
+                <p>{talle}</p>
             </div>
             <div className='cantidad'>
                 <ItemCount
@@ -51,3 +53,4 @@ export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle }
         </div>
     )
 }
+// <img src={imagen_id?.url || imagenEjemplo} alt={nombre} />

@@ -5,7 +5,7 @@ import { ContenedorDeProductos } from '../../ui/ContenedorDeProductos/Contenedor
 import { ItemCount } from '../../ui/ItemCount/ItemCount'
 import { useProductoStore } from '../../../store/useProductoStore';
 import { Detalle } from '../../../types/detalle'
-
+import imgEj from '../../img/UTB8SVphXwnJXKJkSaelq6xUzXXaI.jpg_720x720q50.avif';
 
 
 export const VerProducto = () => {
@@ -20,14 +20,14 @@ export const VerProducto = () => {
     return (
         <div className='VerProducto'>
             <div className='fotosVerProducto'>
-                <img src={detalle?.imagen_id.url} alt="" className='ImagenPrincipalFotos' />
+                <img src={imgEj} alt="" className='ImagenPrincipalFotos' />
                 <div className='ImagenesSecundarias'>
-                    <img src={detalle?.imagen_id.url} alt="" /><img src={detalle?.imagen_id.url} alt="" /><img src={detalle?.imagen_id.url} alt="" /><img src={detalle?.imagen_id.url} alt="" /><img src={detalle?.imagen_id.url} alt="" />
+                    <img src={imgEj} alt="" /><img src={imgEj} alt="" /><img src={imgEj} alt="" /><img src={imgEj} alt="" /><img src={imgEj} alt="" />
                 </div>
             </div>
             <div className='CuerpoVerProducto'>
-                <h3>{detalle?.producto_id.nombre}</h3>
-                <h4>{detalle?.precio_id.precio_venta}</h4>
+                <h3>{detalle?.productIdj.name}</h3>
+                <h4>{detalle?.prizeId.sellingPrice}</h4>
                 {detalle && (
                     <ItemCount
                         stock={10}
@@ -49,3 +49,4 @@ export const VerProducto = () => {
         </div>
     )
 }
+//detalle?.imagen_id.url

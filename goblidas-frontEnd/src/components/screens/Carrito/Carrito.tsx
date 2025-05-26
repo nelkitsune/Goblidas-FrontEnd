@@ -19,11 +19,12 @@ export const Carrito = () => {
                             <li key={producto.id}>
                                 <CardCarrito
                                     id={producto.id}
-                                    nombre={producto.producto_id.nombre}
-                                    precio={producto.precio_id.precio_venta}
-                                    imagen_id={{ url: producto.imagen_id.url }}
+                                    nombre={producto.productIdj.name}
+                                    precio={producto.prizeId.sellingPrice}
+                                    imagen_id={{ url: "2" }} //arreglar
                                     cantidad={producto.cantidad}
                                     detalle={producto}
+                                    talle={producto.sizeId.number} //arreglar.... creo
                                 />
                             </li>
                         ))}
@@ -37,10 +38,10 @@ export const Carrito = () => {
                                 {productos.map((producto) => (
                                     <tr key={producto.id + '-' + producto.cantidad}>
                                         <td>
-                                            {producto.producto_id.nombre} x {producto.cantidad}
+                                            {producto.productIdj.name} x {producto.cantidad}
                                         </td>
                                         <td>
-                                            ${(producto.precio_id.precio_venta * producto.cantidad).toLocaleString()}
+                                            ${(producto.prizeId.sellingPrice * producto.cantidad).toLocaleString()}
                                         </td>
                                     </tr>
                                 ))}
@@ -51,7 +52,7 @@ export const Carrito = () => {
                                 <tr className="total" key={'total-' + productos.map(p => p.id + '-' + p.cantidad).join('_')}>
                                     <td>Total</td>
                                     <td>
-                                        ${productos.reduce((total, producto) => total + (producto.precio_id.precio_venta * producto.cantidad), 0).toLocaleString()}
+                                        ${productos.reduce((total, producto) => total + (producto.prizeId.sellingPrice * producto.cantidad), 0).toLocaleString()}
                                     </td>
                                 </tr>
                             </tbody>

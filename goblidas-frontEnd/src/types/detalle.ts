@@ -4,12 +4,12 @@ import { Imagen } from './imagen'
 
 export type Detalle = {
     id: number
-    precio_id: Precio
-    producto_id: Producto
+    prizeId: Precio
+    productIdj: Producto
     imagen_id: Imagen
-    talle_id: number
-    color: string
-    marca: string
+    sizeId: number
+    colour: string
+    brand: string
     stock: number
-    estado: boolean
+    state: boolean
 }

@@ -3,7 +3,6 @@ import 'bootstrap-icons/font/bootstrap-icons.css';
 import './RegistrarSesionModalEstilo.css';
 import fotoLogo from "../../../img/goblinLogo.png";
 import { useUsuarioStore } from '../../../../store/useUsuarioStore';
-import { Usuario } from '../../../../store/types/usuario';
 
 export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
     const { setUsuario } = useUsuarioStore();
@@ -18,23 +17,10 @@ export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
     const [repetirPassword, setRepetirPassword] = useState('');
     const [aceptaTerminos, setAceptaTerminos] = useState(false);
 
-    const handleSubmit = (event: React.FormEvent) => {
-        event.preventDefault();
-        setUsuario({
-            nombre,
-            apellido,
-            documento,
-            repetirDocumento,
-            email,
-            password,
-            aceptaTerminos
-        });
-        onClose();
-    };
 
     return (
         <div className='RegistrarSesionModal'>
-            <form onSubmit={handleSubmit}>
+            <form >
                 <button className='botonCierre' type="button" onClick={onClose}>
                     <i className="bi bi-x-lg"></i>
                 </button>
