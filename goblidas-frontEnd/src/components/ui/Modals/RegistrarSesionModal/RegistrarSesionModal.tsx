@@ -8,7 +8,7 @@ import { Usuario } from '../../../../types/usuario';
 
 export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
     const { setUsuario } = useUsuarioStore();
-    const [nombre, setNombre] = useState('');
+    const [name, setNombre] = useState('');
     const [documento, setDocumento] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
@@ -27,7 +27,7 @@ export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
             return;
         }
         const nuevoUsuario = {
-            nombre,
+            name,
             dni: documento,
             email,
             password,
@@ -41,7 +41,7 @@ export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
                 password: usuarioCreado.password,
                 role: usuarioCreado.rol ?? "CUSTOMER",
                 email: usuarioCreado.email,
-                name: usuarioCreado.nombre ?? "",
+                name: usuarioCreado.name ?? "",
                 dni: usuarioCreado.dni ?? "",
             }
             console.log("Usuario que se setea en el store:", usuario);
@@ -63,7 +63,7 @@ export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
                 </button>
                 <h2>Crear cuenta</h2>
                 <div className='form-group'>
-                    <input type="text" placeholder="Nombre" required value={nombre} onChange={e => setNombre(e.target.value)} />
+                    <input type="text" placeholder="Nombre" required value={name} onChange={e => setNombre(e.target.value)} />
                 </div>
                 <div className='form-group'>
                     <input type="text" placeholder="Documento" required value={documento} onChange={e => setDocumento(e.target.value)} />

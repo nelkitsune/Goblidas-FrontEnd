@@ -1,50 +1,61 @@
-import React from 'react'
+import React, { use, useEffect, useState } from 'react'
 import "./SideCatalogo.css"
+import { getCategory } from '../../../service/categoryService'
+import { getSize } from '../../../service/sizeService';
 
 export const SideCatalogo = () => {
-  return (
-    <>
-        <div className="sideCatalogoTotal">
-            <div>
-                <h2>Categorias</h2>
+    const [Categorias, setCategorias] = useState([]);
+    const [Talles, setTalles] = useState([]);
+    useEffect(() => {
+
+        getCategory()
+            .then((data) => {
+                console.log('🟢 [SideCatalogo] Categorías obtenidas:', data);
+                setCategorias(data);
+            }
+            )
+            .catch((error) => {
+                console.error('🔴 [SideCatalogo] Error al obtener categorías:', error);
+            });
+        getSize()
+            .then((data) => {
+                console.log('🟢 [SideCatalogo] Talles obtenidos:', data);
+                setTalles(data);
+            })
+            .catch((error) => {
+                console.error('🔴 [SideCatalogo] Error al obtener talles:', error);
+            });
+    }
+        , []);
+    return (
+        <>
+            <div className="sideCatalogoTotal">
+                <div>
+                    <h2>Categorias</h2>
+                </div>
+                <div>
+                    <ul>
+                        {Categorias.map((categoria: any) => (
+                            <li key={categoria.id}>
+                                <a href={`/category/${categoria.id}`}>{categoria.name}</a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
+                <div>
+                    <h3>Precio</h3>
+                </div>
+                <div>
+                    <h3>Talle</h3>
+                    <ul>
+                        {Talles.map((talle: any) => (
+                            <li key={talle.id}>
+                                <a href={`/size/${talle.id}`}>{talle.number}</a>
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             </div>
-            <div>
-                <ul>
-                    <li>Hombre</li>
-                    <li>Mujer</li>
-                    <li>Niño</li>
-                </ul>
-            </div>
-            <div>
-                <ul>
-                    <li>Mocasines</li>
-                    <li>Botas</li>
-                    <li>Chatitas</li>
-                    <li>Sandalias</li>
-                    <li>Alpargatas</li>
-                    <li>Pantuflas</li>
-                    <li>Tennis</li>
-                </ul>
-            </div>
-            <div>
-                <h3>Precio</h3>
-            </div>
-            <div>
-                <h3>Talle</h3>
-                <ul>
-                    <li>40</li>
-                    <li>41</li>
-                    <li>42</li>
-                    <li>43</li>
-                    <li>44</li>
-                    <li>45</li>
-                    <li>46</li>
-                    <li>47</li>
-                    <li>48</li>
-                    <li>49</li>
-                </ul>
-            </div>
-        </div>
-    </>
-  )
+        </>
+    )
 }
