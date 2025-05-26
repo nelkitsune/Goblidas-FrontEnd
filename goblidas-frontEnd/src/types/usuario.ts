@@ -1,7 +1,8 @@
 export type Usuario = {
     id: number
-    contrasena: string
+    password: string
+    role: string
     email: string
-    nombre: string
+    name: string
     dni: string
 }

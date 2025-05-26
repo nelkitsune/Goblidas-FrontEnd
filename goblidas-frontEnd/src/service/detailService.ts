@@ -1,4 +1,4 @@
-// src/services/userService.ts
+
 import api from '../components/api/axios';
 
 export const getDetalles = async () => {
