@@ -1,11 +1,19 @@
 import axios from 'axios';
 
 const api = axios.create({
-    baseURL: 'http://localhost:8080/api', // Cambiá esto según tu backend
+    baseURL: 'http://localhost:8080/api',
     headers: {
-        'Content-Type': 'application/json',
-        'Authorization': 'Bearer eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJhZG1pbkBnb2JsaWRhcy5jb20iLCJpYXQiOjE3NDgyNzY0MDcsImV4cCI6MTc0ODMxMjQwN30.1YXqRE0oaLja6DD2yIo_FqdikFuLAZNM1rzXg4-S_Vw'
+        'Content-Type': 'application/json'
     },
+});
+
+// Interceptor para agregar el token a cada petición (excepto login)
+api.interceptors.request.use((config) => {
+    const token = localStorage.getItem('token');
+    if (token && config.url !== '/auth/login') {
+        config.headers['Authorization'] = `Bearer ${token}`;
+    }
+    return config;
 });
 
 export default api;
