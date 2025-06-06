@@ -1,7 +1,10 @@
+import { Categoria } from './categoria'
+import { Detalle } from './detalle'
 export type Producto = {
     id: number
     productType: string
-    categoryId: number
+    categoriesIds: Categoria[]
     name: string
     gender: string
+    details: Detalle[];
 }

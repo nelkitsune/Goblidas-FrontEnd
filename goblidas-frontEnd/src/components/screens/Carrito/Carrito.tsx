@@ -2,29 +2,30 @@ import React from 'react'
 import { CardCarrito } from '../../ui/CardCarrito/CardCarrito'
 import './CarritoEstilo.css'
 import { useCarritoStore } from '../../../store/useCarritoStore'
-import { Link } from 'react-router'
-
+import { Link } from 'react-router-dom'
 
 export const Carrito = () => {
     // Usar el hook para obtener los productos y que el componente se actualice automáticamente
-    const productos = useCarritoStore((state) => state.productos)
-    console.log('Productos en el carrito:', productos);
+    const detalles = useCarritoStore((state) => state.productos)
+    console.log('Productos en el carrito:', detalles);
+
     return (
         <div className='carritoScreen'>
             <h1>Carrito</h1>
             <div className='carritoCuerpo'>
                 <div className="listaProductos">
                     <ul style={{ listStyle: 'none', padding: 0 }}>
-                        {productos.map((producto) => (
-                            <li key={producto.id}>
+                        {detalles.map(detalle => (
+                            <li key={detalle.id}>
                                 <CardCarrito
-                                    id={producto.id}
-                                    nombre={producto.productIdj.name}
-                                    precio={producto.prizeId.sellingPrice}
+                                    id={detalle.id}
+                                    nombre={detalle.productIdj.name}
+                                    precio={detalle.prizeId.sellingPrice}
                                     imagen_id={{ url: "2" }} //arreglar
-                                    cantidad={producto.cantidad}
-                                    detalle={producto}
-                                    talle={producto.sizeId.number} //arreglar.... creo
+                                    cantidad={detalle.cantidad}
+                                    detalle={detalle}
+                                    talle={detalle.sizeId.number} //arreglar.... creo
+                                    color={detalle.colour}
                                 />
                             </li>
                         ))}
@@ -35,7 +36,7 @@ export const Carrito = () => {
                         <h2>Resumen</h2>
                         <table>
                             <tbody style={{ fontSize: '1.2rem' }}>
-                                {productos.map((producto) => (
+                                {detalles.map(producto => (
                                     <tr key={producto.id + '-' + producto.cantidad}>
                                         <td>
                                             {producto.productIdj.name} x {producto.cantidad}
@@ -45,14 +46,10 @@ export const Carrito = () => {
                                         </td>
                                     </tr>
                                 ))}
-                                <tr>
-                                </tr>
-                                <tr>
-                                </tr>
-                                <tr className="total" key={'total-' + productos.map(p => p.id + '-' + p.cantidad).join('_')}>
+                                <tr className="total" key={'total-' + detalles.map(p => p.id + '-' + p.cantidad).join('_')}>
                                     <td>Total</td>
                                     <td>
-                                        ${productos.reduce((total, producto) => total + (producto.prizeId.sellingPrice * producto.cantidad), 0).toLocaleString()}
+                                        ${detalles.reduce((total, producto) => total + (producto.prizeId.sellingPrice * producto.cantidad), 0).toLocaleString()}
                                     </td>
                                 </tr>
                             </tbody>

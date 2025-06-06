@@ -1,39 +1,35 @@
 import { create } from 'zustand';
-import { Detalle } from '../types/detalle';
+import { Producto } from '../types/producto';
 
-type DetalleState = {
-    detalles: Detalle[];
-    setDetalles: (detalles: Detalle[]) => void;
-    agregarDetalle: (detalle: Detalle) => void;
-    quitarDetalle: (id: number) => void;
-    actualizarDetalle: (id: number, detalle: Detalle) => void;
-    detalleActivo: Detalle | null;
-    setDetalleActivo: (detalle: Detalle | null) => void;
-    limpiarDetalles: () => void;
+type ProductoState = {
+    productos: Producto[];
+    setProductos: (productos: Producto[]) => void;
+    agregarProducto: (producto: Producto) => void;
+    quitarProducto: (id: number) => void;
+    actualizarProducto: (id: number, producto: Producto) => void;
+    productoActivo: Producto | null;
+    setProductoActivo: (producto: Producto | null) => void;
+    limpiarProductos: () => void;
 };
 
-
-export const useProductoStore = create<DetalleState>((set) => ({
-    detalles: [],
-    setDetalles: (detalles) => set({ detalles }),
-    agregarDetalle: (detalle) =>
+export const useProductoStore = create<ProductoState>((set) => ({
+    productos: [],
+    setProductos: (productos) => set({ productos }),
+    agregarProducto: (producto) =>
         set((state) => ({
-            detalles: [...state.detalles, detalle],
+            productos: [...state.productos, producto],
         })),
-    quitarDetalle: (id) =>
+    quitarProducto: (id) =>
         set((state) => ({
-            detalles: state.detalles.filter((d) => d.id !== id),
+            productos: state.productos.filter((p) => p.id !== id),
         })),
-    actualizarDetalle: (id, detalle) =>
+    actualizarProducto: (id, producto) =>
         set((state) => ({
-            detalles: state.detalles.map((d) =>
-                d.id === id ? { ...d, ...detalle } : d
+            productos: state.productos.map((p) =>
+                p.id === id ? { ...p, ...producto } : p
             ),
         })),
-    detalleActivo: null,
-
-
-    setDetalleActivo: (producto) => set({ detalleActivo: producto }),
-    limpiarDetalleActivo: () => set({ detalleActivo: null }),
-    limpiarDetalles: () => set({ detalles: [] }),
+    productoActivo: null,
+    setProductoActivo: (producto) => set({ productoActivo: producto }),
+    limpiarProductos: () => set({ productos: [] }),
 }));

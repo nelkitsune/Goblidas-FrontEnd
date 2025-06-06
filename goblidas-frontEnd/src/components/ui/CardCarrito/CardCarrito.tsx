@@ -16,9 +16,10 @@ type Props = {
     cantidad: number
     detalle: Detalle
     talle: string | number
+    color?: string
 }
 
-export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle, talle }: Props) => {
+export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle, talle, color }: Props) => {
     const quitarProducto = useCarritoStore((state) => state.quitarProducto)
 
     const hanleDeleteProducto = () => {
@@ -32,11 +33,11 @@ export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle, 
             </div>
             <div className='nombre'>
                 <p>{nombre}</p>
-                <p>{talle}</p>
+                <p>{talle} {color}</p>
             </div>
             <div className='cantidad'>
                 <ItemCount
-                    stock={10}
+                    stock={detalle.stock}
                     initial={cantidad}
                     onAdd={() => { }}
                     detalle={detalle}

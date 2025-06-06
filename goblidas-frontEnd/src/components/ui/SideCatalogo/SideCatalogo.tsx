@@ -3,7 +3,7 @@ import "./SideCatalogo.css"
 import { getCategory } from '../../../service/categoryService'
 import { getSize } from '../../../service/sizeService';
 
-export const SideCatalogo = () => {
+export const SideCatalogo = ({ onFiltrar }: { onFiltrar: (filtros: any) => void }) => {
     const [Categorias, setCategorias] = useState([]);
     const [Talles, setTalles] = useState([]);
     useEffect(() => {
@@ -37,7 +37,9 @@ export const SideCatalogo = () => {
                     <ul>
                         {Categorias.map((categoria: any) => (
                             <li key={categoria.id}>
-                                <a href={`/category/${categoria.id}`}>{categoria.name}</a>
+                                <button onClick={() => onFiltrar({ categoriesIds: categoria.id })}>
+                                    {categoria.name}
+                                </button>
                             </li>
                         ))}
                     </ul>
@@ -50,7 +52,9 @@ export const SideCatalogo = () => {
                     <ul>
                         {Talles.map((talle: any) => (
                             <li key={talle.id}>
-                                <a href={`/size/${talle.id}`}>{talle.number}</a>
+                                <button onClick={() => onFiltrar({ size: talle.number })}>
+                                    {talle.number}
+                                </button>
                             </li>
                         ))}
                     </ul>

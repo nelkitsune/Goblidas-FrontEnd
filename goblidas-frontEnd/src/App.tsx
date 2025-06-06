@@ -8,6 +8,7 @@ import { Catalogo } from './components/screens/Catalogo/Catalogo'
 import { VerProducto } from './components/screens/VerProducto/VerProducto'
 import { Carrito } from './components/screens/Carrito/Carrito'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
+import { VerPerfil } from './components/screens/VerPerfil/VerPerfil'
 
 function App() {
 
@@ -23,6 +24,7 @@ function App() {
               <Route path='/catalogo' element={<Catalogo />} />
               <Route path='/verproducto' element={<VerProducto />} />
               <Route path='/carrito' element={<Carrito />} />
+              <Route path='/verperfil' element={<VerPerfil />} />
             </Routes>
             <PieDePagina />
           </div>

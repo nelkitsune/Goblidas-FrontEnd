@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import './ItemCountEstilo.css';
 import { useCarritoStore } from '../../../store/useCarritoStore'
 import { Detalle } from '../../../types/detalle';
+import { Producto } from '../../../types/producto';
 
 interface ItemCountProps {
     stock: number;
@@ -10,10 +11,12 @@ interface ItemCountProps {
     detalle: Detalle;
     cosa?: boolean;
     onChangeCantidad?: (cantidad: number) => void;
+    disabled?: boolean;
+    producto?: Producto;
 }
 
 export const ItemCount: React.FC<ItemCountProps> = ({
-    stock, initial, onAdd, detalle, cosa, onChangeCantidad
+    stock, initial, onAdd, detalle, cosa, onChangeCantidad, disabled, producto
 }) => {
 
     const agregarProducto = useCarritoStore((state) => state.agregarProducto);
@@ -40,10 +43,11 @@ export const ItemCount: React.FC<ItemCountProps> = ({
     };
 
     const handleAddToCart = (quantity: number) => {
-        if (detalle) {
+        if (detalle && producto) {
             const productoCarrito = {
                 ...detalle,
                 cantidad: quantity,
+                productIdj: producto, // <-- ahora sí
             };
             agregarProducto(productoCarrito);
         }
@@ -63,11 +67,14 @@ export const ItemCount: React.FC<ItemCountProps> = ({
                 </button>
             </div>
             {cosa && (
-                <button className="add-to-cart" onClick={() => handleAddToCart(count)} disabled={stock === 0}>
+                <button
+                    className="add-to-cart"
+                    onClick={() => handleAddToCart(count)}
+                    disabled={disabled || stock === 0} // <-- usa la prop aquí
+                >
                     Añadir al carrito
                 </button>
-            )
-            }
+            )}
         </div>
     );
 };

@@ -2,9 +2,7 @@ import React from 'react'
 import './CardProductoEstilo.css'
 import fotomedias from "../../img/UTB8SVphXwnJXKJkSaelq6xUzXXaI.jpg_720x720q50.avif";
 import { Link } from 'react-router-dom';
-import { Detalle } from '../../../types/detalle';
 import { Producto } from '../../../types/producto';
-
 import { useProductoStore } from '../../../store/useProductoStore';
 
 
@@ -14,19 +12,21 @@ type Props = {
     nombreProducto: string
     precio: number
     img?: string
+    producto?: Producto
 }
 
 
-export const CardProducto = ({ nombreProducto, precio, img, id }: Props) => {
+export const CardProducto = ({ nombreProducto, precio, img, id, producto }: Props) => {
     const handleClick = () => {
-        const detalle = useProductoStore.getState().detalles.find((detalle: Detalle) => detalle.id === id);
-        if (detalle) {
-            setDetalleActivo(detalle);
+        if (producto) {
+            setProductoActivo(producto);
+            console.log("Producto encontrado:", producto);
+        } else {
+            console.log("Producto no encontrado");
         }
-        console.log(detalleActivo);
     }
-    const detalleActivo = useProductoStore((state) => state.detalleActivo);
-    const setDetalleActivo = useProductoStore((state) => state.setDetalleActivo);
+    const productoActivo = useProductoStore((state) => state.productoActivo);
+    const setProductoActivo = useProductoStore((state) => state.setProductoActivo);
 
     return (
         <>

@@ -1,21 +1,47 @@
-import React, { useEffect, useState } from 'react'
-import fotoEjemplo from '../../../components/img/descarga.jpg'
-import './VerProductoEstilo.css'
-import { ContenedorDeProductos } from '../../ui/ContenedorDeProductos/ContenedorDeProductos'
-import { ItemCount } from '../../ui/ItemCount/ItemCount'
-import { useProductoStore } from '../../../store/useProductoStore';
-import { Detalle } from '../../../types/detalle'
+import React, { useState } from 'react'
 import imgEj from '../../img/UTB8SVphXwnJXKJkSaelq6xUzXXaI.jpg_720x720q50.avif';
-
+import { useDetalleStore } from '../../../store/useDetalleStore';
+import { useProductoStore } from '../../../store/useProductoStore'
+import { ItemCount } from '../../ui/ItemCount/ItemCount'
+import './VerProductoEstilo.css'
 
 export const VerProducto = () => {
-    const [detalle, setDetalle] = useState<Detalle | null>(null);
-    useEffect(() => {
-        const detalleActivo = useProductoStore.getState().detalleActivo;
-        setDetalle(detalleActivo);
-    }, []);
+    const detalleActivo = useDetalleStore((state) => state.detalleActivo);
+    const setDetalleActivo = useDetalleStore((state) => state.setDetalleActivo);
+    const productoActivo = useProductoStore((state) => state.productoActivo);
 
+    // Estados para selección
+    const [colorSeleccionado, setColorSeleccionado] = useState<string | null>(null);
+    const [talleSeleccionado, setTalleSeleccionado] = useState<number | null>(null);
 
+    // Colores únicos
+    const coloresUnicos = productoActivo
+        ? Array.from(new Set(productoActivo.details.map((detalle) => detalle.colour)))
+        : [];
+
+    // Talles únicos según el color seleccionado
+    const tallesFiltrados = productoActivo && colorSeleccionado
+        ? Array.from(
+            new Set(
+                productoActivo.details
+                    .filter((detalle) => detalle.colour === colorSeleccionado)
+                    .map((detalle) => detalle.sizeId.number)
+            )
+        )
+        : [];
+
+    // Actualizar detalleActivo cuando ambos estén seleccionados
+    React.useEffect(() => {
+        if (productoActivo && colorSeleccionado && talleSeleccionado) {
+            const detalle = productoActivo.details.find(
+                (d) => d.colour === colorSeleccionado && d.sizeId.number === talleSeleccionado
+            );
+            setDetalleActivo(detalle ?? null);
+        }
+    }, [productoActivo, colorSeleccionado, talleSeleccionado, setDetalleActivo]);
+
+    // Deshabilitar añadir al carrito si falta selección
+    const puedeAgregar = !!(colorSeleccionado && talleSeleccionado && detalleActivo);
 
     return (
         <div className='VerProducto'>
@@ -26,27 +52,59 @@ export const VerProducto = () => {
                 </div>
             </div>
             <div className='CuerpoVerProducto'>
-                <h3>{detalle?.productIdj.name}</h3>
-                <h4>{detalle?.prizeId.sellingPrice}</h4>
-                {detalle && (
+                <h3>{productoActivo?.name}</h3>
+                <h4>{detalleActivo?.prizeId.sellingPrice}</h4>
+                {productoActivo && detalleActivo && (
                     <ItemCount
-                        stock={10}
+                        stock={detalleActivo.stock}
                         initial={1}
                         onAdd={(quantity) => console.log(`Añadido ${quantity} productos al carrito`)}
-                        detalle={detalle}
+                        detalle={detalleActivo}
                         cosa={true}
+                        disabled={!puedeAgregar}
+                        producto={productoActivo} // <-- pásalo aquí
                     />
                 )}
-                <h3>Descripcion</h3>
-                <p>Lorem ipsum dolor, sit amet consectetur adipisicing elit. Eum reprehenderit porro quam aspernatur, libero eos odio? Fuga quam soluta nulla eligendi at provident fugit pariatur. Eum aliquid vitae id. Cum.</p>
+                <h4>Color:
+                    {coloresUnicos.map((color) => (
+                        <button
+                            key={color}
+                            onClick={() => {
+                                setColorSeleccionado(color);
+                                setTalleSeleccionado(null); // Reinicia talle al cambiar color
+                            }}
+                            style={{
+                                fontWeight: colorSeleccionado === color ? 'bold' : 'normal'
+                            }}
+                        >
+                            {color}
+                        </button>
+                    ))}
+                </h4>
+                <h4>Tamaño:
+                    {tallesFiltrados.map((talle) => (
+                        <button
+                            key={talle}
+                            onClick={() => setTalleSeleccionado(talle)}
+                            style={{
+                                fontWeight: talleSeleccionado === talle ? 'bold' : 'normal'
+                            }}
+                        >
+                            {talle}
+                        </button>
+                    ))}
+                </h4>
+                {!puedeAgregar && (
+                    <div style={{ color: 'red' }}>
+                        Selecciona un color y un talle para añadir al carrito.
+                    </div>
+                )}
             </div>
             <div className='ProductosRecomendados'>
                 <h5>Productos recomendados</h5>
                 <div className='ContenedorDeProductosRecomendados'>
-                    <ContenedorDeProductos />
                 </div>
             </div>
         </div>
     )
 }
-//detalle?.imagen_id.url

@@ -6,35 +6,37 @@ import { CardProducto } from '../../ui/CardProducto/CardProducto'
 import { ContenedorDeProductos } from '../../ui/ContenedorDeProductos/ContenedorDeProductos'
 import { RegistrarSesionModal } from '../../ui/Modals/RegistrarSesionModal/RegistrarSesionModal'
 import { getDetalles } from '../../../service/detailService'
+import { getProductos } from '../../../service/productsService'
+import { Producto } from '../../../types/producto'
 
 export const Home = () => {
-    const [producto, setProducto] = useState<Detalle[]>([])
-    const [zapatilla, setZapatilla] = useState<Detalle[]>([])
-    const [remera, setRemera] = useState<Detalle[]>([])
-    const [pantalon, setPantalon] = useState<Detalle[]>([])
-    const [gorra, setGorra] = useState<Detalle[]>([])
-    const [abrigo, setAbrigo] = useState<Detalle[]>([])
-    const [otroTipo, setOtroTipo] = useState<Detalle[]>([])
+    const [producto, setProducto] = useState<Producto[]>([])
+    const [zapatilla, setZapatilla] = useState<Producto[]>([])
+    const [remera, setRemera] = useState<Producto[]>([])
+    const [pantalon, setPantalon] = useState<Producto[]>([])
+    const [gorra, setGorra] = useState<Producto[]>([])
+    const [abrigo, setAbrigo] = useState<Producto[]>([])
+    const [otroTipo, setOtroTipo] = useState<Producto[]>([])
 
     useEffect(() => {
-        getDetalles()
+        getProductos()
             .then((data) => {
                 setProducto(data);
-                console.log("Detalles obtenidos:", data);
+                console.log("Productos obtenidos:", data);
             })
             .catch((error) => {
-                console.error("Error al obtener los detalles:", error);
+                console.error("Error al obtener los Productos:", error);
             });
     }, []);
 
     useEffect(() => {
-        const zapatilla = producto.filter((item) => item.productIdj.productType === "Zapatilla");
-        const remera = producto.filter((item) => item.productIdj.productType === "Remera");
-        const pantalon = producto.filter((item) => item.productIdj.productType === "Pantalon");
-        const gorra = producto.filter((item) => item.productIdj.productType === "Gorra");
-        const abrigo = producto.filter((item) => item.productIdj.productType === "Abrigo");
+        const zapatilla = producto.filter((item) => item.productType === "Zapatilla");
+        const remera = producto.filter((item) => item.productType === "Remera");
+        const pantalon = producto.filter((item) => item.productType === "Pantalon");
+        const gorra = producto.filter((item) => item.productType === "Gorra");
+        const abrigo = producto.filter((item) => item.productType === "Abrigo");
         const otroTipo = producto.filter((item) =>
-            !["Zapatilla", "Remera", "Pantalon", "Gorra", "Abrigo"].includes(item.productIdj.productType)
+            !["Zapatilla", "Remera", "Pantalon", "Gorra", "Abrigo"].includes(item.productType)
         );
         setZapatilla(zapatilla);
         setRemera(remera);
@@ -55,17 +57,17 @@ export const Home = () => {
             <CarruselCasero></CarruselCasero>
             <br />
             <h4>Zapatillas</h4>
-            <ContenedorDeProductos detalles={zapatilla} />
+            <ContenedorDeProductos productos={zapatilla} />
             <h4>Remeras</h4>
-            <ContenedorDeProductos detalles={remera} />
+            <ContenedorDeProductos productos={remera} />
             <h4>Pantalones</h4>
-            <ContenedorDeProductos detalles={pantalon} />
+            <ContenedorDeProductos productos={pantalon} />
             <h4>Gorras</h4>
-            <ContenedorDeProductos detalles={gorra} />
+            <ContenedorDeProductos productos={gorra} />
             <h4>Abrigos</h4>
-            <ContenedorDeProductos detalles={abrigo} />
+            <ContenedorDeProductos productos={abrigo} />
             <h4>Otros productos</h4>
-            <ContenedorDeProductos detalles={otroTipo} />
+            <ContenedorDeProductos productos={otroTipo} />
         </>
     )
 }

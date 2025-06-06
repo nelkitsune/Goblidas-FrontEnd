@@ -1,6 +1,7 @@
 import React from 'react'
 import { useUsuarioStore } from '../../../../store/useUsuarioStore'
 import './ModalSesionEstilo.css'
+import { Link } from 'react-router'
 
 export const ModalSesion = ({
     onIniciarSesion,
@@ -15,8 +16,8 @@ export const ModalSesion = ({
         <>
             {usuario && (
                 <div className='modalSesionInterior'>
-                    <div className='divModalSesion'>Hola, {usuario.nombre}</div>
-                    <div className='divModalSesion'>Mi cuenta</div>
+                    <div className='divModalSesion'>Hola, {usuario.name}</div>
+                    <div className='divModalSesion'><Link to="/verperfil">Mi Perfil</Link></div>
                     <div className='divModalSesion'>Mis pedidos</div>
                     <div className='divModalSesion'>Salir</div>
                 </div>

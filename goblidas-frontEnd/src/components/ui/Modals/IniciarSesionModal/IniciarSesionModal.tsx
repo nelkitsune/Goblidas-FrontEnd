@@ -4,6 +4,7 @@ import './IniciarSesionModalEstilo.css'
 import fotoLogo from "../../../img/goblinLogo.png"
 import { useUsuarioStore } from '../../../../store/useUsuarioStore';
 import { loginUser } from '../../../../service/authService';
+import { getUsers } from '../../../../service/userService';
 
 export const IniciarSesionModal = ({ onClose }: { onClose: () => void }) => {
     const [email, setEmail] = useState('');
@@ -12,8 +13,11 @@ export const IniciarSesionModal = ({ onClose }: { onClose: () => void }) => {
     const handleSubmit = async (e: React.FormEvent) => {
         e.preventDefault();
         try {
-            const usuario = await loginUser(email, password);
-            setUsuario(usuario);
+            const { token } = await loginUser(email, password);
+            localStorage.setItem('token', token);
+            const users = await getUsers();
+            const usuarioLogeado = users.find((user: any) => user.email === email);
+            setUsuario(usuarioLogeado);
             alert('¡Sesión iniciada!');
             onClose();
         } catch (error: any) {
