@@ -32,7 +32,7 @@ function App() {
               <Route path='/success' element={<Success />} />
               <Route path='/pending' element={<Pending />} />
               <Route path='/failure' element={<Failure />} />
-              <Route path='/selecionarDireccion' element={<SelecionarDireccion />} />
+              <Route path='/seleccionardireccion' element={<SelecionarDireccion />} />
             </Routes>
             <PieDePagina />
           </div>

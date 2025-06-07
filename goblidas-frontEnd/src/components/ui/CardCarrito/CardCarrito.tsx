@@ -5,6 +5,7 @@ import './CardCarritoEstilo.css'
 import { Detalle } from '../../../types/detalle'
 import { useCarritoStore } from '../../../store/useCarritoStore'
 import imgEj from '../../img/UTB8SVphXwnJXKJkSaelq6xUzXXaI.jpg_720x720q50.avif';
+import Swal from 'sweetalert2'
 
 type Props = {
     id: number
@@ -22,9 +23,28 @@ type Props = {
 export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle, talle, color }: Props) => {
     const quitarProducto = useCarritoStore((state) => state.quitarProducto)
 
-    const hanleDeleteProducto = () => {
-        quitarProducto(id)
-    }
+    const handleDeleteProducto = () => {
+        Swal.fire({
+            title: '¿Estás seguro?',
+            text: "Esta acción eliminará el producto del carrito.",
+            icon: 'warning',
+            showCancelButton: true,
+            confirmButtonColor: '#d33',
+            cancelButtonColor: '#3085d6',
+            confirmButtonText: 'Sí, eliminar',
+            cancelButtonText: 'Cancelar'
+        }).then((result) => {
+            if (result.isConfirmed) {
+                quitarProducto(id);
+                Swal.fire(
+                    'Eliminado',
+                    'El producto fue eliminado del carrito.',
+                    'success'
+                );
+            }
+        });
+    };
+
     const cambiarCantidad = useCarritoStore((state) => state.cambiarCantidad)
     return (
         <div className="card">
@@ -49,7 +69,7 @@ export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle, 
                 <p>${precio.toLocaleString()}</p>
             </div>
             <div className='eliminar'>
-                <i className="bi bi-trash" onClick={hanleDeleteProducto}></i>
+                <i className="bi bi-trash" onClick={handleDeleteProducto}></i>
             </div>
         </div>
     )

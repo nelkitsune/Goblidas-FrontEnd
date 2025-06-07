@@ -5,6 +5,7 @@ import fotoLogo from "../../../img/goblinLogo.png"
 import { useUsuarioStore } from '../../../../store/useUsuarioStore';
 import { loginUser } from '../../../../service/authService';
 import { getUsers } from '../../../../service/userService';
+import Swal from 'sweetalert2'
 
 export const IniciarSesionModal = ({ onClose }: { onClose: () => void }) => {
     const [email, setEmail] = useState('');
@@ -18,10 +19,18 @@ export const IniciarSesionModal = ({ onClose }: { onClose: () => void }) => {
             const users = await getUsers();
             const usuarioLogeado = users.find((user: any) => user.email === email);
             setUsuario(usuarioLogeado);
-            alert('¡Sesión iniciada!');
+            Swal.fire({
+                icon: 'success',
+                title: 'Inicio de sesión exitoso',
+                text: `Bienvenido ${usuarioLogeado.nombre}!`,
+            });
             onClose();
         } catch (error: any) {
-            alert(error.message || 'Email o contraseña incorrectos');
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al iniciar sesión',
+                text: error.response?.data?.message || 'Ocurrió un error inesperado.',
+            });
         }
     };
     return (

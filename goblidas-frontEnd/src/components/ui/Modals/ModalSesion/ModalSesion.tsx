@@ -3,6 +3,7 @@ import { useUsuarioStore } from '../../../../store/useUsuarioStore'
 import './ModalSesionEstilo.css'
 import { Link } from 'react-router'
 
+
 export const ModalSesion = ({
     onIniciarSesion,
     onRegistrarse

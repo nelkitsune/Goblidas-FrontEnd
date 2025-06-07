@@ -5,6 +5,8 @@ import fotoLogo from "../../../img/goblinLogo.png";
 import { useUsuarioStore } from '../../../../store/useUsuarioStore';
 import { createUser } from '../../../../service/userService';
 import { Usuario } from '../../../../types/usuario';
+import Swal from 'sweetalert2'
+import { object, string } from "yup";
 
 export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
     const { setUsuario } = useUsuarioStore();
@@ -15,15 +17,55 @@ export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
     const [repetirPassword, setRepetirPassword] = useState('');
     const [aceptaTerminos, setAceptaTerminos] = useState(false);
 
+    const schema = object({
+        name: string()
+            .required("El campo nombre es obligatorio")
+            .min(1, "El nombre tiene que tener al menos un carácter")
+            .max(100, "El nombre no puede superar los 100 carácteres"),
+        documento: string()
+            .required("El documento es obligatorio"),
+        email: string()
+            .required("El email es obligatorio")
+            .email("El email no tiene un formato válido"),
+        password: string()
+            .required("La contraseña es obligatoria")
+            .min(6, "La contraseña debe tener al menos 6 caracteres")
+    });
 
-    function handleSubmit(event: React.FormEvent) {
+    async function handleSubmit(event: React.FormEvent) {
         event.preventDefault();
+
+        // Validación con Yup
+        try {
+            await schema.validate({ name, documento, email, password }, { abortEarly: false });
+        } catch (err: any) {
+            // err.inner es un array con todos los errores
+            const mensajes = err.inner?.map((e: any) => e.message).join('\n') || err.message;
+            Swal.fire({
+                title: "Error de validación",
+                text: mensajes,
+                icon: "error",
+                confirmButtonText: "Aceptar"
+            });
+            return;
+        }
+
         if (password !== repetirPassword) {
-            alert("Las contraseñas no coinciden");
+            Swal.fire({
+                title: "Error",
+                text: "Las contraseñas no coinciden",
+                icon: "error",
+                confirmButtonText: "Aceptar"
+            });
             return;
         }
         if (!aceptaTerminos) {
-            alert("Debes aceptar los términos y condiciones");
+            Swal.fire({
+                title: "Error",
+                text: "Debes aceptar los términos y condiciones",
+                icon: "error",
+                confirmButtonText: "Aceptar"
+            });
             return;
         }
         const nuevoUsuario = {
@@ -46,11 +88,19 @@ export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
             }
             console.log("Usuario que se setea en el store:", usuario);
             setUsuario(usuario);
-            alert("Usuario creado exitosamente");
+            Swal.fire({
+                icon: 'success',
+                title: 'Cuenta creada exitosamente',
+                text: `Bienvenido ${usuario.name}!`,
+            });
             onClose();
         }).catch((error) => {
             console.error("Error al crear el usuario:", error);
-            alert("Error al crear el usuario. Por favor, inténtalo de nuevo.");
+            Swal.fire({
+                icon: 'error',
+                title: 'Error al crear la cuenta',
+                text: error.response?.data?.message || 'Ocurrió un error inesperado.',
+            });
         });
     }
 
@@ -66,7 +116,7 @@ export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
                     <input type="text" placeholder="Nombre" required value={name} onChange={e => setNombre(e.target.value)} />
                 </div>
                 <div className='form-group'>
-                    <input type="text" placeholder="Documento" required value={documento} onChange={e => setDocumento(e.target.value)} />
+                    <input type="text" placeholder="Documento/Pasaporte" required value={documento} onChange={e => setDocumento(e.target.value)} />
                 </div>
                 <div className='form-group'>
                     <input type="email" placeholder="E-mail" required value={email} onChange={e => setEmail(e.target.value)} />

@@ -3,6 +3,7 @@ import './ItemCountEstilo.css';
 import { useCarritoStore } from '../../../store/useCarritoStore'
 import { Detalle } from '../../../types/detalle';
 import { Producto } from '../../../types/producto';
+import Swal from 'sweetalert2'
 
 interface ItemCountProps {
     stock: number;
@@ -43,17 +44,30 @@ export const ItemCount: React.FC<ItemCountProps> = ({
     };
 
     const handleAddToCart = (quantity: number) => {
-        if (detalle && producto) {
-            const productoCarrito = {
-                ...detalle,
-                cantidad: quantity,
-                productIdj: producto, // <-- ahora sí
-            };
-            agregarProducto(productoCarrito);
+        try {
+            if (detalle && producto) {
+                const productoCarrito = {
+                    ...detalle,
+                    cantidad: quantity,
+                    productIdj: producto, // <-- ahora sí
+                };
+                agregarProducto(productoCarrito);
+            }
+            onAdd(quantity);
+            Swal.fire({
+                icon: 'success',
+                title: 'Producto agregado',
+                text: `Se han agregado ${quantity} unidades al carrito.`,
+            });
+        } catch (error) {
+            console.error('Error al agregar al carrito:', error);
+            Swal.fire({
+                icon: 'error',
+                title: 'Error',
+                text: 'No se pudo agregar el producto al carrito. Inténtalo de nuevo más tarde.',
+            });
         }
-        onAdd(quantity);
-    }
-
+    };
 
     return (
         <div className="item-count">
@@ -77,4 +91,4 @@ export const ItemCount: React.FC<ItemCountProps> = ({
             )}
         </div>
     );
-};
+}
