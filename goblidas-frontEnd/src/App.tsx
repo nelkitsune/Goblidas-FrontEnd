@@ -9,6 +9,10 @@ import { VerProducto } from './components/screens/VerProducto/VerProducto'
 import { Carrito } from './components/screens/Carrito/Carrito'
 import { BrowserRouter, Route, Routes } from 'react-router-dom'
 import { VerPerfil } from './components/screens/VerPerfil/VerPerfil'
+import { Success } from './components/screens/Sucess/Success'
+import { Pending } from './components/screens/Pending/Pending'
+import { Failure } from './components/screens/Failure/Failure'
+import { SelecionarDireccion } from './components/screens/SelecionarDireccion/SelecionarDireccion'
 
 function App() {
 
@@ -25,6 +29,10 @@ function App() {
               <Route path='/verproducto' element={<VerProducto />} />
               <Route path='/carrito' element={<Carrito />} />
               <Route path='/verperfil' element={<VerPerfil />} />
+              <Route path='/success' element={<Success />} />
+              <Route path='/pending' element={<Pending />} />
+              <Route path='/failure' element={<Failure />} />
+              <Route path='/selecionarDireccion' element={<SelecionarDireccion />} />
             </Routes>
             <PieDePagina />
           </div>

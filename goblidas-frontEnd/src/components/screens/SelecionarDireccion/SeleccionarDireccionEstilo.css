@@ -1,0 +1,48 @@
+.selecionarDireccionScreen {
+    min-height: 70vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding-top: 32px;
+    background: transparent;
+}
+
+.selecionarDireccionScreen h1 {
+    font-size: 2.3rem;
+    font-weight: bold;
+    color: #222f3e;
+    margin-bottom: 32px;
+    margin-top: 24px;
+}
+
+.selecionarDireccionCuerpo {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+.selecionarDireccionBotones {
+    display: flex;
+    justify-content: center;
+    margin-top: 12px;
+}
+
+.botonSelecionarDireccion {
+    padding: 10px 24px;
+    background: #7DF0B8;
+    color: #222f3e;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+    transition: background 0.2s, color 0.2s;
+}
+
+.botonSelecionarDireccion:hover {
+    background: #50bd88;
+    color: #fff;
+}

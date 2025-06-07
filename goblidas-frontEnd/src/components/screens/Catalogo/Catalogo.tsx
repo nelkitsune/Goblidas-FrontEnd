@@ -60,11 +60,6 @@ export const Catalogo = () => {
                 <MenuCategoria productos={productos} />
                 <div className="productosCatalogo">
                     {productos.length === 0 && <p>No hay productos para este filtro.</p>}
-                    {productos.map((producto: any) => (
-                        <div key={producto.id}>
-                            <strong>{producto.name}</strong> (ID: {producto.id})
-                        </div>
-                    ))}
                 </div>
             </div>
         </>

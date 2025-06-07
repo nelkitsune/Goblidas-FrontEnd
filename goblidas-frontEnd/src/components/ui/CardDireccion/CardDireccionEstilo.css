@@ -1,0 +1,33 @@
+.cardDireccion {
+    background: #BBEAD3;
+    border: 1.5px solid #7DF0B8;
+    border-radius: 12px;
+    box-shadow: 0 2px 8px rgba(44, 62, 80, 0.07);
+    padding: 20px 28px;
+    margin: 16px auto;
+    max-width: 350px;
+    min-width: 220px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: box-shadow 0.2s, border-color 0.2s;
+}
+
+.cardDireccion:hover {
+    box-shadow: 0 4px 16px rgba(44, 62, 80, 0.15);
+    border-color: #50bd88;
+}
+
+.cardDireccion p {
+    margin: 0;
+    color: #222f3e;
+    font-size: 1rem;
+    letter-spacing: 0.2px;
+    line-height: 1.5;
+}
+
+.cardDireccion p:first-child {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #50bd88;
+}
