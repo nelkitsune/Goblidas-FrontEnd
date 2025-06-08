@@ -9,3 +9,7 @@ export const getsizeById = async (id: number) => {
     const response = await api.get(`/size/${id}`);
     return response.data;
 }
+export const postSize = async (size: any) => {
+    const response = await api.post('/size', size);
+    return response.data;
+}

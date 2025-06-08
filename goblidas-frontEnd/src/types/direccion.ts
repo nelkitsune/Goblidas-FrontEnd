@@ -1,7 +1,9 @@
 export type Direccion = {
     id: number
-    departamento: string
-    localidad: string
-    pais: string
-    provincia: string
+    departament: string
+    locality: string
+    country: string
+    province: string
+    number: number
+    streetName: string
 }

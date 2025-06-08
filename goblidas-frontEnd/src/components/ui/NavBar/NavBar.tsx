@@ -6,12 +6,14 @@ import { Link } from 'react-router-dom';
 import { ModalSesion } from '../Modals/ModalSesion/ModalSesion';
 import { IniciarSesionModal } from '../Modals/IniciarSesionModal/IniciarSesionModal';
 import { RegistrarSesionModal } from '../Modals/RegistrarSesionModal/RegistrarSesionModal';
+import { useUsuarioStore } from '../../../store/useUsuarioStore'; // Ajusta el path si es necesario
+
 
 export const NavBar = () => {
+    const usuario = useUsuarioStore(state => state.usuario);
     const [modalSesion, setModalSesion] = useState(false);
     const [modalIniciarSesion, setModalIniciarSesion] = useState(false);
     const [modalRegistrarse, setModalRegistrarse] = useState(false);
-
     const handleModalSesion = () => {
         setModalSesion(!modalSesion);
     }
@@ -42,6 +44,15 @@ export const NavBar = () => {
                     <li className='navBar__li ninos'><Link to="/catalogo">Niños</Link></li>
                     {/*Boton dedicado a llevarte a la pantalla carrito*/}
                     <li className='navBar__li carrito'><Link to="/carrito"><i className="bi bi-cart"></i></Link></li>
+
+
+                    {usuario?.role === "ADMIN" && (
+                        <>
+                            <li className='navBar__li admin'>
+                                <Link to="/admin/productos"><i className="bi bi-gear"></i></Link>
+                            </li>
+                        </>
+                    )}
                     {/*Boton dedicado a activar los modal de sesion*/}
                     <li className='navBar__li logo'>
                         <div className='navBar__ul__img' onClick={handleModalSesion}>

@@ -5,7 +5,7 @@ export const getAdress = async () => {
     return response.data;
 };
 
-export const getAdressByUser = async (userId: string) => {
-    const response = await api.get(`/useradress/${userId}`);
+export const getAdressByUser = async (userId: number) => {
+    const response = await api.get(`/useradress/filter?userId=${userId}`);
     return response.data;
 };

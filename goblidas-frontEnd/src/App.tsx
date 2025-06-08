@@ -13,6 +13,8 @@ import { Success } from './components/screens/Sucess/Success'
 import { Pending } from './components/screens/Pending/Pending'
 import { Failure } from './components/screens/Failure/Failure'
 import { SelecionarDireccion } from './components/screens/SelecionarDireccion/SelecionarDireccion'
+import { AdminPanel } from './components/screens/Admin/AdminPanel'
+import { DetalleProducto } from './components/screens/Admin/DetalleProducto/DetalleProducto'
 
 function App() {
 
@@ -33,6 +35,8 @@ function App() {
               <Route path='/pending' element={<Pending />} />
               <Route path='/failure' element={<Failure />} />
               <Route path='/seleccionardireccion' element={<SelecionarDireccion />} />
+              <Route path='/admin/productos' element={<AdminPanel />} />
+              <Route path="/admin/productos/:id" element={<DetalleProducto />} />
             </Routes>
             <PieDePagina />
           </div>
