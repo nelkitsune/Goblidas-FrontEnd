@@ -2,14 +2,16 @@ import React, { use, useEffect, useState } from 'react'
 import { CardDireccion } from '../../ui/CardDireccion/CardDireccion'
 import './SeleccionarDireccionEstilo.css'
 import { Direccion } from '../../../types/direccion'
-import { getAdressByUser } from '../../../service/adressService'
+import { getAdressByUser, postDireccion, createUsuarioDireccion } from '../../../service/adressService'
 import { useUsuarioStore } from '../../../store/useUsuarioStore'
 import { data } from 'react-router'
 import { createOrdenDetail } from '../../../service/orderDetailService'
 import { useCarritoStore } from '../../../store/useCarritoStore' // Asegúrate de tener este store
+import { ModalAgregarDireccion } from './../../ui/ModalAgregarDireccion/ModalAgregarDireccion';
 
 export const SelecionarDireccion = () => {
     const [direccionesUsuario, setDireccionesUsuario] = useState<Direccion[]>([])
+    const [mostrarModal, setMostrarModal] = useState(false);
     const usuario = useUsuarioStore(state => state.usuario);
     const carrito = useCarritoStore(state => state.productos);
 
@@ -52,6 +54,34 @@ export const SelecionarDireccion = () => {
                 });
         }
     }, [usuario]);
+
+    const handleSaveDireccion = async (direccion: any) => {
+        if (!usuario?.id) return;
+        try {
+            // 1. Crear la dirección y obtener la respuesta (que debe incluir el id de la nueva dirección)
+            const nuevaDireccion = await postDireccion(usuario.id, direccion);
+
+            // 2. Asociar la dirección al usuario
+            await createUsuarioDireccion(usuario.id, nuevaDireccion.id);
+
+            // 3. Recargar las direcciones después de guardar
+            const data = await getAdressByUser(usuario.id);
+            const direcciones = data.map((item: any) => ({
+                id: item.adressId.id,
+                departament: item.adressId.departament,
+                locality: item.adressId.locality,
+                country: item.adressId.country,
+                province: item.adressId.province,
+                number: item.adressId.number,
+                streetName: item.adressId.streetName,
+            }));
+            setDireccionesUsuario(direcciones);
+        } catch (error) {
+            console.error('Error al guardar la dirección:', error);
+        }
+        setMostrarModal(false);
+    };
+
     return (
         <div className='selecionarDireccionScreen'>
             <h1>Selecionar Dirección</h1>
@@ -77,8 +107,16 @@ export const SelecionarDireccion = () => {
                 )}
             </div>
             <div className='selecionarDireccionBotones'>
-                <button className='botonSelecionarDireccion'>Agregar nueva direccion</button>
+                <button className='botonSelecionarDireccion' onClick={() => setMostrarModal(true)}>
+                    Agregar nueva direccion
+                </button>
             </div>
+            {mostrarModal && (
+                <ModalAgregarDireccion
+                    onClose={() => setMostrarModal(false)}
+                    onSave={handleSaveDireccion}
+                />
+            )}
         </div>
     )
 }

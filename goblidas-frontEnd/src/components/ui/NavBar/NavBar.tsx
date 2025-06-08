@@ -33,15 +33,23 @@ export const NavBar = () => {
             <nav className='navBar'>
                 <ul className='navBar__ul'>
                     {/*Boton dedicado a llevarte a la pantalla destacado*/}
-                    <li className='navBar__li destacado'><Link to="/catalogo">Destacado</Link></li>
+                    <li className='navBar__li destacado'>
+                        <Link to="/catalogo">Destacado</Link>
+                    </li>
                     {/*Boton dedicado a llevarte a la pantalla con productos de hombre*/}
-                    <li className='navBar__li hombre'><Link to="/catalogo">Hombre</Link></li>
+                    <li className='navBar__li hombre'>
+                        <Link to="/catalogo?gender=HOMBRE">Hombre</Link>
+                    </li>
                     {/*Boton dedicado a llevarte a la pantalla home*/}
                     <li className='navBar__li li_marca'><Link to="/">Goblidas</Link></li>
                     {/*Boton dedicado a llevarte a la pantalla con productos de mujer*/}
-                    <li className='navBar__li mujer'><Link to="/catalogo">Mujer</Link></li>
+                    <li className='navBar__li mujer'>
+                        <Link to="/catalogo?gender=MUJER">Mujer</Link>
+                    </li>
                     {/*Boton dedicado a llevarte a la pantalla con productos de niños*/}
-                    <li className='navBar__li ninos'><Link to="/catalogo">Niños</Link></li>
+                    <li className='navBar__li ninos'>
+                        <Link to="/catalogo?gender=NIÑOS">Niños</Link>
+                    </li>
                     {/*Boton dedicado a llevarte a la pantalla carrito*/}
                     <li className='navBar__li carrito'><Link to="/carrito"><i className="bi bi-cart"></i></Link></li>
 

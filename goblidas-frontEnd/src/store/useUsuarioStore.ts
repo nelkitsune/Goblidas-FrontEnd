@@ -8,7 +8,7 @@ type UsuarioState = {
 };
 
 export const useUsuarioStore = create<UsuarioState>((set) => ({
-    usuario: null,
+    usuario: null, // o undefined
     setUsuario: (usuario) => set({ usuario }),
     limpiarUsuario: () => set({ usuario: null }),
 }));

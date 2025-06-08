@@ -17,16 +17,22 @@ export const MenuCategoria = ({ productos }: { productos: any[] }) => {
     };
     return (
         <div className='menuCategoria'>
-            {productos.map((producto) => (
-                <CardProducto
-                    key={producto.id}
-                    id={producto.id}
-                    nombreProducto={producto.name}
-                    precio={buscarPrecio(producto)}
-                    img={imgEj}
-                    producto={producto}
-                />
-            ))}
+            {productos
+                .filter(producto =>
+                    producto.details &&
+                    producto.details.length > 0 &&
+                    producto.details.some((detalle: any) => detalle.state === true)
+                )
+                .map((producto) => (
+                    <CardProducto
+                        key={producto.id}
+                        id={producto.id}
+                        nombreProducto={producto.name}
+                        precio={buscarPrecio(producto)}
+                        img={imgEj}
+                        producto={producto}
+                    />
+                ))}
         </div>
     )
 }
