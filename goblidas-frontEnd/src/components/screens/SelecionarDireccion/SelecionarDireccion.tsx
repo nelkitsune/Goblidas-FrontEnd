@@ -1,38 +1,69 @@
-import React, { use, useEffect, useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { CardDireccion } from '../../ui/CardDireccion/CardDireccion'
 import './SeleccionarDireccionEstilo.css'
 import { Direccion } from '../../../types/direccion'
 import { getAdressByUser, postDireccion, createUsuarioDireccion } from '../../../service/adressService'
 import { useUsuarioStore } from '../../../store/useUsuarioStore'
-import { data } from 'react-router'
-import { createOrdenDetail } from '../../../service/orderDetailService'
-import { useCarritoStore } from '../../../store/useCarritoStore' // Asegúrate de tener este store
+import { createOrder } from '../../../service/orderDetailService'
+import { useCarritoStore } from '../../../store/useCarritoStore'
 import { ModalAgregarDireccion } from './../../ui/ModalAgregarDireccion/ModalAgregarDireccion';
+import { createPaymentPreference } from '../../../service/paymentService'
+import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
+
+initMercadoPago('APP_USR-ef0be797-dce2-4633-b909-b06945e1578e'); // Reemplaza con tu public key real
 
 export const SelecionarDireccion = () => {
     const [direccionesUsuario, setDireccionesUsuario] = useState<Direccion[]>([])
     const [mostrarModal, setMostrarModal] = useState(false);
+    const [preferenceId, setPreferenceId] = useState<string | null>(null);
     const usuario = useUsuarioStore(state => state.usuario);
     const carrito = useCarritoStore(state => state.productos);
 
     const handleClick = async (direccion: Direccion) => {
+        console.log('--- INICIO handleClick ---');
+        console.log('Dirección seleccionada:', direccion);
+        console.log('Carrito actual:', carrito);
+
         const cartItems = carrito.map((item: any) => ({
             detailId: item.id,
             quantity: item.cantidad,
             price: item.prizeId.sellingPrice
         }));
-        console.log('Dirección seleccionada:', direccion);
-        console.log('Carrito de compras:', cartItems);
-        try {
-            await createOrdenDetail({
-                userAdressId: { id: direccion.id },
-                cartItems
-            });
+        console.log('cartItems generados:', cartItems);
 
+        const order = {
+            userAdressId: direccion.id,
+            cartItems
+        };
+        console.log('Objeto order a enviar:', order);
+
+        let ordenCreada: any;
+
+        try {
+            ordenCreada = await createOrder(order);
+            console.log('Respuesta de createOrder:', ordenCreada);
+            console.log('ID de la orden creada:', ordenCreada.id);
         } catch (error) {
             console.error('Error al crear la orden:', error);
+            return;
         }
-    }
+
+        try {
+            const initPoint = await createPaymentPreference(ordenCreada.id);
+            console.log('initPoint recibido:', initPoint);
+            // Verifica si es solo el ID o una URL
+            if (typeof initPoint === 'string' && initPoint.startsWith('http')) {
+                console.warn('¡initPoint es una URL! Debe ser solo el ID de preferencia.');
+            } else {
+                console.log('preferenceId correcto:', initPoint);
+            }
+            setPreferenceId(initPoint); // initPoint debe ser SOLO el id, no la URL
+        } catch (error) {
+            console.error('Error al crear preferencia de pago:', error);
+        }
+    };
+
+
 
     useEffect(() => {
         if (usuario?.id) {
@@ -88,9 +119,8 @@ export const SelecionarDireccion = () => {
             <div className='selecionarDireccionCuerpo'>
                 {direccionesUsuario.length > 0 ? (
                     direccionesUsuario.map((direccion) => (
-                        <div onClick={() => handleClick(direccion)}>
+                        <div key={direccion.id} onClick={() => handleClick(direccion)}>
                             <CardDireccion
-                                key={direccion.id}
                                 id={direccion.id}
                                 departament={direccion.departament}
                                 locality={direccion.locality}
@@ -100,7 +130,6 @@ export const SelecionarDireccion = () => {
                                 streetName={direccion.streetName}
                             />
                         </div>
-
                     ))
                 ) : (
                     <p>No hay direcciones disponibles.</p>
@@ -117,6 +146,34 @@ export const SelecionarDireccion = () => {
                     onSave={handleSaveDireccion}
                 />
             )}
+
+            {/* Botón de Mercado Pago solo si hay preferenceId */}
+            {preferenceId && (
+                <div style={{ marginTop: '30px', display: 'flex', justifyContent: 'center' }}>
+                    <Wallet initialization={{ preferenceId }} />
+                </div>
+            )}
         </div>
     )
 }
+
+
+
+//    const handleClick = async (direccion: Direccion) => {
+//       const cartItems = carrito.map((item: any) => ({
+//            detail: { id: item.id },
+//            quantity: item.cantidad,
+//            price: item.prizeId.sellingPrice
+//        }));
+//        console.log('Dirección seleccionada:', direccion);
+//        console.log('Carrito de compras:', cartItems);
+//        try {
+//            await createOrdenDetail({
+//                userAdressId: { id: direccion.id },
+//                cartItems
+//            });
+//
+///        } catch (error) {
+//            console.error('Error al crear la orden:', error);
+///        }
+///    }

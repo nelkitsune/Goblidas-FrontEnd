@@ -40,6 +40,19 @@ export const VerProducto = () => {
         }
     }, [productoActivo, colorSeleccionado, talleSeleccionado, setDetalleActivo]);
 
+    // Setear automáticamente el primer detalle disponible al abrir el producto
+    React.useEffect(() => {
+        if (productoActivo && productoActivo.details.length > 0) {
+            const primerDetalle = productoActivo.details[0];
+            setColorSeleccionado(primerDetalle.colour);
+            setTalleSeleccionado(primerDetalle.sizeId.number);
+            setDetalleActivo(primerDetalle);
+        }
+    }, [productoActivo, setDetalleActivo]);
+
+    console.log(detalleActivo?.prizeId.sellingPrice)
+    console.log(productoActivo?.details)
+    console.log(detalleActivo)
     // Deshabilitar añadir al carrito si falta selección
     const puedeAgregar = !!(colorSeleccionado && talleSeleccionado && detalleActivo);
 
