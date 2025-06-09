@@ -5,8 +5,34 @@ import { useNavigate } from 'react-router-dom';
 import { postSize } from '../../../service/sizeService'; // Asegúrate de tener este servicio
 import { getCategory, postCategory } from '../../../service/categoryService';
 import { postDiscountPrice } from '../../../service/discountprice';
+import * as Yup from 'yup';
+import Swal from 'sweetalert2';
 
 // ... Tipado de Producto ...
+
+const productoSchema = Yup.object().shape({
+  name: Yup.string().required('El nombre es obligatorio'),
+  productType: Yup.string().required('El tipo de producto es obligatorio'),
+  gender: Yup.string().required('El género es obligatorio'),
+  categoriesIds: Yup.array().min(1, 'Debe seleccionar al menos una categoría'),
+});
+
+const talleSchema = Yup.object().shape({
+  number: Yup.string().required('El número de talle es obligatorio'),
+});
+
+const categoriaSchema = Yup.object().shape({
+  name: Yup.string().required('El nombre de la categoría es obligatorio'),
+});
+
+const descuentoSchema = Yup.object().shape({
+  fecha_inicio: Yup.string().required('La fecha de inicio es obligatoria'),
+  fecha_final: Yup.string().required('La fecha final es obligatoria'),
+  porcentaje: Yup.number()
+    .min(1, 'El porcentaje debe ser mayor a 0')
+    .max(100, 'El porcentaje no puede ser mayor a 100')
+    .required('El porcentaje es obligatorio'),
+});
 
 export const TablaProductos = () => {
   // -------------------- Estados --------------------
@@ -19,7 +45,8 @@ export const TablaProductos = () => {
     name: '',
     gender: '',
     details: [],
-    highlighted: false
+    highlighted: false,
+    active: true
   });
   const [editando, setEditando] = useState<Producto | null>(null);
   const [mostrarTalle, setMostrarTalle] = useState(false);
@@ -39,6 +66,7 @@ export const TablaProductos = () => {
   const cargarProductos = async () => {
     try {
       const data = await getProductos();
+      console.log('Productos recibidos:', data); // <-- LOG 1
       setProductos(data);
     } catch (error) {
       console.error('🔴 [TablaProductos] Error al obtener productos:', error);
@@ -80,7 +108,7 @@ export const TablaProductos = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      // Elimina el id si es 0 o null antes de enviar
+      await productoSchema.validate(nuevoProducto, { abortEarly: false });
       const { id, ...rest } = nuevoProducto;
       const productoParaEnviar = { ...rest };
       await postProducto(productoParaEnviar);
@@ -92,24 +120,38 @@ export const TablaProductos = () => {
         name: '',
         gender: '',
         details: [],
-        highlighted: false
+        highlighted: false,
+        active: true
       });
+      setMostrarModal(false);
       await cargarProductos();
+      Swal.fire('¡Éxito!', 'Producto creado correctamente', 'success');
     } catch (err: any) {
-      console.error('Error al crear producto:', err);
-      alert(`Error al crear producto: ${err?.message || 'Error desconocido'}`);
+      if (err.name === 'ValidationError') {
+        Swal.fire('Error de validación', err.errors.join('<br>'), 'error');
+      } else {
+        Swal.fire('Error', err?.message || 'Error desconocido', 'error');
+      }
     }
   };
 
   // -------------------- Eliminar producto --------------------
   const handleEliminar = async (id?: number) => {
     if (!id) return;
-    if (!window.confirm('¿Seguro que deseas eliminar este producto?')) return;
+    const result = await Swal.fire({
+      title: '¿Seguro que deseas eliminar este producto?',
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    });
+    if (!result.isConfirmed) return;
     try {
       await deleteProducto(id);
       await cargarProductos();
+      Swal.fire('Eliminado', 'Producto eliminado correctamente', 'success');
     } catch (err) {
-      console.error('Error al eliminar producto:', err);
+      Swal.fire('Error', 'Error al eliminar producto', 'error');
     }
   };
 
@@ -118,25 +160,36 @@ export const TablaProductos = () => {
     e.preventDefault();
     if (!editando || !editando.id) return;
     try {
-      const productoParaEnviar = {
-        ...editando,
-        // ...aquí puedes agregar lógica para detalles si es necesario...
-      };
-
+      await productoSchema.validate(editando, { abortEarly: false });
+      const productoParaEnviar = { ...editando };
       await putProducto(editando.id, productoParaEnviar);
       setEditando(null);
       await cargarProductos();
-    } catch (err) {
-      console.error('Error al actualizar producto:', err);
+      Swal.fire('¡Éxito!', 'Producto actualizado correctamente', 'success');
+    } catch (err: any) {
+      if (err.name === 'ValidationError') {
+        Swal.fire('Error de validación', err.errors.join('<br>'), 'error');
+      } else {
+        Swal.fire('Error', err?.message || 'Error desconocido', 'error');
+      }
     }
   };
 
-  const handleEditarChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
-    const target = e.target as HTMLInputElement;
-    const { name, value, type } = target;
+  const handleEditarChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement | HTMLTextAreaElement>
+  ) => {
+    const target = e.target;
+    const { name, value, type } = target as any;
     if (!editando) return;
     if (type === 'checkbox') {
-      setEditando({ ...editando, [name]: target.checked });
+      setEditando({ ...editando, [name]: (target as HTMLInputElement).checked });
+    } else if (target instanceof HTMLSelectElement && name === "categoriesIds" && target.multiple) {
+      // Si algún día usas select múltiple en editar
+      const selected = Array.from(target.options)
+        .filter(option => option.selected)
+        .map(option => categorias.find(cat => cat.id === Number(option.value)))
+        .filter(Boolean);
+      setEditando({ ...editando, categoriesIds: selected });
     } else {
       setEditando({ ...editando, [name]: value });
     }
@@ -146,13 +199,18 @@ export const TablaProductos = () => {
   const handleAgregarTalle = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      await talleSchema.validate(nuevoTalle, { abortEarly: false });
       await postSize({ number: nuevoTalle.number });
       setNuevoTalle({ number: '' });
       setMostrarTalle(false);
-      alert('Talle creado correctamente');
+      Swal.fire('¡Éxito!', 'Talle creado correctamente', 'success');
       // Si quieres recargar talles, hazlo aquí
-    } catch (err) {
-      alert('Error al crear talle');
+    } catch (err: any) {
+      if (err.name === 'ValidationError') {
+        Swal.fire('Error de validación', err.errors.join('<br>'), 'error');
+      } else {
+        Swal.fire('Error', err?.message || 'Error desconocido', 'error');
+      }
     }
   };
 
@@ -160,13 +218,44 @@ export const TablaProductos = () => {
   const handleAgregarCategoria = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
+      await categoriaSchema.validate(nuevaCategoria, { abortEarly: false });
       await postCategory(nuevaCategoria);
       setNuevaCategoria({ name: '' });
       setMostrarCategoria(false);
-      alert('Categoría creada correctamente');
-      // Si quieres recargar categorías, hazlo aquí
-    } catch (err) {
-      alert('Error al crear categoría');
+      Swal.fire('¡Éxito!', 'Categoría creada correctamente', 'success');
+      // Recargar categorías aquí:
+      const data = await getCategory();
+      setCategorias(data);
+    } catch (err: any) {
+      if (err.name === 'ValidationError') {
+        Swal.fire('Error de validación', err.errors.join('<br>'), 'error');
+      } else {
+        Swal.fire('Error', err?.message || 'Error desconocido', 'error');
+      }
+    }
+  };
+
+  // -------------------- Agregar descuento --------------------
+  const handleAgregarDescuento = async (e: React.FormEvent) => {
+    e.preventDefault();
+    try {
+      await descuentoSchema.validate(nuevoDescuento, { abortEarly: false });
+      const addSeconds = (dateStr: string) => dateStr.length === 16 ? dateStr + ':00' : dateStr;
+      const descuentoParaEnviar = {
+        initialDate: addSeconds(nuevoDescuento.fecha_inicio),
+        finalDate: addSeconds(nuevoDescuento.fecha_final),
+        percentage: nuevoDescuento.porcentaje
+      };
+      await postDiscountPrice(descuentoParaEnviar);
+      setMostrarDescuento(false);
+      setNuevoDescuento({ fecha_inicio: '', fecha_final: '', porcentaje: 0 });
+      Swal.fire('¡Éxito!', 'Descuento creado correctamente', 'success');
+    } catch (err: any) {
+      if (err.name === 'ValidationError') {
+        Swal.fire('Error de validación', err.errors.join('<br>'), 'error');
+      } else {
+        Swal.fire('Error', err?.message || 'Error desconocido', 'error');
+      }
     }
   };
 
@@ -186,18 +275,7 @@ export const TablaProductos = () => {
         }}>
           <form
             style={{ background: '#fff', padding: 24, borderRadius: 8, minWidth: 320, maxWidth: 400 }}
-            onSubmit={async (e) => {
-              e.preventDefault();
-              console.log(nuevoDescuento); // <-- Agrega esto para depurar
-              try {
-                await postDiscountPrice(nuevoDescuento);
-                setMostrarDescuento(false);
-                setNuevoDescuento({ fecha_inicio: '', fecha_final: '', porcentaje: 0 });
-                alert('Descuento creado correctamente');
-              } catch (err) {
-                alert('Error al crear descuento');
-              }
-            }}
+            onSubmit={handleAgregarDescuento}
           >
             <h4>Nuevo descuento</h4>
             <input
@@ -273,8 +351,33 @@ export const TablaProductos = () => {
           >
             <h4>Nuevo producto</h4>
             <input name="name" placeholder="Nombre" value={nuevoProducto.name} onChange={handleChange} required style={{ width: '100%', marginBottom: 8 }} />
-            <input name="productType" placeholder="Tipo de producto" value={nuevoProducto.productType} onChange={handleChange} required style={{ width: '100%', marginBottom: 8 }} />
-            <input name="gender" placeholder="Género" value={nuevoProducto.gender} onChange={handleChange} required style={{ width: '100%', marginBottom: 8 }} />
+            <select
+              name="productType"
+              value={nuevoProducto.productType}
+              onChange={handleChange}
+              required
+              style={{ width: '100%', marginBottom: 8 }}
+            >
+              <option value="">Tipo de producto</option>
+              <option value="Zapatilla">Zapatilla</option>
+              <option value="Remera">Remera</option>
+              <option value="Pantalon">Pantalón</option>
+              <option value="Gorra">Gorra</option>
+              <option value="Abrigo">Abrigo</option>
+              <option value="Otro Producto">Otro Producto</option>
+            </select>
+            <select
+              name="gender"
+              value={nuevoProducto.gender}
+              onChange={handleChange}
+              required
+              style={{ width: '100%', marginBottom: 8 }}
+            >
+              <option value="">Género</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Unisex">Unisex</option>
+            </select>
             <label>Categorías:</label>
             <select
               name="categoriesIds"
@@ -299,7 +402,25 @@ export const TablaProductos = () => {
               </label>
             </div>
             <button type="submit" style={{ marginTop: 12 }}>Guardar y cerrar</button>
-            <button type="button" onClick={() => setMostrarModal(false)} style={{ marginLeft: 8 }}>Cancelar</button>
+            <button
+              type="button"
+              onClick={() => {
+                setMostrarModal(false);
+                setNuevoProducto({
+                  id: 0,
+                  productType: '',
+                  categoriesIds: [],
+                  name: '',
+                  gender: '',
+                  details: [],
+                  highlighted: false,
+                  active: true
+                });
+              }}
+              style={{ marginLeft: 8 }}
+            >
+              Cancelar
+            </button>
           </form>
         </div>
       )}
@@ -314,8 +435,33 @@ export const TablaProductos = () => {
           >
             <h4>Editar producto</h4>
             <input name="name" placeholder="Nombre" value={editando.name} onChange={handleEditarChange} required style={{ width: '100%', marginBottom: 8 }} />
-            <input name="productType" placeholder="Tipo de producto" value={editando.productType} onChange={handleEditarChange} required style={{ width: '100%', marginBottom: 8 }} />
-            <input name="gender" placeholder="Género" value={editando.gender} onChange={handleEditarChange} required style={{ width: '100%', marginBottom: 8 }} />
+            <select
+              name="productType"
+              value={editando.productType}
+              onChange={handleEditarChange}
+              required
+              style={{ width: '100%', marginBottom: 8 }}
+            >
+              <option value="">Tipo de producto</option>
+              <option value="Zapatilla">Zapatilla</option>
+              <option value="Remera">Remera</option>
+              <option value="Pantalon">Pantalón</option>
+              <option value="Gorra">Gorra</option>
+              <option value="Abrigo">Abrigo</option>
+              <option value="Otro Producto">Otro Producto</option>
+            </select>
+            <select
+              name="gender"
+              value={editando.gender}
+              onChange={handleEditarChange}
+              required
+              style={{ width: '100%', marginBottom: 8 }}
+            >
+              <option value="">Género</option>
+              <option value="Masculino">Masculino</option>
+              <option value="Femenino">Femenino</option>
+              <option value="Unisex">Unisex</option>
+            </select>
             <label>Categorías actuales:</label>
             <ul>
               {editando.categoriesIds.map((cat: any) => (
@@ -372,25 +518,31 @@ export const TablaProductos = () => {
           </tr>
         </thead>
         <tbody>
-          {productos.map(prod => (
-            <tr key={prod.id}>
-              <td>{prod.name}</td>
-              <td>{prod.productType}</td>
-              <td>{prod.gender}</td>
-              <td>
-                {prod.categoriesIds && Array.isArray(prod.categoriesIds)
-                  ? prod.categoriesIds.map((cat: any) => cat.name).join(', ')
-                  : ''}
-              </td>
-              <td><input type="checkbox" checked={prod.highlighted} disabled /></td>
-              <td>{prod.details ? prod.details.length : 0}</td>
-              <td>
-                <button onClick={() => navigate(`/admin/productos/${prod.id}`)}>Ver</button>
-                <button style={{ marginLeft: 4 }} onClick={() => setEditando(prod)}>Editar</button>
-                <button style={{ marginLeft: 4 }} onClick={() => handleEliminar(prod.id)}>Eliminar</button>
-              </td>
-            </tr>
-          ))}
+          {/* LOG 3 */}
+          {productos
+            .filter(prod => {
+              console.log('Producto filtrado:', prod); // <-- LOG 4
+              return prod.active === true; // Cambia 'activo' por el nombre real de tu campo
+            })
+            .map(prod => (
+              <tr key={prod.id}>
+                <td>{prod.name}</td>
+                <td>{prod.productType}</td>
+                <td>{prod.gender}</td>
+                <td>
+                  {prod.categoriesIds && Array.isArray(prod.categoriesIds)
+                    ? prod.categoriesIds.map((cat: any) => cat.name).join(', ')
+                    : ''}
+                </td>
+                <td><input type="checkbox" checked={prod.highlighted} disabled /></td>
+                <td>{prod.details ? prod.details.length : 0}</td>
+                <td>
+                  <button onClick={() => navigate(`/admin/productos/${prod.id}`)}>Ver</button>
+                  <button style={{ marginLeft: 4 }} onClick={() => setEditando(prod)}>Editar</button>
+                  <button style={{ marginLeft: 4 }} onClick={() => handleEliminar(prod.id)}>Eliminar</button>
+                </td>
+              </tr>
+            ))}
         </tbody>
       </table>
     </div>

@@ -8,4 +8,5 @@ export type Producto = {
     gender: string
     details: Detalle[];
     highlighted: boolean;
+    active: boolean;
 }

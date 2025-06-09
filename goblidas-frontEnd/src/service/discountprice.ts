@@ -1,4 +1,3 @@
-
 import api from '../components/api/axios';
 
 export const getDiscountPrice = async () => {
@@ -17,7 +16,17 @@ export const postDiscountPrice = async (discount: any) => {
     const response = await api.post('/discount', discount);
     return response.data;
 };
-export const postDiscountPriceByProductId = async (productId: number, discount: any) => {
-    const response = await api.post(`/discountprice/${productId}`, discount);
+export const postDiscountPriceByProductId = async (discount: {
+    discountId: number;
+    priceId: number;
+    active: boolean;
+}) => {
+    const payload = {
+        active: discount.active,
+        discountId: { id: discount.discountId },
+        priceId: { id: discount.priceId },
+    };
+
+    const response = await api.post(`/discountprice`, payload);
     return response.data;
-}
+};

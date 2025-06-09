@@ -30,18 +30,17 @@ export const CardProducto = ({ nombreProducto, precio, img, id, producto }: Prop
 
     return (
         <>
-            <div className='CardProducto'>
-                <div className='CardProducto__img'>
-                    <img src={img || fotomedias} alt="nombreProducto" />
-                </div>
-                <Link to="/verproducto" className='CardProducto__link' onClick={handleClick}>
+            <Link to="/verproducto" className='CardProducto__link' onClick={handleClick}>
+                <div className='CardProducto'>
+                    <div className='CardProducto__img'>
+                        <img src={img || fotomedias} alt="nombreProducto" />
+                    </div>
                     <div className='CardProducto__info'>
                         <h6>{nombreProducto}</h6>
                         <p>${precio}</p>
-                        <button>Ver Producto</button>
                     </div>
-                </Link>
-            </div>
+                </div >
+            </Link>
         </>
     )
 }

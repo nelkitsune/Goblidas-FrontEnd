@@ -83,6 +83,21 @@
     background: #7f0000;
 }
 
+.detalle-producto-descuento-btn {
+    background: #ff9800;
+    color: #fff;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 4px;
+    cursor: pointer;
+    margin-right: 4px;
+    transition: background 0.2s;
+}
+
+.detalle-producto-descuento-btn:hover {
+    background: #f57c00;
+}
+
 .detalle-producto-form {
     margin-top: 18px;
     background: #f5f6fa;
