@@ -4,6 +4,7 @@ import { useDetalleStore } from '../../../store/useDetalleStore';
 import { useProductoStore } from '../../../store/useProductoStore'
 import { ItemCount } from '../../ui/ItemCount/ItemCount'
 import './VerProductoEstilo.css'
+import { getDiscountPrice, getDescuentos } from '../../../service/discountprice';
 
 export const VerProducto = () => {
     const detalleActivo = useDetalleStore((state) => state.detalleActivo);
@@ -13,6 +14,8 @@ export const VerProducto = () => {
     // Estados para selección
     const [colorSeleccionado, setColorSeleccionado] = useState<string | null>(null);
     const [talleSeleccionado, setTalleSeleccionado] = useState<number | null>(null);
+    const [precioConDescuento, setPrecioConDescuento] = useState<number | null>(null);
+    const [porcentajeDescuento, setPorcentajeDescuento] = useState<number | null>(null);
 
     // Colores únicos
     const coloresUnicos = productoActivo
@@ -50,9 +53,55 @@ export const VerProducto = () => {
         }
     }, [productoActivo, setDetalleActivo]);
 
-    console.log(detalleActivo?.prizeId.sellingPrice)
-    console.log(productoActivo?.details)
-    console.log(detalleActivo)
+    // Buscar descuento cuando cambia el detalleActivo
+    React.useEffect(() => {
+        const fetchDescuento = async () => {
+            if (detalleActivo) {
+                try {
+                    console.log('Detalle activo:', detalleActivo);
+                    // Trae todas las relaciones descuento-detalle
+                    const discountPrices = await getDiscountPrice();
+                    console.log('Relaciones descuento-precio:', discountPrices);
+
+                    // Busca si el detalleActivo tiene descuento
+                    const relacion = discountPrices.find(
+                        (dp: any) => dp.priceId?.id === detalleActivo.prizeId.id
+                    );
+                    console.log('Relación encontrada:', relacion);
+
+                    if (relacion) {
+                        // Trae todos los descuentos
+                        const descuentos = await getDescuentos();
+                        console.log('Descuentos:', descuentos);
+
+                        // Busca el descuento correspondiente
+                        const descuento = descuentos.find((d: any) => d.id === relacion.discountId.id);
+                        console.log('Descuento encontrado:', descuento);
+
+                        if (descuento) {
+                            const precioOriginal = detalleActivo.prizeId.sellingPrice;
+                            const precioFinal = precioOriginal - (precioOriginal * descuento.percentage / 100);
+                            setPrecioConDescuento(precioFinal);
+                            setPorcentajeDescuento(descuento.porcentaje);
+                            console.log('Precio original:', precioOriginal, 'Precio con descuento:', precioFinal);
+                            return;
+                        }
+                    }
+                    setPrecioConDescuento(null);
+                    setPorcentajeDescuento(null);
+                } catch (e) {
+                    console.log('Error buscando descuento:', e);
+                    setPrecioConDescuento(null);
+                    setPorcentajeDescuento(null);
+                }
+            } else {
+                setPrecioConDescuento(null);
+                setPorcentajeDescuento(null);
+            }
+        };
+        fetchDescuento();
+    }, [detalleActivo]);
+
     // Deshabilitar añadir al carrito si falta selección
     const puedeAgregar = !!(colorSeleccionado && talleSeleccionado && detalleActivo);
 
@@ -66,7 +115,20 @@ export const VerProducto = () => {
             </div>
             <div className='CuerpoVerProducto'>
                 <h3>{productoActivo?.name}</h3>
-                <h4>{detalleActivo?.prizeId.sellingPrice}</h4>
+                <h4>
+                    {precioConDescuento ? (
+                        <>
+                            <span style={{ textDecoration: 'line-through', color: 'red', marginRight: 8 }}>
+                                ${detalleActivo?.prizeId.sellingPrice}
+                            </span>
+                            <span style={{ color: 'green', fontWeight: 'bold', marginRight: 8 }}>
+                                ${precioConDescuento.toFixed(2)}
+                            </span>
+                        </>
+                    ) : (
+                        <>${detalleActivo?.prizeId.sellingPrice}</>
+                    )}
+                </h4>
                 {productoActivo && detalleActivo && (
                     <ItemCount
                         stock={detalleActivo.stock}
