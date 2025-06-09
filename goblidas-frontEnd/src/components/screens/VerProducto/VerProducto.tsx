@@ -137,7 +137,8 @@ export const VerProducto = () => {
                         detalle={detalleActivo}
                         cosa={true}
                         disabled={!puedeAgregar}
-                        producto={productoActivo} // <-- pásalo aquí
+                        producto={productoActivo}
+                        precioConDescuento={precioConDescuento} // <-- NUEVO
                     />
                 )}
                 <h4>Color:

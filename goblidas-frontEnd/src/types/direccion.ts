@@ -6,4 +6,5 @@ export type Direccion = {
     province: string
     number: number
     streetName: string
+    active?: boolean
 }

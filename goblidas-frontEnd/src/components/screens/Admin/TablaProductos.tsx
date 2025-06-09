@@ -4,6 +4,7 @@ import { Producto } from '../../../types/producto';
 import { useNavigate } from 'react-router-dom';
 import { postSize } from '../../../service/sizeService'; // Asegúrate de tener este servicio
 import { getCategory, postCategory } from '../../../service/categoryService';
+import { postDiscountPrice } from '../../../service/discountprice';
 
 // ... Tipado de Producto ...
 
@@ -17,7 +18,8 @@ export const TablaProductos = () => {
     categoriesIds: [],
     name: '',
     gender: '',
-    details: []
+    details: [],
+    highlighted: false
   });
   const [editando, setEditando] = useState<Producto | null>(null);
   const [mostrarTalle, setMostrarTalle] = useState(false);
@@ -25,6 +27,12 @@ export const TablaProductos = () => {
   const [categorias, setCategorias] = useState<any[]>([]);
   const [mostrarCategoria, setMostrarCategoria] = useState(false);
   const [nuevaCategoria, setNuevaCategoria] = useState({ name: '' });
+  const [mostrarDescuento, setMostrarDescuento] = useState(false);
+  const [nuevoDescuento, setNuevoDescuento] = useState({
+    fecha_inicio: '',
+    fecha_final: '',
+    porcentaje: 0
+  });
   const navigate = useNavigate();
 
   // -------------------- Cargar productos --------------------
@@ -77,14 +85,14 @@ export const TablaProductos = () => {
       const productoParaEnviar = { ...rest };
       await postProducto(productoParaEnviar);
 
-      setMostrarModal(false);
       setNuevoProducto({
         id: 0,
         productType: '',
         categoriesIds: [],
         name: '',
         gender: '',
-        details: []
+        details: [],
+        highlighted: false
       });
       await cargarProductos();
     } catch (err: any) {
@@ -169,6 +177,63 @@ export const TablaProductos = () => {
       <button onClick={() => setMostrarModal(true)} style={{ marginBottom: 12 }}>Agregar producto</button>
       <button onClick={() => setMostrarTalle(!mostrarTalle)}>Agregar un Talle</button>
       <button onClick={() => setMostrarCategoria(!mostrarCategoria)}>Agregar una Categoría</button>
+      <button onClick={() => setMostrarDescuento(true)}>Crear un Descuento</button>
+
+      {mostrarDescuento && (
+        <div style={{
+          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
+          background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
+        }}>
+          <form
+            style={{ background: '#fff', padding: 24, borderRadius: 8, minWidth: 320, maxWidth: 400 }}
+            onSubmit={async (e) => {
+              e.preventDefault();
+              console.log(nuevoDescuento); // <-- Agrega esto para depurar
+              try {
+                await postDiscountPrice(nuevoDescuento);
+                setMostrarDescuento(false);
+                setNuevoDescuento({ fecha_inicio: '', fecha_final: '', porcentaje: 0 });
+                alert('Descuento creado correctamente');
+              } catch (err) {
+                alert('Error al crear descuento');
+              }
+            }}
+          >
+            <h4>Nuevo descuento</h4>
+            <input
+              type="datetime-local"
+              name="fecha_inicio"
+              value={nuevoDescuento.fecha_inicio}
+              onChange={e => setNuevoDescuento({ ...nuevoDescuento, fecha_inicio: e.target.value })}
+              required
+              style={{ width: '100%', marginBottom: 8 }}
+              placeholder="Fecha inicio"
+            />
+            <input
+              type="datetime-local"
+              name="fecha_final"
+              value={nuevoDescuento.fecha_final}
+              onChange={e => setNuevoDescuento({ ...nuevoDescuento, fecha_final: e.target.value })}
+              required
+              style={{ width: '100%', marginBottom: 8 }}
+              placeholder="Fecha final"
+            />
+            <input
+              type="number"
+              name="porcentaje"
+              value={nuevoDescuento.porcentaje}
+              onChange={e => setNuevoDescuento({ ...nuevoDescuento, porcentaje: Number(e.target.value) })}
+              required
+              min={1}
+              max={100}
+              style={{ width: '100%', marginBottom: 8 }}
+              placeholder="Porcentaje"
+            />
+            <button type="submit" style={{ marginTop: 12 }}>Guardar descuento</button>
+            <button type="button" onClick={() => setMostrarDescuento(false)} style={{ marginLeft: 8 }}>Cancelar</button>
+          </form>
+        </div>
+      )}
       {mostrarTalle && (
         <form onSubmit={handleAgregarTalle} style={{ margin: '12px 0', background: '#f5f5f5', padding: 12, borderRadius: 6 }}>
           <input
@@ -222,6 +287,17 @@ export const TablaProductos = () => {
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
             </select>
+            <div style={{ marginBottom: 8 }}>
+              <label>
+                <input
+                  type="checkbox"
+                  name="highlighted"
+                  checked={!!nuevoProducto.highlighted}
+                  onChange={handleChange}
+                />{' '}
+                ¿Destacado?
+              </label>
+            </div>
             <button type="submit" style={{ marginTop: 12 }}>Guardar y cerrar</button>
             <button type="button" onClick={() => setMostrarModal(false)} style={{ marginLeft: 8 }}>Cancelar</button>
           </form>
@@ -267,6 +343,17 @@ export const TablaProductos = () => {
                   <option key={cat.id} value={cat.id}>{cat.name}</option>
                 ))}
             </select>
+            <div style={{ marginBottom: 8 }}>
+              <label>
+                <input
+                  type="checkbox"
+                  name="highlighted"
+                  checked={!!editando.highlighted}
+                  onChange={handleEditarChange}
+                />{' '}
+                ¿Destacado?
+              </label>
+            </div>
             <button type="submit" style={{ marginTop: 12 }}>Guardar cambios</button>
             <button type="button" onClick={() => setEditando(null)} style={{ marginLeft: 8 }}>Cancelar</button>
           </form>
@@ -279,6 +366,7 @@ export const TablaProductos = () => {
             <th>Tipo</th>
             <th>Género</th>
             <th>Categorías</th>
+            <th>¿Destacado?</th>
             <th>Detalles</th>
             <th>Acciones</th>
           </tr>
@@ -294,6 +382,7 @@ export const TablaProductos = () => {
                   ? prod.categoriesIds.map((cat: any) => cat.name).join(', ')
                   : ''}
               </td>
+              <td><input type="checkbox" checked={prod.highlighted} disabled /></td>
               <td>{prod.details ? prod.details.length : 0}</td>
               <td>
                 <button onClick={() => navigate(`/admin/productos/${prod.id}`)}>Ver</button>

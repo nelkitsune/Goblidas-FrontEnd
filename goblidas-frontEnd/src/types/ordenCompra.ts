@@ -3,4 +3,5 @@ export type OrdenCompra = {
     total: number
     fecha_compra: string
     id_usuario_direccion: number
+    active?: boolean
 }

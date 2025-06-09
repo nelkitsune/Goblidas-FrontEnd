@@ -14,10 +14,11 @@ interface ItemCountProps {
     onChangeCantidad?: (cantidad: number) => void;
     disabled?: boolean;
     producto?: Producto;
+    precioConDescuento?: number | null; // <-- NUEVO
 }
 
 export const ItemCount: React.FC<ItemCountProps> = ({
-    stock, initial, onAdd, detalle, cosa, onChangeCantidad, disabled, producto
+    stock, initial, onAdd, detalle, cosa, onChangeCantidad, disabled, producto, precioConDescuento
 }) => {
 
     const agregarProducto = useCarritoStore((state) => state.agregarProducto);
@@ -49,7 +50,11 @@ export const ItemCount: React.FC<ItemCountProps> = ({
                 const productoCarrito = {
                     ...detalle,
                     cantidad: quantity,
-                    productIdj: producto, // <-- ahora sí
+                    productIdj: producto,
+                    prizeId: {
+                        ...detalle.prizeId,
+                        sellingPrice: precioConDescuento ?? detalle.prizeId.sellingPrice // <-- usa el precio con descuento si existe
+                    }
                 };
                 agregarProducto(productoCarrito);
             }

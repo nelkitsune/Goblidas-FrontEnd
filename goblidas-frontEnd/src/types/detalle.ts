@@ -12,4 +12,5 @@ export type Detalle = {
     brand: string
     stock: number
     state: boolean
+    active?: boolean
 }

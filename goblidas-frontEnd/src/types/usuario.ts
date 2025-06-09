@@ -5,4 +5,5 @@ export type Usuario = {
     email: string
     name: string
     dni: string
+    active?: boolean
 }
