@@ -11,20 +11,21 @@ import { useUsuarioStore } from '../../../store/useUsuarioStore'; // Ajusta el p
 
 export const NavBar = () => {
     const usuario = useUsuarioStore(state => state.usuario);
-    const [modalSesion, setModalSesion] = useState(false);
+    const [modalVisible, setModalVisible] = useState(false);
     const [modalIniciarSesion, setModalIniciarSesion] = useState(false);
     const [modalRegistrarse, setModalRegistrarse] = useState(false);
+
     const handleModalSesion = () => {
-        setModalSesion(!modalSesion);
+        setModalVisible(!modalVisible);
     }
 
     const handleAbrirIniciarSesion = () => {
-        setModalSesion(false);
+        setModalVisible(false);
         setModalIniciarSesion(true);
     }
 
     const handleAbrirRegistrarse = () => {
-        setModalSesion(false);
+        setModalVisible(false);
         setModalRegistrarse(true);
     }
 
@@ -69,13 +70,21 @@ export const NavBar = () => {
                     </li>
                 </ul>
             </nav >
-            {modalSesion && (
-                <div className='modalSesion'>
-                    <ModalSesion
-                        onIniciarSesion={handleAbrirIniciarSesion}
-                        onRegistrarse={handleAbrirRegistrarse}
-                    />
-                </div>
+            {modalVisible && (
+                <ModalSesion
+                    visible={modalVisible}
+                    onClose={() => setModalVisible(false)}
+                    onIniciarSesion={() => {
+                        setModalVisible(false);
+                        setModalIniciarSesion(true);
+                        setModalRegistrarse(false);
+                    }}
+                    onRegistrarse={() => {
+                        setModalVisible(false);
+                        setModalIniciarSesion(false);
+                        setModalRegistrarse(true);
+                    }}
+                />
             )}
             {modalIniciarSesion && (
                 <IniciarSesionModal onClose={() => setModalIniciarSesion(false)} />

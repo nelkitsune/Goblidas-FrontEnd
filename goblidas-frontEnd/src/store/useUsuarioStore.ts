@@ -1,15 +1,27 @@
-import { create } from 'zustand';
-import { Usuario } from '../types/usuario';
+import { create } from 'zustand'
+import { persist } from 'zustand/middleware'
+import { Usuario } from '../types/usuario'
+import { useCarritoStore } from './useCarritoStore' // <-- Agrega esta línea
 
 type UsuarioState = {
-    usuario: Usuario | null;
-    setUsuario: (usuario: Usuario) => void;
-    limpiarUsuario: () => void;
-};
+    usuario: Usuario | null
+    setUsuario: (usuario: Usuario | null) => void
+    logout: () => void
+}
 
-export const useUsuarioStore = create<UsuarioState>((set) => ({
-    usuario: null, // o undefined
-    setUsuario: (usuario) => set({ usuario }),
-    limpiarUsuario: () => set({ usuario: null }),
-}));
+export const useUsuarioStore = create<UsuarioState>()(
+    persist(
+        (set) => ({
+            usuario: null,
+            setUsuario: (usuario) => set({ usuario }),
+            logout: () => {
+                set({ usuario: null })
+                useCarritoStore.getState().vaciarCarrito() // <-- Vacía el carrito al cerrar sesión
+            },
+        }),
+        {
+            name: 'usuario-storage', // clave en localStorage
+        }
+    )
+)
 

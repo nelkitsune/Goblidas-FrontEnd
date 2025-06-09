@@ -21,8 +21,10 @@ export const Home = () => {
     useEffect(() => {
         getProductos()
             .then((data) => {
-                setProducto(data);
-                console.log("Productos obtenidos:", data);
+                // Filtra solo productos activos
+                const activos = data.filter((p: Producto) => p.active !== false);
+                setProducto(activos);
+                console.log("Productos obtenidos:", activos);
             })
             .catch((error) => {
                 console.error("Error al obtener los Productos:", error);
@@ -30,31 +32,24 @@ export const Home = () => {
     }, []);
 
     useEffect(() => {
-        const zapatilla = producto.filter((item) => item.productType === "Zapatilla");
-        const remera = producto.filter((item) => item.productType === "Remera");
-        const pantalon = producto.filter((item) => item.productType === "Pantalon");
-        const gorra = producto.filter((item) => item.productType === "Gorra");
-        const abrigo = producto.filter((item) => item.productType === "Abrigo");
-        const otroTipo = producto.filter((item) =>
+        if (!producto || producto.length === 0) return;
+        setZapatilla(producto.filter((item) => item.productType === "Zapatilla"));
+        setRemera(producto.filter((item) => item.productType === "Remera"));
+        setPantalon(producto.filter((item) => item.productType === "Pantalon"));
+        setGorra(producto.filter((item) => item.productType === "Gorra"));
+        setAbrigo(producto.filter((item) => item.productType === "Abrigo"));
+        setOtroTipo(producto.filter((item) =>
             !["Zapatilla", "Remera", "Pantalon", "Gorra", "Abrigo"].includes(item.productType)
-        );
-        setZapatilla(zapatilla);
-        setRemera(remera);
-        setPantalon(pantalon);
-        setGorra(gorra);
-        setAbrigo(abrigo);
-        setOtroTipo(otroTipo);
-        console.log("Zapatillas:", zapatilla);
-        console.log("Remeras:", remera);
-        console.log("Pantalones:", pantalon);
-        console.log("Gorras:", gorra);
-        console.log("Abrigos:", abrigo);
-        console.log("Otros tipos:", otroTipo);
+        ));
     }, [producto]);
+
+    if (!producto || producto.length === 0) {
+        return <div>Cargando productos...</div>;
+    }
 
     return (
         <>
-            <CarruselCasero></CarruselCasero>
+            <CarruselCasero />
             <br />
             <h4>Zapatillas</h4>
             <ContenedorDeProductos productos={zapatilla} />

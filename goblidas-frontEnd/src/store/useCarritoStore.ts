@@ -1,8 +1,6 @@
 import { create } from 'zustand'
-import { persist } from 'zustand/middleware'
-import { Producto } from '../types/producto'
+import { persist, PersistOptions } from 'zustand/middleware'
 import { Detalle } from '../types/detalle'
-import { DetailsHTMLAttributes } from 'react'
 
 type ProductoCarrito = Detalle & {
     cantidad: number
@@ -16,23 +14,30 @@ type CarritoState = {
     cambiarCantidad: (id: number, cantidad: number) => void
 }
 
-export const useCarritoStore = create<CarritoState>(
-    persist(
+// Tipar correctamente el persist
+type MyPersist = PersistOptions<CarritoState>
+
+export const useCarritoStore = create<CarritoState>()(
+    persist<CarritoState>(
         (set) => ({
             productos: [],
             agregarProducto: (producto) =>
                 set((state) => {
                     const existe = state.productos.find((p) => p.id === producto.id)
                     if (existe) {
+                        const nuevaCantidad = Math.min(
+                            existe.cantidad + producto.cantidad,
+                            producto.stock
+                        );
                         return {
                             productos: state.productos.map((p) =>
                                 p.id === producto.id
-                                    ? { ...p, cantidad: p.cantidad + producto.cantidad }
+                                    ? { ...p, cantidad: nuevaCantidad }
                                     : p
                             ),
                         }
                     }
-                    return { productos: [...state.productos, producto] }
+                    return { productos: [...state.productos, { ...producto, cantidad: Math.min(producto.cantidad, producto.stock) }] }
                 }),
             quitarProducto: (id) =>
                 set((state) => ({
@@ -47,7 +52,7 @@ export const useCarritoStore = create<CarritoState>(
                 })),
         }),
         {
-            name: 'carrito-storage', // clave en localStorage
+            name: 'carrito-storage',
         }
     )
 )

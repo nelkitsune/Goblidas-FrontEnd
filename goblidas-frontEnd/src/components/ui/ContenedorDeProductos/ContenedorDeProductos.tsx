@@ -22,6 +22,7 @@ export const ContenedorDeProductos = ({ productos }: ContenedorDeProductosProps)
     return (
         <div className='contenedor-productos'>
             {productos
+                .filter(producto => producto.active !== false)
                 .filter(producto =>
                     producto.details &&
                     producto.details.length > 0 &&

@@ -47,6 +47,17 @@ export const ItemCount: React.FC<ItemCountProps> = ({
     const handleAddToCart = (quantity: number) => {
         try {
             if (detalle && producto) {
+                // Verifica cuántos ya hay en el carrito
+                const carrito = useCarritoStore.getState().productos;
+                const yaEnCarrito = carrito.find(p => p.id === detalle.id)?.cantidad || 0;
+                if (yaEnCarrito + quantity > detalle.stock) {
+                    Swal.fire({
+                        icon: 'warning',
+                        title: 'Stock insuficiente',
+                        text: `Ya tienes ${yaEnCarrito} en el carrito. Solo puedes agregar ${detalle.stock - yaEnCarrito} más.`,
+                    });
+                    return;
+                }
                 const productoCarrito = {
                     ...detalle,
                     cantidad: quantity,

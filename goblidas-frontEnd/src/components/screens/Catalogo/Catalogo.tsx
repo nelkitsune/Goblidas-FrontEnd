@@ -16,7 +16,9 @@ export const Catalogo = () => {
     // Si no hay filtros, trae todos los productos
     useEffect(() => {
         if (Object.keys(filtros).length === 0) {
-            getProductos().then(setProductos);
+            getProductos().then((data) => {
+                setProductos(data.filter((p: any) => p.active !== false));
+            });
         }
         console.log('🟢 [Catalogo] Filtros actuales:', filtros);
     }, [filtros]);
@@ -26,23 +28,22 @@ export const Catalogo = () => {
         const filtrosActualizados = { ...filtros, ...nuevosFiltros };
         setFiltros(filtrosActualizados);
 
-        // Si no hay filtros, trae todos los productos
         if (Object.keys(filtrosActualizados).length === 0) {
             const todos = await getProductos();
-            setProductos(todos);
+            setProductos(todos.filter((p: any) => p.active !== false));
             return;
         }
 
         const productosFiltrados = await filtrarProductos(filtrosActualizados);
+        let filtrados: any[] = [];
         if (Array.isArray(productosFiltrados)) {
-            setProductos(productosFiltrados);
+            filtrados = productosFiltrados;
         } else if (productosFiltrados && Array.isArray(productosFiltrados.data)) {
-            setProductos(productosFiltrados.data);
+            filtrados = productosFiltrados.data;
         } else if (productosFiltrados) {
-            setProductos([productosFiltrados]);
-        } else {
-            setProductos([]);
+            filtrados = [productosFiltrados];
         }
+        setProductos(filtrados.filter((p: any) => p.active !== false));
     }
 
     console.log('Productos a renderizar:', productos);
