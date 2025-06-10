@@ -1,29 +1,47 @@
 import React, { useEffect, useState } from 'react'
+import { useLocation } from 'react-router-dom'
 import { SideCatalogo } from '../../ui/SideCatalogo/SideCatalogo'
 import './CatalogoEstilo.css'
 import { MenuCategoria } from '../../ui/MenuCategoria/MenuCategoria'
 import { filtrarProductos, getProductos } from '../../../service/productsService'
+import { Producto } from '../../../types/producto'
 
 export const Catalogo = () => {
     const [sideCatalogo, setSideCatalogo] = useState(false)
     const [productos, setProductos] = useState<any[]>([]);
-    const [filtros, setFiltros] = useState({});
-
-    const handleOpenSideCatalogo = () => {
-        setSideCatalogo(!sideCatalogo)
+    interface Filtros {
+        size?: string;
+        [key: string]: any;
     }
+    const [filtros, setFiltros] = useState<Filtros>({});
+    const location = useLocation();
 
-    // Si no hay filtros, trae todos los productos
+    // Lee los parámetros de la URL y los convierte en un objeto
+    const getFiltrosFromURL = () => {
+        const params = new URLSearchParams(location.search);
+        const filtrosURL: any = {};
+        params.forEach((value, key) => {
+            filtrosURL[key] = value;
+        });
+        return filtrosURL;
+    };
+
     useEffect(() => {
-        if (Object.keys(filtros).length === 0) {
+        const filtrosURL = getFiltrosFromURL();
+        // Si hay filtros en la URL, usa el endpoint de filtro
+        if (Object.keys(filtrosURL).length > 0) {
+            filtrarProductos(filtrosURL).then((data) => {
+                setProductos(Array.isArray(data) ? data.filter((p: any) => p.active !== false) : []);
+            });
+        } else {
+            // Si no hay filtros, trae todos los productos
             getProductos().then((data) => {
                 setProductos(data.filter((p: any) => p.active !== false));
             });
         }
-        console.log('🟢 [Catalogo] Filtros actuales:', filtros);
-    }, [filtros]);
+    }, [location.search]);
 
-    // Llama a este método cuando cambie algún filtro
+    // Llama a este método cuando cambie algún filtro interno
     const handleFiltrar = async (nuevosFiltros: any) => {
         const filtrosActualizados = { ...filtros, ...nuevosFiltros };
         setFiltros(filtrosActualizados);
@@ -46,7 +64,25 @@ export const Catalogo = () => {
         setProductos(filtrados.filter((p: any) => p.active !== false));
     }
 
+    // Filtrado adicional por talle (si hay un talle seleccionado)
+    const productosFiltrados = productos.filter((producto: Producto) => {
+        // Si no hay talle seleccionado, no filtra por talle
+        if (!filtros.size || filtros.size === '') return true;
+        // Busca si algún detalle coincide con el talle (por id) y está activo
+        return producto.details.some(
+            (detalle) =>
+                detalle.sizeId.id === Number(filtros.size) && // <-- compara por id
+                detalle.active !== false &&
+                detalle.state !== false
+        );
+    });
+
     console.log('Productos a renderizar:', productos);
+
+    // Abre el SideCatalogo
+    const handleOpenSideCatalogo = () => {
+        setSideCatalogo(true);
+    };
 
     return (
         <>
@@ -55,12 +91,12 @@ export const Catalogo = () => {
                     Categorias
                 </button>
                 {sideCatalogo && (
-                    <SideCatalogo onFiltrar={handleFiltrar} />
+                    <SideCatalogo onClose={() => setSideCatalogo(false)} />
                 )}
                 <h1>Catalogo</h1>
-                <MenuCategoria productos={productos} />
+                <MenuCategoria productos={productosFiltrados} />
                 <div className="productosCatalogo">
-                    {productos.length === 0 && <p>No hay productos para este filtro.</p>}
+                    {productosFiltrados.length === 0 && <p>No hay productos para este filtro.</p>}
                 </div>
             </div>
         </>

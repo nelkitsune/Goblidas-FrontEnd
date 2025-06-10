@@ -17,6 +17,8 @@ import { AdminPanel } from './components/screens/Admin/AdminPanel'
 import { DetalleProducto } from './components/screens/Admin/DetalleProducto/DetalleProducto'
 import { RequireAdmin } from './components/routes/RequireAdmin';
 import { RequireAuth } from './components/routes/RequireAuth';
+import { ConfirmarCompra } from './components/screens/ConfirmarCompra/ConfirmarCompra';
+import { MisPedidos } from './components/screens/MisPedidos/MisPedidos';
 
 function App() {
 
@@ -64,10 +66,18 @@ function App() {
                 }
               />
               <Route
-                path='/seleccionardireccion'
+                path='/seleccionar-direccion'
                 element={
                   <RequireAuth>
                     <SelecionarDireccion />
+                  </RequireAuth>
+                }
+              />
+              <Route
+                path='/confirmar-compra'
+                element={
+                  <RequireAuth>
+                    <ConfirmarCompra />
                   </RequireAuth>
                 }
               />
@@ -87,6 +97,7 @@ function App() {
                   </RequireAdmin>
                 }
               />
+              <Route path='/mis-pedidos' element={<MisPedidos />} />
             </Routes>
             <PieDePagina />
           </div>

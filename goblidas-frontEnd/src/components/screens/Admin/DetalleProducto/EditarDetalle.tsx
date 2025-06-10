@@ -5,6 +5,7 @@ import { putPrice } from '../../../../service/priceService';
 import { uploadImageToCloudinary } from '../../../../service/cloudinaryService';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
+import { colorNames } from '../../../../constants/colores'; // Ajusta la ruta si lo pones en otro archivo
 
 const detalleSchema = Yup.object().shape({
     colour: Yup.string().required('El color es obligatorio'),
@@ -116,13 +117,17 @@ export const EditarDetalle = ({
     return (
         <form className="detalle-producto-form" onSubmit={handleEditarDetalle}>
             <h4>Editar detalle</h4>
-            <input
+            <select
                 name="colour"
-                placeholder="Color"
                 value={detalleEditando.colour || ''}
                 onChange={e => setDetalleEditando({ ...detalleEditando, colour: e.target.value })}
                 required
-            />
+            >
+                <option value="">Seleccionar color</option>
+                {colorNames.map((color) => (
+                    <option key={color} value={color}>{color}</option>
+                ))}
+            </select>
             <select
                 name="sizeId"
                 value={detalleEditando.sizeId?.id || detalleEditando.sizeId || ''}

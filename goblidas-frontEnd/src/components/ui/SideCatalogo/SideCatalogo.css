@@ -1,4 +1,35 @@
-.sideCatalogoTotal{
+.sideCatalogoTotal {
     background-color: #B1E4AE;
-    
+
+}
+
+.select-talle {
+    max-height: 150px;
+    overflow-y: auto;
+}
+
+.btn-group {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-bottom: 10px;
+}
+
+.btn-group button {
+    padding: 8px 16px;
+    border: 1px solid #aaa;
+    background: #fff;
+    cursor: pointer;
+    border-radius: 6px;
+    transition: background 0.2s, color 0.2s;
+    min-width: 40px;
+    min-height: 40px;
+    font-size: 1rem;
+    box-sizing: border-box;
+}
+
+.btn-group button.active {
+    background: #4caf50;
+    color: #fff;
+    border-color: #388e3c;
 }

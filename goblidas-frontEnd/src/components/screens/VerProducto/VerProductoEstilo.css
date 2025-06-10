@@ -52,7 +52,25 @@
     background-color: #B7E2CD;
 }
 
+.item-count {
+    padding: 5px;
+}
+
 /* --- Breakpoints Responsivos --- */
+
+@media (min-width: 320px) {
+    .VerProducto {
+        padding: 10px;
+    }
+
+    .ImagenPrincipalFotos {
+        height: 250px;
+    }
+
+    .ImagenesSecundarias img {
+        height: 40px;
+    }
+}
 
 /* Tablets (mínimo 768px) */
 @media (min-width: 768px) {

@@ -5,6 +5,7 @@ import { Precio } from '../../../../types/precio';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import { uploadImageToCloudinary } from '../../../../service/cloudinaryService';
+import { colorNames } from '../../../../constants/colores'; // Ajusta la ruta si lo pones en otro archivo
 
 export const AgregarDetalle = ({
     nuevoDetalle,
@@ -49,7 +50,8 @@ export const AgregarDetalle = ({
         try {
             const urls: string[] = [];
             for (let i = 0; i < files.length; i++) {
-                const url = await uploadImageToCloudinary(files[i]);
+                // Cuando subas la imagen, pásale el detailId si lo tienes:
+                const url = await uploadImageToCloudinary(files[i], nuevoDetalle.id); // o el id correspondiente
                 urls.push(url);
             }
             setNuevoDetalle({ ...nuevoDetalle, imageUrls: urls });
@@ -67,7 +69,7 @@ export const AgregarDetalle = ({
         try {
             const detalleAValidar = {
                 ...nuevoDetalle,
-                state: nuevoDetalle.state === true || nuevoDetalle.state === "true"
+                state: nuevoDetalle.state === "true" || nuevoDetalle.state === true
             };
             await detalleSchema.validate(detalleAValidar, { abortEarly: false });
 
@@ -81,8 +83,8 @@ export const AgregarDetalle = ({
                 productIdj: { id: producto.id },
                 sizeId: { id: Number(nuevoDetalle.sizeId) },
                 prizeId: { id: price.id },
-                state: detalleAValidar.state,
-                imageUrls: nuevoDetalle.imageUrls || [] // Envía el array de URLs
+                state: nuevoDetalle.state === "true", // <-- Aquí la conversión correcta
+                imageUrls: nuevoDetalle.imageUrls || []
             });
 
             setMostrarFormDetalle(false);
@@ -102,13 +104,17 @@ export const AgregarDetalle = ({
     return (
         <form className="detalle-producto-form" onSubmit={handleAgregarDetalle}>
             <h4>Agregar detalle</h4>
-            <input
+            <select
                 name="colour"
-                placeholder="Color"
                 value={nuevoDetalle.colour || ''}
                 onChange={e => setNuevoDetalle({ ...nuevoDetalle, colour: e.target.value })}
                 required
-            />
+            >
+                <option value="">Seleccionar color</option>
+                {colorNames.map((color) => (
+                    <option key={color} value={color}>{color}</option>
+                ))}
+            </select>
             <select
                 name="sizeId"
                 value={nuevoDetalle.sizeId || ''}
@@ -148,8 +154,8 @@ export const AgregarDetalle = ({
             />
             <select
                 name="state"
-                value={nuevoDetalle.state ?? true}
-                onChange={e => setNuevoDetalle({ ...nuevoDetalle, state: e.target.value === "true" })}
+                value={nuevoDetalle.state === undefined ? "true" : String(nuevoDetalle.state)}
+                onChange={e => setNuevoDetalle({ ...nuevoDetalle, state: e.target.value })}
                 required
             >
                 <option value="true">Activo</option>

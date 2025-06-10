@@ -6,6 +6,43 @@ import { ItemCount } from '../../ui/ItemCount/ItemCount'
 import './VerProductoEstilo.css'
 import { getDiscountPrice, getDescuentos } from '../../../service/discountprice';
 
+// Mapea nombres a colores CSS válidos
+const colorMap: Record<string, string> = {
+    'rojo': 'red',
+    'azul': 'blue',
+    'verde': 'green',
+    'verde lima': '#BFFF00',
+    'amarillo': 'yellow',
+    'negro': 'black',
+    'blanco': 'white',
+    'gris': 'gray',
+    'gris claro': '#D3D3D3',
+    'gris oscuro': '#555',
+    'naranja': 'orange',
+    'celeste': '#00BFFF',
+    'violeta': 'violet',
+    'morado': '#800080',
+    'rosa': 'pink',
+    'fucsia': '#FF00FF',
+    'marrón': '#8B4513',
+    'beige': '#F5F5DC',
+    'bordó': '#800000',
+    'turquesa': '#40E0D0',
+    'dorado': '#FFD700',
+    'plateado': '#C0C0C0',
+    'azul marino': '#001F3F',
+    'verde oscuro': '#006400',
+    'verde claro': '#90EE90',
+    'mostaza': '#FFDB58',
+    'salmon': '#FA8072',
+    'coral': '#FF7F50',
+    'lavanda': '#E6E6FA',
+    'cian': '#00FFFF',
+    'lila': '#C8A2C8',
+    'ocre': '#CC7722',
+    // Agrega más según tus necesidades
+};
+
 export const VerProducto = () => {
     const detalleActivo = useDetalleStore((state) => state.detalleActivo);
     const setDetalleActivo = useDetalleStore((state) => state.setDetalleActivo);
@@ -142,29 +179,33 @@ export const VerProducto = () => {
                     />
                 )}
                 <h4>Color:
-                    {coloresUnicos.map((color) => (
-                        <button
-                            key={color}
-                            onClick={() => {
-                                setColorSeleccionado(color);
-                                setTalleSeleccionado(null); // Reinicia talle al cambiar color
-                            }}
-                            style={{
-                                fontWeight: colorSeleccionado === color ? 'bold' : 'normal'
-                            }}
-                        >
-                            {color}
-                        </button>
-                    ))}
+                    {coloresUnicos.map((color) => {
+                        const cssColor = colorMap[color.toLowerCase()] || color;
+                        const isLight = ['amarillo', 'blanco', 'verde lima'].includes(color.toLowerCase());
+                        return (
+                            <button
+                                key={color}
+                                className={`ColorBtn${colorSeleccionado === color ? ' ColorBtn-activo' : ''}`}
+                                onClick={() => {
+                                    setColorSeleccionado(color);
+                                    setTalleSeleccionado(null);
+                                }}
+                                style={{
+                                    backgroundColor: cssColor,
+                                    color: isLight ? '#222' : '#fff',
+                                }}
+                            >
+                                {color}
+                            </button>
+                        )
+                    })}
                 </h4>
                 <h4>Tamaño:
                     {tallesFiltrados.map((talle) => (
                         <button
                             key={talle}
+                            className={`TalleBtn${talleSeleccionado === talle ? ' TalleBtn-activo' : ''}`}
                             onClick={() => setTalleSeleccionado(talle)}
-                            style={{
-                                fontWeight: talleSeleccionado === talle ? 'bold' : 'normal'
-                            }}
                         >
                             {talle}
                         </button>

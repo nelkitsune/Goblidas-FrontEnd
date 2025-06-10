@@ -41,7 +41,9 @@ export const ModalSesion = ({
                     <>
                         <div className='divModalSesion'>Hola, {usuario.name}</div>
                         <div className='divModalSesion'><Link to="/verperfil">Mi Perfil</Link></div>
-                        <div className='divModalSesion'>Mis pedidos</div>
+                        <div className='divModalSesion'>
+                          <Link to="/mis-pedidos">Mis pedidos</Link>
+                        </div>
                         <div className='divModalSesion' onClick={cerrarSesion}>Salir</div>
                     </>
                 ) : (

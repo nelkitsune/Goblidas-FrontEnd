@@ -60,7 +60,7 @@ export const Carrito = () => {
                         </table>
                     </div>
                     <div className="botones">
-                        <button className="btn-pagar"><Link to="/seleccionardireccion">Selecionar direccion</Link></button>
+                        <button className="btn-pagar"><Link to="/seleccionar-direccion">Selecionar direccion</Link></button>
                         <button className="btn-seguir"><Link to="/catalogo">Seguir comprando</Link></button>
                     </div>
                 </div>
