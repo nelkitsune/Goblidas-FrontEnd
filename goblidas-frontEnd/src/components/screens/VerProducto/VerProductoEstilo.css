@@ -26,6 +26,13 @@
     gap: 10px;
     background-color: #B7E2CD;
     padding: 10px;
+    overflow-x: auto;
+    /* Habilita el scroll horizontal */
+    white-space: nowrap;
+    /* Evita que las imágenes bajen a otra línea */
+    max-width: 100%;
+    /* Opcional: limita el ancho al contenedor padre */
+    box-sizing: border-box;
 }
 
 .ImagenesSecundarias img {

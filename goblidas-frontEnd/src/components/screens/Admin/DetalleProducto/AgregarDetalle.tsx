@@ -6,6 +6,7 @@ import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import { uploadImageToCloudinary } from '../../../../service/cloudinaryService';
 import { colorNames } from '../../../../constants/colores'; // Ajusta la ruta si lo pones en otro archivo
+import { putDetalle } from '../../../../service/detailService';
 
 export const AgregarDetalle = ({
     nuevoDetalle,
@@ -37,9 +38,9 @@ export const AgregarDetalle = ({
         sellingPrice: Yup.number().required('El valor de venta es obligatorio').min(0, 'El valor de venta debe ser mayor o igual a 0'),
         state: Yup.boolean().required('El estado es obligatorio'),
         brand: Yup.string(),
-        imageUrls: Yup.array()
-            .of(Yup.string().url('Debe ser una URL válida'))
-            .min(1, 'Debes subir al menos una imagen')
+        // imageUrls: Yup.array()
+        //     .of(Yup.string().url('Debe ser una URL válida'))
+        //     .min(1, 'Debes subir al menos una imagen')
     });
 
     // Cambia imageUrl por imageUrls (array)
@@ -48,16 +49,10 @@ export const AgregarDetalle = ({
         if (!files || files.length === 0) return;
         setSubiendoImagen(true);
         try {
-            const urls: string[] = [];
-            for (let i = 0; i < files.length; i++) {
-                // Cuando subas la imagen, pásale el detailId si lo tienes:
-                const url = await uploadImageToCloudinary(files[i], nuevoDetalle.id); // o el id correspondiente
-                urls.push(url);
-            }
-            setNuevoDetalle({ ...nuevoDetalle, imageUrls: urls });
-            Swal.fire('Imágenes subidas', 'Las imágenes se subieron correctamente', 'success');
+            setNuevoDetalle({ ...nuevoDetalle, imageUrls: [], imageUrlsArchivos: Array.from(files) });
+            Swal.fire('Imágenes seleccionadas', 'Las imágenes se seleccionaron correctamente', 'success');
         } catch (error) {
-            Swal.fire('Error', 'No se pudieron subir las imágenes', 'error');
+            Swal.fire('Error', 'No se pudieron seleccionar las imágenes', 'error');
         } finally {
             setSubiendoImagen(false);
         }
@@ -69,7 +64,15 @@ export const AgregarDetalle = ({
         try {
             const detalleAValidar = {
                 ...nuevoDetalle,
-                state: nuevoDetalle.state === "true" || nuevoDetalle.state === true
+                state: nuevoDetalle.state === "true" || nuevoDetalle.state === true,
+                // imageUrls: (
+                //     nuevoDetalle.imageUrls && nuevoDetalle.imageUrls.length > 0
+                //         ? nuevoDetalle.imageUrls
+                //         : (nuevoDetalle.imageUrlsArchivos && nuevoDetalle.imageUrlsArchivos.length > 0
+                //             ? ["archivo"] // Valor ficticio para pasar la validación
+                //             : []
+                //         )
+                // )
             };
             await detalleSchema.validate(detalleAValidar, { abortEarly: false });
 
@@ -78,15 +81,26 @@ export const AgregarDetalle = ({
                 sellingPrice: nuevoDetalle.sellingPrice
             });
 
-            await postDetalle({
+            // 1. Crear el detalle (sin imágenes)
+            const detalleCreado = await postDetalle({
                 ...nuevoDetalle,
                 productIdj: { id: producto.id },
                 sizeId: { id: Number(nuevoDetalle.sizeId) },
                 prizeId: { id: price.id },
-                state: nuevoDetalle.state === "true", // <-- Aquí la conversión correcta
-                imageUrls: nuevoDetalle.imageUrls || []
+                state: nuevoDetalle.state === "true",
             });
+            console.log('Detalle creado:', detalleCreado);
 
+            // 2. Subir cada imagen with el detailId
+            const files = nuevoDetalle.imageUrlsArchivos as File[] | undefined;
+            if (files && files.length > 0) {
+                for (let i = 0; i < files.length; i++) {
+                    await uploadImageToCloudinary(files[i], detalleCreado.id);
+                    // No necesitas guardar nada en el detalle, el backend lo asocia
+                }
+            }
+
+            // 3. Actualizar la UI, mostrar éxito, etc.
             setMostrarFormDetalle(false);
             setNuevoDetalle({});
             const data = await getProductoPorId(producto.id);

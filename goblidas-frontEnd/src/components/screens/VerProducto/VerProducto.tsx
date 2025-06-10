@@ -5,42 +5,12 @@ import { useProductoStore } from '../../../store/useProductoStore'
 import { ItemCount } from '../../ui/ItemCount/ItemCount'
 import './VerProductoEstilo.css'
 import { getDiscountPrice, getDescuentos } from '../../../service/discountprice';
+import { getProductos } from '../../../service/productsService'
+import { CardProducto } from '../../ui/CardProducto/CardProducto'
+import { getImagesByDetail } from '../../../service/cloudinaryService';
 
-// Mapea nombres a colores CSS válidos
 const colorMap: Record<string, string> = {
-    'rojo': 'red',
-    'azul': 'blue',
-    'verde': 'green',
-    'verde lima': '#BFFF00',
-    'amarillo': 'yellow',
-    'negro': 'black',
-    'blanco': 'white',
-    'gris': 'gray',
-    'gris claro': '#D3D3D3',
-    'gris oscuro': '#555',
-    'naranja': 'orange',
-    'celeste': '#00BFFF',
-    'violeta': 'violet',
-    'morado': '#800080',
-    'rosa': 'pink',
-    'fucsia': '#FF00FF',
-    'marrón': '#8B4513',
-    'beige': '#F5F5DC',
-    'bordó': '#800000',
-    'turquesa': '#40E0D0',
-    'dorado': '#FFD700',
-    'plateado': '#C0C0C0',
-    'azul marino': '#001F3F',
-    'verde oscuro': '#006400',
-    'verde claro': '#90EE90',
-    'mostaza': '#FFDB58',
-    'salmon': '#FA8072',
-    'coral': '#FF7F50',
-    'lavanda': '#E6E6FA',
-    'cian': '#00FFFF',
-    'lila': '#C8A2C8',
-    'ocre': '#CC7722',
-    // Agrega más según tus necesidades
+    'rojo': 'red', 'azul': 'blue', 'verde': 'green', 'verde lima': '#BFFF00', 'amarillo': 'yellow', 'negro': 'black', 'blanco': 'white', 'gris': 'gray', 'gris claro': '#D3D3D3', 'gris oscuro': '#555', 'naranja': 'orange', 'celeste': '#00BFFF', 'violeta': 'violet', 'morado': '#800080', 'rosa': 'pink', 'fucsia': '#FF00FF', 'marrón': '#8B4513', 'beige': '#F5F5DC', 'bordó': '#800000', 'turquesa': '#40E0D0', 'dorado': '#FFD700', 'plateado': '#C0C0C0', 'azul marino': '#001F3F', 'verde oscuro': '#006400', 'verde claro': '#90EE90', 'mostaza': '#FFDB58', 'salmon': '#FA8072', 'coral': '#FF7F50', 'lavanda': '#E6E6FA', 'cian': '#00FFFF', 'lila': '#C8A2C8', 'ocre': '#CC7722',
 };
 
 export const VerProducto = () => {
@@ -53,6 +23,9 @@ export const VerProducto = () => {
     const [talleSeleccionado, setTalleSeleccionado] = useState<number | null>(null);
     const [precioConDescuento, setPrecioConDescuento] = useState<number | null>(null);
     const [porcentajeDescuento, setPorcentajeDescuento] = useState<number | null>(null);
+    const [recomendados, setRecomendados] = useState<any[]>([]);
+    const [imagenesDetalle, setImagenesDetalle] = useState<string[]>([]);
+    const [fotoPrincipalIdx, setFotoPrincipalIdx] = useState(0);
 
     // Colores únicos
     const coloresUnicos = productoActivo
@@ -139,15 +112,67 @@ export const VerProducto = () => {
         fetchDescuento();
     }, [detalleActivo]);
 
+    React.useEffect(() => {
+        getProductos().then((data) => {
+            // Filtra los productos recomendados y que estén activos
+            const recomendadosActivos = data.filter((p: any) => p.highlighted && p.active !== false);
+            setRecomendados(recomendadosActivos);
+        });
+    }, []);
+
+    // Traer imágenes cada vez que cambia el detalleActivo
+    React.useEffect(() => {
+        const fetchImages = async () => {
+            if (detalleActivo?.id) {
+                try {
+                    console.log('Buscando imágenes para detalleActivo.id:', detalleActivo.id);
+                    const imagenes = await getImagesByDetail(detalleActivo.id);
+                    console.log('Imágenes recibidas:', imagenes);
+                    // Mapear a solo URLs
+                    const urls = imagenes.map((img: any) => img.url);
+                    setImagenesDetalle(urls);
+                } catch (e) {
+                    console.log('Error al traer imágenes:', e);
+                    setImagenesDetalle([]);
+                }
+            } else {
+                console.log('No hay detalleActivo para buscar imágenes');
+                setImagenesDetalle([]);
+            }
+        };
+        fetchImages();
+    }, [detalleActivo]);
+
+    // Cuando cambian las imágenes, resetea la principal
+    React.useEffect(() => {
+        setFotoPrincipalIdx(0);
+    }, [imagenesDetalle]);
+
     // Deshabilitar añadir al carrito si falta selección
     const puedeAgregar = !!(colorSeleccionado && talleSeleccionado && detalleActivo);
 
     return (
         <div className='VerProducto'>
             <div className='fotosVerProducto'>
-                <img src={imgEj} alt="" className='ImagenPrincipalFotos' />
+                <img
+                    src={imagenesDetalle[fotoPrincipalIdx] || imgEj}
+                    alt=""
+                    className='ImagenPrincipalFotos'
+                />
                 <div className='ImagenesSecundarias'>
-                    <img src={imgEj} alt="" /><img src={imgEj} alt="" /><img src={imgEj} alt="" /><img src={imgEj} alt="" /><img src={imgEj} alt="" />
+                    {imagenesDetalle.map((url, idx) => (
+                        <img
+                            key={idx}
+                            src={url}
+                            alt=""
+                            style={{
+                                border: fotoPrincipalIdx === idx ? '2px solid #007bff' : 'none',
+                                cursor: 'pointer',
+                                opacity: fotoPrincipalIdx === idx ? 1 : 0.7,
+                            }}
+                            onClick={() => setFotoPrincipalIdx(idx)}
+                        />
+                    ))}
                 </div>
             </div>
             <div className='CuerpoVerProducto'>
@@ -220,6 +245,17 @@ export const VerProducto = () => {
             <div className='ProductosRecomendados'>
                 <h5>Productos recomendados</h5>
                 <div className='ContenedorDeProductosRecomendados'>
+                    {recomendados.length === 0 && <p>No hay productos recomendados.</p>}
+                    {recomendados.map((producto) => (
+                        <CardProducto
+                            key={producto.id}
+                            id={producto.id}
+                            nombreProducto={producto.name}
+                            precio={producto.details?.[0]?.prizeId?.sellingPrice ?? 0}
+                            img={imgEj}
+                            producto={producto}
+                        />
+                    ))}
                 </div>
             </div>
         </div>
