@@ -1,6 +1,30 @@
-.sideCatalogoTotal {
-    background-color: #B1E4AE;
+.sideCatalogoOverlay {
+    position: fixed;
+    left: 0;
+    right: 0;
+    top: 56px;
+    /* Altura del NavBar */
+    bottom: 64px;
+    /* Altura del Footer */
+    background: rgba(0, 0, 0, 0.08);
+    z-index: 1000;
+    display: flex;
+    align-items: flex-start;
+    justify-content: flex-start;
+}
 
+.sideCatalogoTotal {
+    width: 90vw;
+    max-width: 100%;
+    min-width: 0;
+    height: calc(100vh - 56px - 64px);
+    /* Resta NavBar y Footer */
+    max-height: calc(100vh - 56px - 64px);
+    overflow-y: auto;
+    background: #B1E4AE;
+    border-radius: 0 12px 12px 0;
+    box-shadow: 2px 0 8px rgba(80, 180, 120, 0.08);
+    padding: 16px 8px;
 }
 
 .select-talle {
@@ -18,18 +42,143 @@
 .btn-group button {
     padding: 8px 16px;
     border: 1px solid #aaa;
-    background: #fff;
-    cursor: pointer;
-    border-radius: 6px;
-    transition: background 0.2s, color 0.2s;
+    background: #B7E2CD;
+    color: #222;
+    border: 1.5px solid #67cf5d;
+    border-radius: 8px;
+    transition: background 0.2s, color 0.2s, border 0.2s;
     min-width: 40px;
     min-height: 40px;
     font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
     box-sizing: border-box;
 }
 
 .btn-group button.active {
+    background: #67cf5d;
+    color: #fff;
+    border-color: #31ad21;
+}
+
+.precio-group input {
+    border: 1.5px solid #67cf5d;
+    border-radius: 6px;
+    padding: 6px 8px;
+    margin-right: 8px;
+    width: 80px;
+    background: #E6FFF2;
+    color: #222;
+    font-size: 1rem;
+    transition: border 0.2s;
+}
+
+.precio-group input:focus {
+    border-color: #31ad21;
+    outline: none;
+}
+
+.sideCatalogoTotal h2,
+.sideCatalogoTotal h3 {
+    color: #00796b;
+    margin-bottom: 8px;
+    margin-top: 18px;
+    font-weight: 700;
+}
+
+.sideCatalogoTotal button {
+    margin-top: 12px;
     background: #4caf50;
     color: #fff;
-    border-color: #388e3c;
+    border: none;
+    border-radius: 8px;
+    padding: 10px 24px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(80, 180, 120, 0.08);
+    transition: background 0.2s;
+}
+
+.sideCatalogoTotal button:hover {
+    background: #31ad21;
+}
+
+/* --- Breakpoints Responsivos --- */
+
+/* Móviles pequeños */
+@media (min-width: 320px) {
+    .sideCatalogoTotal {
+        padding: 10px;
+        font-size: 0.98rem;
+    }
+
+    .btn-group button,
+    .precio-group input {
+        font-size: 0.95rem;
+        min-width: 32px;
+        min-height: 32px;
+        padding: 6px 8px;
+    }
+}
+
+/* Móviles medianos */
+@media (min-width: 375px) {
+    .sideCatalogoTotal {
+        padding: 14px;
+    }
+
+    .btn-group button,
+    .precio-group input {
+        font-size: 1rem;
+        min-width: 36px;
+        min-height: 36px;
+    }
+}
+
+/* Móviles grandes */
+@media (min-width: 425px) {
+    .sideCatalogoTotal {
+        width: 600px;
+        padding: 18px;
+    }
+
+    .btn-group button,
+    .precio-group input {
+        font-size: 1.05rem;
+        min-width: 40px;
+        min-height: 40px;
+    }
+}
+
+/* Tablets pequeñas */
+@media (min-width: 600px) {
+    .sideCatalogoTotal {
+        padding: 22px;
+    }
+}
+
+/* Tablets grandes */
+@media (min-width: 768px) {
+    .sideCatalogoTotal {
+        padding: 28px;
+    }
+}
+
+/* Escritorio */
+@media (min-width: 1024px) {
+    .sideCatalogoTotal {
+        width: 10000px;
+        padding: 24px;
+        margin: 0;
+        top: 32px;
+    }
+}
+
+/* Escritorio grande */
+@media (min-width: 1366px) {
+    .sideCatalogoTotal {
+
+        padding: 32px;
+    }
 }

@@ -178,7 +178,7 @@ export const VerProducto = () => {
                         precioConDescuento={precioConDescuento} // <-- NUEVO
                     />
                 )}
-                <h4>Color:
+                <h4 className='verProductoColores'>Color:
                     {coloresUnicos.map((color) => {
                         const cssColor = colorMap[color.toLowerCase()] || color;
                         const isLight = ['amarillo', 'blanco', 'verde lima'].includes(color.toLowerCase());
@@ -200,7 +200,7 @@ export const VerProducto = () => {
                         )
                     })}
                 </h4>
-                <h4>Tamaño:
+                <h4 className='verProductoTamanioBoton'>Tamaño:
                     {tallesFiltrados.map((talle) => (
                         <button
                             key={talle}

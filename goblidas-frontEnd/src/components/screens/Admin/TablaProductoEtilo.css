@@ -1,0 +1,94 @@
+.tabla-prod-container {
+    max-width: 100%;
+    margin: 32px auto;
+    background: #e6fff2;
+    border-radius: 10px;
+    padding: 32px 24px;
+    box-shadow: 0 2px 8px rgba(80, 180, 120, 0.08);
+}
+
+.tabla-prod-btn {}
+
+.tabla-prod-btn:hover {
+    background: #67cf5d;
+    color: #fff;
+}
+
+.tabla-prod-modal {}
+
+.tabla-prod-form {
+    background: #fff;
+}
+
+.tabla-prod-form input,
+.tabla-prod-form select {
+    border: 1px solid #b1e4ae;
+}
+
+.tabla-prod-form button[type="submit"] {
+    background: #388e3c;
+    color: #fff;
+}
+
+.tabla-prod-form button[type="submit"]:hover {
+    background: #2e7031;
+}
+
+.tabla-prod-form button[type="button"] {
+    background: #b71c1c;
+    color: #fff;
+}
+
+.tabla-prod-form button[type="button"]:hover {
+    background: #7f0000;
+}
+
+.tabla-prod-table-wrapper {
+    overflow-x: auto;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(80, 180, 120, 0.08);
+}
+
+.tabla-prod-table {
+    background: #fff;
+}
+
+.tabla-prod-table th,
+.tabla-prod-table td {
+    border: 1px solid #b1e4ae;
+}
+
+.tabla-prod-table th {
+    background: #b7e2cd;
+}
+
+/* Responsive: para pantallas medianas */
+@media (max-width: 900px) {
+    .tabla-prod-container {}
+}
+
+/* Responsive: para pantallas chicas */
+@media (max-width: 775px) {
+    .tabla-prod-container {}
+
+    .tabla-prod-table-wrapper {}
+
+    .tabla-prod-table {}
+
+    .tabla-prod-table th,
+    .tabla-prod-table td {}
+}
+
+/* Responsive: para móviles */
+@media (max-width: 600px) {
+    .tabla-prod-container {}
+
+    .tabla-prod-table-wrapper {}
+
+    .tabla-prod-table {}
+
+    .tabla-prod-table th,
+    .tabla-prod-table td {}
+}

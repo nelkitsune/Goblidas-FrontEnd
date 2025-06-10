@@ -1,19 +1,30 @@
 import React, { useState } from 'react';
 import { TablaProductos } from './TablaProductos';
 import { TablaUsuarios } from './TablaUsuarios';
+import './AdminPanelEstilo.css';
 
 export const AdminPanel = () => {
   const [vista, setVista] = useState<'productos' | 'usuarios'>('productos');
 
   return (
-    <div style={{ padding: 24, background: "#fff", borderRadius: 8, minHeight: 500 }}>
-      <h2>Panel de Administración</h2>
-      <p>Bienvenido/a administrador/a.</p>
-      <div style={{ marginBottom: 16 }}>
-        <button onClick={() => setVista('productos')}>Productos</button>
-        <button onClick={() => setVista('usuarios')} style={{ marginLeft: 8 }}>Usuarios</button>
+    <div className="admin-panel-container">
+      <h2 className="admin-panel-title">Panel de Administración</h2>
+      <p className="admin-panel-bienvenida">Bienvenido/a administrador/a.</p>
+      <div className="admin-panel-btns">
+        <button
+          className={`admin-panel-btn${vista === 'productos' ? ' active' : ''}`}
+          onClick={() => setVista('productos')}
+        >
+          Productos
+        </button>
+        <button
+          className={`admin-panel-btn${vista === 'usuarios' ? ' active' : ''}`}
+          onClick={() => setVista('usuarios')}
+        >
+          Usuarios
+        </button>
       </div>
       {vista === 'productos' ? <TablaProductos /> : <TablaUsuarios />}
     </div>
   );
-}; 
+};

@@ -56,6 +56,48 @@
     padding: 5px;
 }
 
+
+.verProductoColores {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    padding-top: 10px;
+}
+
+.verProductoColores button {
+    border-radius: 5px;
+    border: none;
+    padding: 1px 1px 1px 1px;
+    margin: 1px 1px 1px 1px;
+    cursor: pointer;
+}
+
+.verProductoTamanioBoton {
+    display: flex;
+    flex-direction: row;
+    gap: 5px;
+    padding-top: 10px;
+}
+
+.verProductoTamanioBoton button {
+    border-radius: 5px;
+    border: none;
+    padding: 1px 1px 1px 1px;
+    margin: 1px 1px 1px 1px;
+    cursor: pointer;
+    background-color: #67cf5d;
+}
+
+.verProductoTamanioBoton button:hover {
+    background-color: #5ab14f;
+
+}
+
+.verProductoTamanioBoton button:active {
+    background-color: #31ad21;
+
+}
+
 /* --- Breakpoints Responsivos --- */
 
 @media (min-width: 320px) {
@@ -65,11 +107,58 @@
 
     .ImagenPrincipalFotos {
         height: 250px;
+        width: 280px;
+    }
+
+    .ImagenesSecundarias {
+        width: 290px;
     }
 
     .ImagenesSecundarias img {
         height: 40px;
+        width: 46px;
     }
+}
+
+@media (min-width: 450px) {
+    .VerProducto {
+        padding: 20px;
+    }
+
+    .ImagenPrincipalFotos {
+        height: 300px;
+        width: 320px;
+    }
+
+    .ImagenesSecundarias {
+        width: 330px;
+    }
+
+    .ImagenesSecundarias img {
+        height: 50px;
+        width: 54px;
+    }
+}
+
+@media (min-width: 600px) {
+    .VerProducto {
+        padding: 30px;
+    }
+
+    .ImagenPrincipalFotos {
+        height: 350px;
+        width: 360px;
+    }
+
+    .ImagenesSecundarias {
+        width: 370px;
+    }
+
+    .ImagenesSecundarias img {
+        height: 60px;
+        width: 62px;
+    }
+
 }
 
 /* Tablets (mínimo 768px) */
@@ -100,6 +189,31 @@
     }
 }
 
+@media (min-width: 800px) {
+    .VerProducto {
+        padding: 30px;
+        gap: 15px;
+    }
+
+    .ImagenPrincipalFotos {
+        height: 400px;
+    }
+
+    .ImagenesSecundarias img {
+        height: 60px;
+    }
+
+    .verProductoTamanioBoton {
+        gap: 10px;
+    }
+
+    .verProductoColores {
+        gap: 10px;
+    }
+
+}
+
+
 /* Laptops (mínimo 1024px) */
 @media (min-width: 1024px) {
     .VerProducto {
@@ -108,10 +222,16 @@
     }
 
     .ImagenPrincipalFotos {
+        width: 450px;
         height: 450px;
     }
 
+    .ImagenesSecundarias {
+        width: 450px;
+    }
+
     .ImagenesSecundarias img {
+        width: 78px;
         height: 70px;
     }
 }

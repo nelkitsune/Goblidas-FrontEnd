@@ -2,13 +2,12 @@ import React, { useEffect, useState } from 'react';
 import { getProductos, postProducto, putProducto, deleteProducto } from '../../../service/productsService';
 import { Producto } from '../../../types/producto';
 import { useNavigate } from 'react-router-dom';
-import { postSize } from '../../../service/sizeService'; // Asegúrate de tener este servicio
+import { postSize } from '../../../service/sizeService';
 import { getCategory, postCategory } from '../../../service/categoryService';
 import { postDiscountPrice } from '../../../service/discountprice';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
-
-// ... Tipado de Producto ...
+import './TablaProductoEtilo.css';
 
 const productoSchema = Yup.object().shape({
   name: Yup.string().required('El nombre es obligatorio'),
@@ -261,22 +260,16 @@ export const TablaProductos = () => {
 
   // -------------------- Render --------------------
   return (
-    <div>
+    <div className="tabla-prod-container">
       <h3>Productos</h3>
-      <button onClick={() => setMostrarModal(true)} style={{ marginBottom: 12 }}>Agregar producto</button>
-      <button onClick={() => setMostrarTalle(!mostrarTalle)}>Agregar un Talle</button>
-      <button onClick={() => setMostrarCategoria(!mostrarCategoria)}>Agregar una Categoría</button>
-      <button onClick={() => setMostrarDescuento(true)}>Crear un Descuento</button>
+      <button className="tabla-prod-btn" onClick={() => setMostrarModal(true)}>Agregar producto</button>
+      <button className="tabla-prod-btn" onClick={() => setMostrarTalle(!mostrarTalle)}>Agregar un Talle</button>
+      <button className="tabla-prod-btn" onClick={() => setMostrarCategoria(!mostrarCategoria)}>Agregar una Categoría</button>
+      <button className="tabla-prod-btn" onClick={() => setMostrarDescuento(true)}>Crear un Descuento</button>
 
       {mostrarDescuento && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-          background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-        }}>
-          <form
-            style={{ background: '#fff', padding: 24, borderRadius: 8, minWidth: 320, maxWidth: 400 }}
-            onSubmit={handleAgregarDescuento}
-          >
+        <div className="tabla-prod-modal">
+          <form className="tabla-prod-form" onSubmit={handleAgregarDescuento}>
             <h4>Nuevo descuento</h4>
             <input
               type="datetime-local"
@@ -284,7 +277,6 @@ export const TablaProductos = () => {
               value={nuevoDescuento.fecha_inicio}
               onChange={e => setNuevoDescuento({ ...nuevoDescuento, fecha_inicio: e.target.value })}
               required
-              style={{ width: '100%', marginBottom: 8 }}
               placeholder="Fecha inicio"
             />
             <input
@@ -293,7 +285,6 @@ export const TablaProductos = () => {
               value={nuevoDescuento.fecha_final}
               onChange={e => setNuevoDescuento({ ...nuevoDescuento, fecha_final: e.target.value })}
               required
-              style={{ width: '100%', marginBottom: 8 }}
               placeholder="Fecha final"
             />
             <input
@@ -304,59 +295,52 @@ export const TablaProductos = () => {
               required
               min={1}
               max={100}
-              style={{ width: '100%', marginBottom: 8 }}
               placeholder="Porcentaje"
             />
-            <button type="submit" style={{ marginTop: 12 }}>Guardar descuento</button>
-            <button type="button" onClick={() => setMostrarDescuento(false)} style={{ marginLeft: 8 }}>Cancelar</button>
+            <button className="tabla-prod-btn" type="submit">Guardar descuento</button>
+            <button className="tabla-prod-btn" type="button" onClick={() => setMostrarDescuento(false)}>Cancelar</button>
           </form>
         </div>
       )}
+
       {mostrarTalle && (
-        <form onSubmit={handleAgregarTalle} style={{ margin: '12px 0', background: '#f5f5f5', padding: 12, borderRadius: 6 }}>
+        <form className="tabla-prod-form" onSubmit={handleAgregarTalle}>
           <input
             type="text"
             placeholder="Número de talle"
             value={nuevoTalle.number}
             onChange={e => setNuevoTalle({ number: e.target.value })}
             required
-            style={{ marginRight: 8 }}
           />
-          <button type="submit">Guardar talle</button>
-          <button type="button" onClick={() => setMostrarTalle(false)} style={{ marginLeft: 8 }}>Cancelar</button>
+          <button className="tabla-prod-btn" type="submit">Guardar talle</button>
+          <button className="tabla-prod-btn" type="button" onClick={() => setMostrarTalle(false)}>Cancelar</button>
         </form>
       )}
+
       {mostrarCategoria && (
-        <form onSubmit={handleAgregarCategoria} style={{ margin: '12px 0', background: '#f5f5f5', padding: 12, borderRadius: 6 }}>
+        <form className="tabla-prod-form" onSubmit={handleAgregarCategoria}>
           <input
             type="text"
             placeholder="Nombre de categoría"
             value={nuevaCategoria.name}
             onChange={e => setNuevaCategoria({ name: e.target.value })}
             required
-            style={{ marginRight: 8 }}
           />
-          <button type="submit">Guardar categoría</button>
-          <button type="button" onClick={() => setMostrarCategoria(false)} style={{ marginLeft: 8 }}>Cancelar</button>
+          <button className="tabla-prod-btn" type="submit">Guardar categoría</button>
+          <button className="tabla-prod-btn" type="button" onClick={() => setMostrarCategoria(false)}>Cancelar</button>
         </form>
       )}
+
       {mostrarModal && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-          background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-        }}>
-          <form
-            style={{ background: '#fff', padding: 24, borderRadius: 8, minWidth: 320, maxWidth: 400 }}
-            onSubmit={handleSubmit}
-          >
+        <div className="tabla-prod-modal">
+          <form className="tabla-prod-form" onSubmit={handleSubmit}>
             <h4>Nuevo producto</h4>
-            <input name="name" placeholder="Nombre" value={nuevoProducto.name} onChange={handleChange} required style={{ width: '100%', marginBottom: 8 }} />
+            <input name="name" placeholder="Nombre" value={nuevoProducto.name} onChange={handleChange} required />
             <select
               name="productType"
               value={nuevoProducto.productType}
               onChange={handleChange}
               required
-              style={{ width: '100%', marginBottom: 8 }}
             >
               <option value="">Tipo de producto</option>
               <option value="Zapatilla">Zapatilla</option>
@@ -371,7 +355,6 @@ export const TablaProductos = () => {
               value={nuevoProducto.gender}
               onChange={handleChange}
               required
-              style={{ width: '100%', marginBottom: 8 }}
             >
               <option value="">Género</option>
               <option value="Masculino">Masculino</option>
@@ -384,13 +367,13 @@ export const TablaProductos = () => {
               multiple
               value={nuevoProducto.categoriesIds.map((cat: any) => cat.id)}
               onChange={handleChange}
-              style={{ width: '100%', marginBottom: 8, height: 80 }}
+              style={{ height: 80 }}
             >
               {categorias.map(cat => (
                 <option key={cat.id} value={cat.id}>{cat.name}</option>
               ))}
             </select>
-            <div style={{ marginBottom: 8 }}>
+            <div>
               <label>
                 <input
                   type="checkbox"
@@ -401,8 +384,9 @@ export const TablaProductos = () => {
                 ¿Destacado?
               </label>
             </div>
-            <button type="submit" style={{ marginTop: 12 }}>Guardar y cerrar</button>
+            <button className="tabla-prod-btn" type="submit">Guardar y cerrar</button>
             <button
+              className="tabla-prod-btn"
               type="button"
               onClick={() => {
                 setMostrarModal(false);
@@ -417,30 +401,23 @@ export const TablaProductos = () => {
                   active: true
                 });
               }}
-              style={{ marginLeft: 8 }}
             >
               Cancelar
             </button>
           </form>
         </div>
       )}
+
       {editando && (
-        <div style={{
-          position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh',
-          background: 'rgba(0,0,0,0.3)', display: 'flex', alignItems: 'center', justifyContent: 'center', zIndex: 1000
-        }}>
-          <form
-            style={{ background: '#fff', padding: 24, borderRadius: 8, minWidth: 320, maxWidth: 400 }}
-            onSubmit={handleEditarSubmit}
-          >
+        <div className="tabla-prod-modal">
+          <form className="tabla-prod-form" onSubmit={handleEditarSubmit}>
             <h4>Editar producto</h4>
-            <input name="name" placeholder="Nombre" value={editando.name} onChange={handleEditarChange} required style={{ width: '100%', marginBottom: 8 }} />
+            <input name="name" placeholder="Nombre" value={editando.name} onChange={handleEditarChange} required />
             <select
               name="productType"
               value={editando.productType}
               onChange={handleEditarChange}
               required
-              style={{ width: '100%', marginBottom: 8 }}
             >
               <option value="">Tipo de producto</option>
               <option value="Zapatilla">Zapatilla</option>
@@ -455,7 +432,6 @@ export const TablaProductos = () => {
               value={editando.gender}
               onChange={handleEditarChange}
               required
-              style={{ width: '100%', marginBottom: 8 }}
             >
               <option value="">Género</option>
               <option value="Masculino">Masculino</option>
@@ -481,7 +457,7 @@ export const TablaProductos = () => {
                 const nuevas = selected.filter(cat => !editando.categoriesIds.some((c: any) => c.id === cat.id));
                 setEditando({ ...editando, categoriesIds: [...editando.categoriesIds, ...nuevas] });
               }}
-              style={{ width: '100%', marginBottom: 8, height: 80 }}
+              style={{ height: 80 }}
             >
               {categorias
                 .filter(cat => !editando.categoriesIds.some((c: any) => c.id === cat.id))
@@ -489,7 +465,7 @@ export const TablaProductos = () => {
                   <option key={cat.id} value={cat.id}>{cat.name}</option>
                 ))}
             </select>
-            <div style={{ marginBottom: 8 }}>
+            <div>
               <label>
                 <input
                   type="checkbox"
@@ -500,51 +476,50 @@ export const TablaProductos = () => {
                 ¿Destacado?
               </label>
             </div>
-            <button type="submit" style={{ marginTop: 12 }}>Guardar cambios</button>
-            <button type="button" onClick={() => setEditando(null)} style={{ marginLeft: 8 }}>Cancelar</button>
+            <button className="tabla-prod-btn" type="submit">Guardar cambios</button>
+            <button className="tabla-prod-btn" type="button" onClick={() => setEditando(null)}>Cancelar</button>
           </form>
         </div>
       )}
-      <table border={1} cellPadding={8} style={{ width: '100%', background: '#fff' }}>
-        <thead>
-          <tr>
-            <th>Nombre</th>
-            <th>Tipo</th>
-            <th>Género</th>
-            <th>Categorías</th>
-            <th>¿Destacado?</th>
-            <th>Detalles</th>
-            <th>Acciones</th>
-          </tr>
-        </thead>
-        <tbody>
-          {/* LOG 3 */}
-          {productos
-            .filter(prod => {
-              console.log('Producto filtrado:', prod); // <-- LOG 4
-              return prod.active === true; // Cambia 'activo' por el nombre real de tu campo
-            })
-            .map(prod => (
-              <tr key={prod.id}>
-                <td>{prod.name}</td>
-                <td>{prod.productType}</td>
-                <td>{prod.gender}</td>
-                <td>
-                  {prod.categoriesIds && Array.isArray(prod.categoriesIds)
-                    ? prod.categoriesIds.map((cat: any) => cat.name).join(', ')
-                    : ''}
-                </td>
-                <td><input type="checkbox" checked={prod.highlighted} disabled /></td>
-                <td>{prod.details ? prod.details.length : 0}</td>
-                <td>
-                  <button onClick={() => navigate(`/admin/productos/${prod.id}`)}>Ver</button>
-                  <button style={{ marginLeft: 4 }} onClick={() => setEditando(prod)}>Editar</button>
-                  <button style={{ marginLeft: 4 }} onClick={() => handleEliminar(prod.id)}>Eliminar</button>
-                </td>
-              </tr>
-            ))}
-        </tbody>
-      </table>
+
+      <div className="tabla-prod-table-wrapper">
+        <table className="tabla-prod-table">
+          <thead>
+            <tr>
+              <th>Nombre</th>
+              <th>Tipo</th>
+              <th>Género</th>
+              <th>Categorías</th>
+              <th>¿Destacado?</th>
+              <th>Detalles</th>
+              <th>Acciones</th>
+            </tr>
+          </thead>
+          <tbody>
+            {productos
+              .filter(prod => prod.active === true)
+              .map(prod => (
+                <tr key={prod.id}>
+                  <td>{prod.name}</td>
+                  <td>{prod.productType}</td>
+                  <td>{prod.gender}</td>
+                  <td>
+                    {prod.categoriesIds && Array.isArray(prod.categoriesIds)
+                      ? prod.categoriesIds.map((cat: any) => cat.name).join(', ')
+                      : ''}
+                  </td>
+                  <td><input type="checkbox" checked={prod.highlighted} disabled /></td>
+                  <td>{prod.details ? prod.details.length : 0}</td>
+                  <td>
+                    <button className="tabla-prod-btn" onClick={() => navigate(`/admin/productos/${prod.id}`)}>Ver</button>
+                    <button className="tabla-prod-btn" onClick={() => setEditando(prod)}>Editar</button>
+                    <button className="tabla-prod-btn" onClick={() => handleEliminar(prod.id)}>Eliminar</button>
+                  </td>
+                </tr>
+              ))}
+          </tbody>
+        </table>
+      </div>
     </div>
   );
 };

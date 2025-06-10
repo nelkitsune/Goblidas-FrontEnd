@@ -81,7 +81,7 @@ export const Catalogo = () => {
 
     // Abre el SideCatalogo
     const handleOpenSideCatalogo = () => {
-        setSideCatalogo(true);
+        setSideCatalogo((prev) => !prev);
     };
 
     return (

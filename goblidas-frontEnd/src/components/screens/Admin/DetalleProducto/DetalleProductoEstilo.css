@@ -1,37 +1,47 @@
 .detalle-producto-container {
-    max-width: 700px;
+    max-width: 100%;
     margin: 32px auto;
-    background: #fafbfc;
+    background: #e6fff2;
     border-radius: 10px;
     padding: 32px 24px;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.07);
+    box-shadow: 0 2px 8px rgba(80, 180, 120, 0.08);
 }
 
 .detalle-producto-titulo,
 .detalle-producto-subtitulo {
     margin-bottom: 16px;
+    color: #1976d2;
 }
 
 .detalle-producto-info p {
     margin: 4px 0;
 }
 
+/* Tabla y overflow */
+.detalle-producto-table-wrapper {
+    overflow-x: auto;
+    margin-top: 16px;
+    margin-bottom: 16px;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(80, 180, 120, 0.08);
+}
+
 .detalle-producto-table {
+    background: #fff;
+    min-width: 650px;
     width: 100%;
     border-collapse: collapse;
-    margin-top: 16px;
-    background: #fff;
 }
 
 .detalle-producto-table th,
 .detalle-producto-table td {
-    border: 1px solid #e0e0e0;
+    border: 1px solid #b1e4ae;
     padding: 10px 8px;
     text-align: left;
 }
 
 .detalle-producto-table th {
-    background: #f5f6fa;
+    background: #b7e2cd;
     font-weight: 600;
 }
 
@@ -39,12 +49,13 @@
     background: #f9f9f9;
 }
 
+/* Botones */
 .detalle-producto-agregar-btn {
     background: #1976d2;
     color: #fff;
     border: none;
     padding: 7px 16px;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     margin-bottom: 10px;
     transition: background 0.2s;
@@ -59,7 +70,7 @@
     color: #fff;
     border: none;
     padding: 6px 12px;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     margin-right: 4px;
     transition: background 0.2s;
@@ -74,7 +85,7 @@
     color: #fff;
     border: none;
     padding: 6px 12px;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background 0.2s;
 }
@@ -88,7 +99,7 @@
     color: #fff;
     border: none;
     padding: 6px 12px;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     margin-right: 4px;
     transition: background 0.2s;
@@ -98,21 +109,24 @@
     background: #f57c00;
 }
 
+/* Formulario */
 .detalle-producto-form {
     margin-top: 18px;
-    background: #f5f6fa;
+    background: #fff;
     padding: 16px;
-    border-radius: 6px;
+    border-radius: 8px;
     display: flex;
     flex-wrap: wrap;
     gap: 10px;
     align-items: center;
+    box-shadow: 0 2px 8px rgba(80, 180, 120, 0.08);
 }
 
-.detalle-producto-form input {
+.detalle-producto-form input,
+.detalle-producto-form select {
     padding: 6px 8px;
-    border: 1px solid #bdbdbd;
-    border-radius: 4px;
+    border: 1px solid #b1e4ae;
+    border-radius: 6px;
 }
 
 .detalle-producto-form button[type="submit"] {
@@ -120,7 +134,7 @@
     color: #fff;
     border: none;
     padding: 6px 14px;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     margin-right: 8px;
     transition: background 0.2s;
@@ -135,7 +149,7 @@
     color: #fff;
     border: none;
     padding: 6px 14px;
-    border-radius: 4px;
+    border-radius: 8px;
     cursor: pointer;
     transition: background 0.2s;
 }
@@ -144,6 +158,7 @@
     background: #7f0000;
 }
 
+/* Volver */
 .detalle-producto-volver {
     margin-top: 28px;
     display: inline-block;
@@ -159,9 +174,76 @@
     text-decoration: underline;
 }
 
+/* Cargando */
 .detalle-producto-cargando {
     text-align: center;
     margin-top: 40px;
     font-size: 1.2em;
     color: #888;
+}
+
+/* Responsive: para pantallas medianas */
+@media (max-width: 900px) {
+    .detalle-producto-container {
+        padding: 12px;
+        border-radius: 8px;
+        margin: 12px;
+    }
+}
+
+/* Responsive: para pantallas chicas */
+@media (max-width: 775px) {
+    .detalle-producto-container {
+        padding: 4px;
+        border-radius: 0;
+        min-width: 0;
+        margin: 0;
+    }
+
+    .detalle-producto-table-wrapper {
+        padding-left: 4px;
+        padding-right: 4px;
+    }
+
+    .detalle-producto-table {
+        min-width: 600px;
+    }
+
+    .detalle-producto-table th,
+    .detalle-producto-table td {
+        padding: 6px 4px;
+        font-size: 0.95rem;
+        word-break: break-word;
+    }
+
+    .detalle-producto-form {
+        min-width: 90vw;
+        padding: 8px;
+        border-radius: 0;
+    }
+}
+
+/* Responsive: para móviles */
+@media (max-width: 600px) {
+    .detalle-producto-container {
+        padding: 4px;
+        border-radius: 0;
+        min-width: 0;
+        width: 100vw;
+        margin: 0;
+    }
+
+    .detalle-producto-table {
+        min-width: 480px;
+    }
+
+    .detalle-producto-table th,
+    .detalle-producto-table td {
+        font-size: 0.9rem;
+    }
+
+    .detalle-producto-form {
+        min-width: 98vw;
+        padding: 4px;
+    }
 }

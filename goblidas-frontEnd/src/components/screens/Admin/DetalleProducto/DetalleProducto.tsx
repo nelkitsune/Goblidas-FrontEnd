@@ -141,49 +141,51 @@ export const DetalleProducto = () => {
 
             <h3 className="detalle-producto-subtitulo">Detalles</h3>
             <button className="detalle-producto-agregar-btn" onClick={() => setMostrarFormDetalle(true)}>Agregar detalle</button>
-            <table className="detalle-producto-table">
-                <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Color</th>
-                        <th>Talle</th>
-                        <th>Valor compra</th>
-                        <th>Valor venta</th>
-                        <th>stock</th>
-                        <th>Descuento</th>
-                        <th>Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    {producto.details
-                        .filter((detalle: any) => detalle.active !== false) // Solo detalles activos
-                        .map((detalle: any) => (
-                            <tr key={detalle.id}>
-                                <td>{detalle.id}</td>
-                                <td>{detalle.colour}</td>
-                                <td>{detalle.sizeId.number}</td>
-                                <td>{detalle.prizeId.purchasePrice}</td>
-                                <td>{detalle.prizeId.sellingPrice}</td>
-                                <td>{detalle.stock}</td>
-                                <td>
-                                    {descuentosPorPrecio[detalle.prizeId.id] && descuentosPorPrecio[detalle.prizeId.id].length > 0
-                                        ? `${descuentosPorPrecio[detalle.prizeId.id][0].discountId.percentage}%`
-                                        : 'Sin descuento'}
-                                </td>
-                                <td>
-                                    <button
-                                        className="detalle-producto-descuento-btn"
-                                        onClick={() => handleAbrirModalDescuento(detalle.prizeId.id)}
-                                    >
-                                        Agregar descuento
-                                    </button>
-                                    <button className="detalle-producto-editar-btn" onClick={() => setDetalleEditando(detalle)}>Editar</button>
-                                    <button className="detalle-producto-eliminar-btn" onClick={() => handleEliminarDetalle(detalle.id)}>Eliminar</button>
-                                </td>
-                            </tr>
-                        ))}
-                </tbody>
-            </table>
+            <div className="detalle-producto-table-wrapper">
+                <table className="detalle-producto-table">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Color</th>
+                            <th>Talle</th>
+                            <th>Valor compra</th>
+                            <th>Valor venta</th>
+                            <th>stock</th>
+                            <th>Descuento</th>
+                            <th>Acciones</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {producto.details
+                            .filter((detalle: any) => detalle.active !== false)
+                            .map((detalle: any) => (
+                                <tr key={detalle.id}>
+                                    <td>{detalle.id}</td>
+                                    <td>{detalle.colour}</td>
+                                    <td>{detalle.sizeId.number}</td>
+                                    <td>{detalle.prizeId.purchasePrice}</td>
+                                    <td>{detalle.prizeId.sellingPrice}</td>
+                                    <td>{detalle.stock}</td>
+                                    <td>
+                                        {descuentosPorPrecio[detalle.prizeId.id] && descuentosPorPrecio[detalle.prizeId.id].length > 0
+                                            ? `${descuentosPorPrecio[detalle.prizeId.id][0].discountId.percentage}%`
+                                            : 'Sin descuento'}
+                                    </td>
+                                    <td>
+                                        <button
+                                            className="detalle-producto-descuento-btn"
+                                            onClick={() => handleAbrirModalDescuento(detalle.prizeId.id)}
+                                        >
+                                            Agregar descuento
+                                        </button>
+                                        <button className="detalle-producto-editar-btn" onClick={() => setDetalleEditando(detalle)}>Editar</button>
+                                        <button className="detalle-producto-eliminar-btn" onClick={() => handleEliminarDetalle(detalle.id)}>Eliminar</button>
+                                    </td>
+                                </tr>
+                            ))}
+                    </tbody>
+                </table>
+            </div>
 
             {mostrarFormDetalle && (
                 <AgregarDetalle
