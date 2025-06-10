@@ -24,29 +24,21 @@ export const SelecionarDireccion = () => {
     const navigate = useNavigate();
 
     const handleClick = async (direccion: Direccion) => {
-        console.log('--- INICIO handleClick ---');
-        console.log('Dirección seleccionada:', direccion);
-        console.log('Carrito actual:', carrito);
-
         const cartItems = carrito.map((item: any) => ({
             detailId: item.id,
             quantity: item.cantidad,
             price: item.prizeId.sellingPrice
         }));
-        console.log('cartItems generados:', cartItems);
 
         const order = {
             userAdressId: direccion.id,
             cartItems
         };
-        console.log('Objeto order a enviar:', order);
 
         let ordenCreada: any;
 
         try {
             ordenCreada = await createOrder(order);
-            console.log('Respuesta de createOrder:', ordenCreada);
-            console.log('ID de la orden creada:', ordenCreada.id);
         } catch (error) {
             console.error('Error al crear la orden:', error);
             return;
@@ -54,13 +46,6 @@ export const SelecionarDireccion = () => {
 
         try {
             const initPoint = await createPaymentPreference(ordenCreada.id);
-            console.log('initPoint recibido:', initPoint);
-            // Verifica si es solo el ID o una URL
-            if (typeof initPoint === 'string' && initPoint.startsWith('http')) {
-                console.warn('¡initPoint es una URL! Debe ser solo el ID de preferencia.');
-            } else {
-                console.log('preferenceId correcto:', initPoint);
-            }
             setPreferenceId(initPoint); // initPoint debe ser SOLO el id, no la URL
         } catch (error) {
             console.error('Error al crear preferencia de pago:', error);

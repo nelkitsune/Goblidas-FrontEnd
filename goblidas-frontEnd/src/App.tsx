@@ -16,12 +16,11 @@ import { SelecionarDireccion } from './components/screens/SelecionarDireccion/Se
 import { AdminPanel } from './components/screens/Admin/AdminPanel'
 import { DetalleProducto } from './components/screens/Admin/DetalleProducto/DetalleProducto'
 import { RequireAdmin } from './components/routes/RequireAdmin';
-import { RequireAuth } from './components/routes/RequireAuth';
 import { ConfirmarCompra } from './components/screens/ConfirmarCompra/ConfirmarCompra';
 import { MisPedidos } from './components/screens/MisPedidos/MisPedidos';
+import { ProtectedRoute } from './components/routes/ProtectedRoute';
 
 function App() {
-
   return (
     <>
       <BrowserRouter>
@@ -36,49 +35,49 @@ function App() {
               <Route
                 path='/verperfil'
                 element={
-                  <RequireAuth>
+                  <ProtectedRoute>
                     <VerPerfil />
-                  </RequireAuth>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path='/success'
                 element={
-                  <RequireAuth>
+                  <ProtectedRoute>
                     <Success />
-                  </RequireAuth>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path='/pending'
                 element={
-                  <RequireAuth>
+                  <ProtectedRoute>
                     <Pending />
-                  </RequireAuth>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path='/failure'
                 element={
-                  <RequireAuth>
+                  <ProtectedRoute>
                     <Failure />
-                  </RequireAuth>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path='/seleccionar-direccion'
                 element={
-                  <RequireAuth>
+                  <ProtectedRoute requireCart>
                     <SelecionarDireccion />
-                  </RequireAuth>
+                  </ProtectedRoute>
                 }
               />
               <Route
                 path='/confirmar-compra'
                 element={
-                  <RequireAuth>
+                  <ProtectedRoute requireCart>
                     <ConfirmarCompra />
-                  </RequireAuth>
+                  </ProtectedRoute>
                 }
               />
               <Route
@@ -97,7 +96,14 @@ function App() {
                   </RequireAdmin>
                 }
               />
-              <Route path='/mis-pedidos' element={<MisPedidos />} />
+              <Route
+                path='/mis-pedidos'
+                element={
+                  <ProtectedRoute>
+                    <MisPedidos />
+                  </ProtectedRoute>
+                }
+              />
             </Routes>
             <PieDePagina />
           </div>

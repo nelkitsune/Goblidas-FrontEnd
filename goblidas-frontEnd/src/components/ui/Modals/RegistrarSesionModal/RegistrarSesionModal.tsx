@@ -75,9 +75,7 @@ export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
             password,
             rol: "CUSTOMER"
         };
-        console.log("Enviando usuario al backend:", nuevoUsuario);
         createUser(nuevoUsuario).then((usuarioCreado) => {
-            console.log("Respuesta del backend al crear usuario:", usuarioCreado);
             const usuario: Usuario = {
                 id: usuarioCreado.id,
                 password: usuarioCreado.password,
@@ -86,7 +84,6 @@ export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
                 name: usuarioCreado.name ?? "",
                 dni: usuarioCreado.dni ?? "",
             }
-            console.log("Usuario que se setea en el store:", usuario);
             setUsuario(usuario);
             Swal.fire({
                 icon: 'success',

@@ -28,13 +28,6 @@ export const ConfirmarCompra = () => {
         const fetchPreferenceId = async () => {
             try {
                 const initPoint = await createPaymentPreference(order.id);
-                console.log('initPoint recibido:', initPoint);
-                // Verifica si es solo el ID o una URL
-                if (typeof initPoint === 'string' && initPoint.startsWith('http')) {
-                    console.warn('¡initPoint es una URL! Debe ser solo el ID de preferencia.');
-                } else {
-                    console.log('preferenceId correcto:', initPoint);
-                }
                 setPreferenceId(initPoint); // initPoint debe ser SOLO el id, no la URL
             } catch (error) {
                 console.error('Error al crear preferencia de pago:', error);

@@ -2,7 +2,6 @@ import React, { useState } from 'react'
 import { CardProducto } from '../CardProducto/CardProducto'
 import "./ContenedorDeProductosEstilos.css"
 import { Detalle } from '../../../types/detalle'
-import imgEj from "../../img/UTB8SVphXwnJXKJkSaelq6xUzXXaI.jpg_720x720q50.avif"
 import { Producto } from '../../../types/producto'
 import { useDetalleStore } from '../../../store/useDetalleStore'
 
@@ -34,7 +33,6 @@ export const ContenedorDeProductos = ({ productos }: ContenedorDeProductosProps)
                         id={producto.id}
                         nombreProducto={producto.name}
                         precio={buscarPrecio(producto)}
-                        img={imgEj}
                         producto={producto}
                     />
                 ))}

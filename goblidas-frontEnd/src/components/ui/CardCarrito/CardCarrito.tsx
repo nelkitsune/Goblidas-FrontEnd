@@ -1,4 +1,4 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import imagenEjemplo from '../../img/descarga.jpg'
 import { ItemCount } from '../ItemCount/ItemCount'
 import './CardCarritoEstilo.css'
@@ -6,6 +6,7 @@ import { Detalle } from '../../../types/detalle'
 import { useCarritoStore } from '../../../store/useCarritoStore'
 import imgEj from '../../img/UTB8SVphXwnJXKJkSaelq6xUzXXaI.jpg_720x720q50.avif';
 import Swal from 'sweetalert2'
+import { getImagesByDetail } from '../../../service/cloudinaryService'
 
 type Props = {
     id: number
@@ -46,10 +47,26 @@ export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle, 
     };
 
     const cambiarCantidad = useCarritoStore((state) => state.cambiarCantidad)
+    const [imgUrl, setImgUrl] = useState<string | undefined>(undefined);
+
+    useEffect(() => {
+        const fetchImg = async () => {
+            if (detalle && detalle.id) {
+                const imagenes = await getImagesByDetail(detalle.id);
+                if (imagenes && imagenes.length > 0) {
+                    setImgUrl(imagenes[0].url);
+                    return;
+                }
+            }
+            setImgUrl(imgEj);
+        };
+        fetchImg();
+    }, [detalle]);
+
     return (
         <div className="card">
             <div className='img'>
-                <img src={imgEj} alt={nombre} />
+                <img src={imgUrl || imgEj} alt={nombre} />
             </div>
             <div className='nombre'>
                 <p>{nombre}</p>

@@ -77,8 +77,6 @@ export const Catalogo = () => {
         );
     });
 
-    console.log('Productos a renderizar:', productos);
-
     // Abre el SideCatalogo
     const handleOpenSideCatalogo = () => {
         setSideCatalogo((prev) => !prev);

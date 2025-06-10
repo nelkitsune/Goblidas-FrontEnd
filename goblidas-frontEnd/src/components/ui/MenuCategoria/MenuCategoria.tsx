@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { CardProducto } from '../CardProducto/CardProducto'
 import './MenuCategoriaEstilo.css'
-import imgEj from '../../img/UTB8SVphXwnJXKJkSaelq6xUzXXaI.jpg_720x720q50.avif';
 import { useDetalleStore } from '../../../store/useDetalleStore';
 import { Producto } from '../../../types/producto';
 
@@ -29,7 +28,6 @@ export const MenuCategoria = ({ productos }: { productos: any[] }) => {
                         id={producto.id}
                         nombreProducto={producto.name}
                         precio={buscarPrecio(producto)}
-                        img={imgEj}
                         producto={producto}
                     />
                 ))}

@@ -76,7 +76,6 @@ export const ItemCount: React.FC<ItemCountProps> = ({
                 text: `Se han agregado ${quantity} unidades al carrito.`,
             });
         } catch (error) {
-            console.error('Error al agregar al carrito:', error);
             Swal.fire({
                 icon: 'error',
                 title: 'Error',

@@ -11,7 +11,6 @@ export const Carrito = () => {
 
     // Usar el hook para obtener los productos y que el componente se actualice automáticamente
     const detalles = useCarritoStore((state) => state.productos)
-    console.log('Productos en el carrito:', detalles);
 
     return (
         <div className='carritoScreen'>

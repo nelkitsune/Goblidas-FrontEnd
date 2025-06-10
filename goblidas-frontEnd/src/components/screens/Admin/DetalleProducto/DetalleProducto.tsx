@@ -107,14 +107,10 @@ export const DetalleProducto = () => {
         setPrecioIdSeleccionado(precioId);
         const descuentos = await getDescuentos();
         setDescuentosDisponibles(descuentos);
-        console.log("mostrarModalDescuento:", mostrarModalDescuento);
         setMostrarModalDescuento(true);
-        console.log('Descuentos disponibles:', descuentos);
-        console.log("mostrarModalDescuento:", mostrarModalDescuento);
     };
 
     const handleAsignarDescuento = async () => {
-        console.log('Asignando descuento...', precioIdSeleccionado, descuentoSeleccionado);
         if (!precioIdSeleccionado || !descuentoSeleccionado) return;
         await postDiscountPriceByProductId({
             discountId: descuentoSeleccionado,

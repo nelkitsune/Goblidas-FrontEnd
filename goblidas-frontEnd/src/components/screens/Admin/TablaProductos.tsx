@@ -65,7 +65,6 @@ export const TablaProductos = () => {
   const cargarProductos = async () => {
     try {
       const data = await getProductos();
-      console.log('Productos recibidos:', data); // <-- LOG 1
       setProductos(data);
     } catch (error) {
       console.error('🔴 [TablaProductos] Error al obtener productos:', error);

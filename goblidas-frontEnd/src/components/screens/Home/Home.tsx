@@ -24,7 +24,6 @@ export const Home = () => {
                 // Filtra solo productos activos
                 const activos = data.filter((p: Producto) => p.active !== false);
                 setProducto(activos);
-                console.log("Productos obtenidos:", activos);
             })
             .catch((error) => {
                 console.error("Error al obtener los Productos:", error);

@@ -25,7 +25,6 @@ export const SideCatalogo = ({
             .catch((error) => console.error(error));
         getSize()
             .then((data) => {
-                console.log('Talles:', data); // <-- Agrega esto
                 setTalles(data);
             })
             .catch((error) => console.error(error));
