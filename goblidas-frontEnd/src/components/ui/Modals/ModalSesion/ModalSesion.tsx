@@ -40,16 +40,22 @@ export const ModalSesion = ({
                 {usuario ? (
                     <>
                         <div className='divModalSesion'>Hola, {usuario.name}</div>
-                        <div className='divModalSesion'><Link to="/verperfil">Mi Perfil</Link></div>
                         <div className='divModalSesion'>
-                          <Link to="/mis-pedidos">Mis pedidos</Link>
+                            <Link to="/verperfil" onClick={onClose}>Mi Perfil</Link>
+                        </div>
+                        <div className='divModalSesion'>
+                            <Link to="/mis-pedidos" onClick={onClose}>Mis pedidos</Link>
                         </div>
                         <div className='divModalSesion' onClick={cerrarSesion}>Salir</div>
                     </>
                 ) : (
                     <>
-                        <div className='divModalSesion' onClick={onIniciarSesion}>Iniciar sesión</div>
-                        <div className='divModalSesion' onClick={onRegistrarse}>Registrarse</div>
+                        <div className='divModalSesion' onClick={() => { onClose(); onIniciarSesion(); }}>
+                            Iniciar sesión
+                        </div>
+                        <div className='divModalSesion' onClick={() => { onClose(); onRegistrarse(); }}>
+                            Registrarse
+                        </div>
                     </>
                 )}
             </div>

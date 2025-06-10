@@ -1,0 +1,79 @@
+.VerPerfil {
+    max-width: 500px;
+    margin: 32px auto;
+    background: #e6fff2;
+    border-radius: 12px;
+    padding: 32px 24px;
+    box-shadow: 0 2px 8px rgba(80, 180, 120, 0.08);
+    font-family: inherit;
+}
+
+.VerPerfil h2 {
+    color: #1976d2;
+    font-size: 1.7rem;
+    margin-bottom: 18px;
+    text-align: center;
+}
+
+.perfilInfo {
+    background: #fff;
+    border-radius: 8px;
+    padding: 14px 16px;
+    margin-bottom: 24px;
+    box-shadow: 0 1px 4px rgba(80, 180, 120, 0.06);
+    color: #222f3e;
+    font-size: 1.05rem;
+}
+
+.VerPerfil ul {
+    padding-left: 18px;
+    margin: 0 0 18px 0;
+}
+
+.VerPerfil li {
+    margin-bottom: 8px;
+    font-size: 1.05rem;
+    color: #222f3e;
+    background: #fff;
+    border-radius: 6px;
+    padding: 8px 10px;
+    box-shadow: 0 1px 2px rgba(80, 180, 120, 0.04);
+}
+
+.VerPerfil li:last-child {
+    margin-bottom: 0;
+}
+
+@media (max-width: 700px) {
+    .VerPerfil {
+        max-width: 98vw;
+        padding: 16px 4vw;
+        border-radius: 0;
+        margin: 0;
+    }
+
+    .VerPerfil h2 {
+        font-size: 1.2rem;
+        margin-bottom: 10px;
+    }
+
+    .perfilInfo {
+        padding: 10px 6px;
+        font-size: 0.98rem;
+    }
+
+    .VerPerfil li {
+        font-size: 0.98rem;
+        padding: 7px 7px;
+    }
+}
+
+@media (max-width: 400px) {
+    .VerPerfil {
+        padding: 8px 2vw;
+    }
+
+    .perfilInfo {
+        padding: 6px 2px;
+    }
+}

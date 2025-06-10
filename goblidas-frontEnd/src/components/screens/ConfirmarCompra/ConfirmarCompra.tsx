@@ -2,6 +2,7 @@ import { useLocation } from 'react-router-dom';
 import { Wallet } from '@mercadopago/sdk-react';
 import { useEffect, useState } from 'react';
 import { createPaymentPreference } from '../../../service/paymentService';
+import './ConfirmarCompraEstilo.css';
 
 type CarritoItem = {
     nombre: string;
@@ -42,11 +43,11 @@ export const ConfirmarCompra = () => {
         fetchPreferenceId();
     }, [order]);
     return (
-        <div style={{ maxWidth: 600, margin: "0 auto" }}>
-            <h2>Confirmar Compra</h2>
-            <h3>Dirección seleccionada</h3>
+        <div className="confirmar-compra-container">
+            <h2 className="confirmar-compra-titulo">Confirmar Compra</h2>
+            <h3 className="confirmar-compra-subtitulo">Dirección seleccionada</h3>
             {direccion ? (
-                <div style={{ marginBottom: 20 }}>
+                <div className="confirmar-compra-direccion" style={{ marginBottom: 20 }}>
                     <strong>
                         {direccion.streetName} {direccion.number}
                         {direccion.departament ? `, Dpto: ${direccion.departament}` : ""}
@@ -55,24 +56,24 @@ export const ConfirmarCompra = () => {
                     {direccion.locality}, {direccion.province}, {direccion.country}
                 </div>
             ) : (
-                <p>No se seleccionó dirección.</p>
+                <p className="confirmar-compra-vacio">No se seleccionó dirección.</p>
             )}
-
-            <h3>Productos</h3>
+            <h3 className="confirmar-compra-subtitulo">Productos</h3>
             {typedCarrito.length > 0 ? (
-                <ul>
-                    {typedCarrito.map((item, idx) => (
-                        <li key={idx}>
-                            <strong>{item.nombre}</strong> x{item.cantidad} - ${item.precio}
-                        </li>
-                    ))}
-                </ul>
+                <div className="confirmar-compra-productos">
+                    <ul>
+                        {typedCarrito.map((item, idx) => (
+                            <li key={idx}>
+                                <strong>{item.nombre}</strong> x{item.cantidad} - ${item.precio}
+                            </li>
+                        ))}
+                    </ul>
+                </div>
             ) : (
                 <p>No hay productos en el carrito.</p>
             )}
-
             {preferenceId && (
-                <div style={{ marginTop: 30 }}>
+                <div className="confirmar-compra-wallet" style={{ marginTop: 30 }}>
                     <Wallet initialization={{ preferenceId }} />
                 </div>
             )}
