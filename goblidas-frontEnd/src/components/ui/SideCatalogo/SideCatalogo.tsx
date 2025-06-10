@@ -1,14 +1,19 @@
+//inicio importaciones
 import React, { useEffect, useState } from 'react'
 import "./SideCatalogo.css"
 import { getCategory } from '../../../service/categoryService'
 import { getSize } from '../../../service/sizeService';
 import { useNavigate } from 'react-router-dom';
+//fin importaciones
+
 
 export const SideCatalogo = ({
     onClose
 }: {
     onClose: () => void
 }) => {
+
+    //seteo de usesStates
     const [Categorias, setCategorias] = useState([]);
     const [Talles, setTalles] = useState([]);
     const [tipoProducto, setTipoProducto] = useState('');
@@ -19,6 +24,7 @@ export const SideCatalogo = ({
     const [precioMax, setPrecioMax] = useState('');
     const navigate = useNavigate();
 
+    // Efecto para cargar categorías y talles al montar el componente
     useEffect(() => {
         getCategory()
             .then((data) => setCategorias(data))
@@ -31,6 +37,7 @@ export const SideCatalogo = ({
     }
         , []);
 
+    // Función para manejar el filtrado de productos
     const handleFiltrar = () => {
         const filtros: any = {};
         if (categoriaSeleccionada) filtros.categoriesIds = categoriaSeleccionada;
@@ -51,6 +58,7 @@ export const SideCatalogo = ({
         onClose();
     };
 
+    // Definición de tipos de producto
     const tiposProducto = [
         { value: '', label: 'Tipo de producto' },
         { value: 'Zapatilla', label: 'Zapatilla' },

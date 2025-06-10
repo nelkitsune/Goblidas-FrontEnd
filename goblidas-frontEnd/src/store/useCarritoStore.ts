@@ -1,21 +1,33 @@
+// =======================
+// Importaciones
+// =======================
+
 import { create } from 'zustand'
 import { persist, PersistOptions } from 'zustand/middleware'
 import { Detalle } from '../types/detalle'
 
+// =======================
+// Tipos y estado del carrito
+// =======================
+
 type ProductoCarrito = Detalle & {
-    cantidad: number
+    cantidad: number // Cantidad de este producto en el carrito
 }
 
 type CarritoState = {
-    productos: ProductoCarrito[]
-    agregarProducto: (producto: ProductoCarrito) => void
-    quitarProducto: (id: number) => void
-    vaciarCarrito: () => void
-    cambiarCantidad: (id: number, cantidad: number) => void
+    productos: ProductoCarrito[] // Productos en el carrito
+    agregarProducto: (producto: ProductoCarrito) => void // Agrega o suma cantidad de un producto
+    quitarProducto: (id: number) => void // Elimina un producto por id
+    vaciarCarrito: () => void // Vacía todo el carrito
+    cambiarCantidad: (id: number, cantidad: number) => void // Cambia la cantidad de un producto
 }
 
-// Tipar correctamente el persist
+// Tipado para persistencia
 type MyPersist = PersistOptions<CarritoState>
+
+// =======================
+// Store del carrito con persistencia en localStorage
+// =======================
 
 export const useCarritoStore = create<CarritoState>()(
     persist<CarritoState>(
@@ -23,6 +35,7 @@ export const useCarritoStore = create<CarritoState>()(
             productos: [],
             agregarProducto: (producto) =>
                 set((state) => {
+                    // Si el producto ya existe, suma la cantidad (sin superar el stock)
                     const existe = state.productos.find((p) => p.id === producto.id)
                     if (existe) {
                         const nuevaCantidad = Math.min(
@@ -37,6 +50,7 @@ export const useCarritoStore = create<CarritoState>()(
                             ),
                         }
                     }
+                    // Si no existe, lo agrega con la cantidad limitada al stock
                     return { productos: [...state.productos, { ...producto, cantidad: Math.min(producto.cantidad, producto.stock) }] }
                 }),
             quitarProducto: (id) =>
@@ -52,7 +66,7 @@ export const useCarritoStore = create<CarritoState>()(
                 })),
         }),
         {
-            name: 'carrito-storage',
+            name: 'carrito-storage', // Clave de almacenamiento en localStorage
         }
     )
 )
