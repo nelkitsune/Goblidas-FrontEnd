@@ -5,6 +5,7 @@
 import React, { useState } from 'react'
 import './App.css' // Estilos globales
 import 'bootstrap/dist/css/bootstrap.min.css'; // Estilos de Bootstrap
+import 'bootstrap-icons/font/bootstrap-icons.css'; // Solo íconos de Bootstrap
 
 // Componentes de UI
 import { NavBar } from './components/ui/NavBar/NavBar'
