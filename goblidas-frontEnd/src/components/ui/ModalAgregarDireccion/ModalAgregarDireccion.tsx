@@ -19,7 +19,7 @@ export const ModalAgregarDireccion: React.FC<Props> = ({ onClose, onSave }) => {
         locality: '',
         country: '',
         province: '',
-        number: 0,
+        number: '', // Cambiado a string vacío
         streetName: ''
     });
 
@@ -27,13 +27,17 @@ export const ModalAgregarDireccion: React.FC<Props> = ({ onClose, onSave }) => {
         const { name, value } = e.target;
         setForm({
             ...form,
-            [name]: name === 'number' ? Number(value) : value
+            [name]: value
         });
     };
 
     const handleSubmit = (e: React.FormEvent) => {
         e.preventDefault();
-        onSave(form);
+        console.log('submit'); // <-- Agrega esto
+        onSave({
+            ...form,
+            number: Number(form.number)
+        });
     };
 
     return (
@@ -46,7 +50,7 @@ export const ModalAgregarDireccion: React.FC<Props> = ({ onClose, onSave }) => {
                 <input name="province" placeholder="Provincia" value={form.province} onChange={handleChange} required />
                 <input name="number" type="number" placeholder="Número" value={form.number} onChange={handleChange} required />
                 <input name="streetName" placeholder="Calle" value={form.streetName} onChange={handleChange} required />
-                <button type="submit">Guardar</button>
+                <button type="submit" >Guardar</button>
                 <button type="button" onClick={onClose}>Cancelar</button>
             </form>
         </div>

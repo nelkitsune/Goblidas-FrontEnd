@@ -1,15 +1,15 @@
 import React, { useState } from 'react';
 import "./CarruselCaseroEstilo.css";
 
-import fotocompleta from "../../img/images (1).jpg";
-import fotomedias from "../../img/UTB8SVphXwnJXKJkSaelq6xUzXXaI.jpg_720x720q50.avif";
+import fotoBaner2 from "../../img/assets2Ftask_01jxeann45fvbrsj700pp93y902F1749606488_img_1.png";
+import fotoBaner3 from "../../img/assets2Ftask_01jxeaxzf4e3r83t9fb1r80vze2F1749606759_img_1.png";
 import fotoBaner1 from "../../img/raw.png"
 
 const CarruselCasero = () => {
     const slides = [
         fotoBaner1,
-        fotocompleta,
-        fotomedias,
+        fotoBaner3,
+        fotoBaner2,
     ];
 
     const [currentIndex, setCurrentIndex] = useState(0);

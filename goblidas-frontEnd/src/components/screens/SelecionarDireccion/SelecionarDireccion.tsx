@@ -74,15 +74,15 @@ export const SelecionarDireccion = () => {
     }, [usuario]);
 
     const handleSaveDireccion = async (direccion: any) => {
+        console.log('handleSaveDireccion', direccion);
         if (!usuario?.id) return;
         try {
-            // 1. Crear la dirección y obtener la respuesta (que debe incluir el id de la nueva dirección)
+            console.log('Voy a llamar a postDireccion'); // <-- Agrega esto
             const nuevaDireccion = await postDireccion(usuario.id, direccion);
-
-            // 2. Asociar la dirección al usuario
+            console.log('Respuesta de postDireccion:', nuevaDireccion);
             await createUsuarioDireccion(usuario.id, nuevaDireccion.id);
 
-            // 3. Recargar las direcciones después de guardar
+            // Recargar direcciones
             const data = await getAdressByUser(usuario.id);
             const direcciones = data.map((item: any) => ({
                 id: item.adressId.id,

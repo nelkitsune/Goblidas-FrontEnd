@@ -11,10 +11,12 @@ export const getAdressByUser = async (userId: number) => {
 };
 
 export const postDireccion = async (userId: number, direccion: any) => {
+    console.log('Llamando a postDireccion con:', { userId, direccion });
     const response = await api.post('/adress', {
         ...direccion,
         userId
     });
+    console.log('Respuesta de postDireccion:', response.data);
     return response.data;
 };
 export const createUsuarioDireccion = async (userId: number, adressId: number) => {

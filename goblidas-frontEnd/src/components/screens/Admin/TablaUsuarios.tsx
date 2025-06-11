@@ -36,7 +36,8 @@ export const TablaUsuarios = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     try {
-      await createUser(nuevoUsuario);
+      await createUser(nuevoUsuario); {/*cambiar el seteo a endpoint de user, estilos de modals de addmins, nrock y mercado pago funcionando, que mis pedidos muestre los pedidos, con el estado actual y hover en ver producto para saber cual esta selecionado*/
+      }
       setMostrarForm(false);
       setNuevoUsuario({ name: '', email: '', password: '', dni: '', role: '', active: true });
       await cargarUsuarios();
