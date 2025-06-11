@@ -20,18 +20,22 @@ interface ItemCountProps {
 export const ItemCount: React.FC<ItemCountProps> = ({
     stock, initial, onAdd, detalle, cosa, onChangeCantidad, disabled, producto, precioConDescuento
 }) => {
-
     const agregarProducto = useCarritoStore((state) => state.agregarProducto);
 
     const [count, setCount] = useState(initial);
 
-    // Sincroniza el estado local con el valor de initial cuando cambie
+    // Obtener cuántos ya hay en el carrito de este producto
+    const carrito = useCarritoStore.getState().productos;
+    const yaEnCarrito = carrito.find(p => p.id === detalle.id)?.cantidad || 0;
+    const maxParaAgregar = stock - yaEnCarrito;
+
     useEffect(() => {
         setCount(initial);
-    }, [initial]);
+    }, [initial, stock, yaEnCarrito]);
 
     const handleIncrement = () => {
-        if (count < stock) {
+        // Solo permite sumar si no superas el stock total
+        if (count < maxParaAgregar) {
             setCount(count + 1);
             if (onChangeCantidad) onChangeCantidad(count + 1);
         }
@@ -91,7 +95,10 @@ export const ItemCount: React.FC<ItemCountProps> = ({
                     -
                 </button>
                 <span>{count}</span>
-                <button onClick={handleIncrement} disabled={count >= stock}>
+                <button
+                    onClick={handleIncrement}
+                    disabled={count >= maxParaAgregar}
+                >
                     +
                 </button>
             </div>
@@ -99,7 +106,7 @@ export const ItemCount: React.FC<ItemCountProps> = ({
                 <button
                     className="add-to-cart"
                     onClick={() => handleAddToCart(count)}
-                    disabled={disabled || stock === 0} // <-- usa la prop aquí
+                    disabled={disabled || stock === 0 || count > maxParaAgregar || maxParaAgregar <= 0}
                 >
                     Añadir al carrito
                 </button>
