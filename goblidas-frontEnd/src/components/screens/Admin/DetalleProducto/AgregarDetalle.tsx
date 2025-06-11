@@ -1,12 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { getSize } from '../../../../service/sizeService';
 import { postPrice } from '../../../../service/priceService';
-import { Precio } from '../../../../types/precio';
 import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 import { uploadImageToCloudinary } from '../../../../service/cloudinaryService';
 import { colorNames } from '../../../../constants/colores'; // Ajusta la ruta si lo pones en otro archivo
-import { putDetalle } from '../../../../service/detailService';
+
 
 export const AgregarDetalle = ({
     nuevoDetalle,
@@ -28,7 +27,7 @@ export const AgregarDetalle = ({
         };
         fetchSizes();
     }, []);
-    const [precioId, setprecioId] = useState<Precio | null>(null)
+
 
     const detalleSchema = Yup.object().shape({
         colour: Yup.string().required('El color es obligatorio'),

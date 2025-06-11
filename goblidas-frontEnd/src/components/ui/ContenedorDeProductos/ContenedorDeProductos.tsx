@@ -1,7 +1,6 @@
-import React, { useState } from 'react'
+
 import { CardProducto } from '../CardProducto/CardProducto'
 import "./ContenedorDeProductosEstilos.css"
-import { Detalle } from '../../../types/detalle'
 import { Producto } from '../../../types/producto'
 import { useDetalleStore } from '../../../store/useDetalleStore'
 

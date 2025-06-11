@@ -1,9 +1,9 @@
-import React from 'react'
+
 import { CardCarrito } from '../../ui/CardCarrito/CardCarrito'
 import './CarritoEstilo.css'
 import { useCarritoStore } from '../../../store/useCarritoStore'
 import { Link } from 'react-router-dom'
-import { initMercadoPago, Wallet } from '@mercadopago/sdk-react';
+import { initMercadoPago } from '@mercadopago/sdk-react';
 
 initMercadoPago('YOUR_PUBLIC_KEY');
 
@@ -27,7 +27,7 @@ export const Carrito = () => {
                                     imagen_id={{ url: "2" }} //arreglar
                                     cantidad={detalle.cantidad}
                                     detalle={detalle}
-                                    talle={detalle.sizeId.number} //arreglar.... creo
+                                    talle={detalle.sizeId.number} //arreglar.... creo... segun esto no funca pero si funca
                                     color={detalle.colour}
                                 />
                             </li>

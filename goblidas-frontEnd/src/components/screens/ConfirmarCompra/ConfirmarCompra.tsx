@@ -10,14 +10,7 @@ type CarritoItem = {
     precio: number;
 };
 
-type Direccion = {
-    streetName: string;
-    number: number;
-    locality: string;
-    province: string;
-    country: string;
-    departament?: string;
-};
+
 
 export const ConfirmarCompra = () => {
     const location = useLocation();

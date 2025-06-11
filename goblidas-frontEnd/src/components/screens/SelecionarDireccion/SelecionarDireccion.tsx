@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { CardDireccion } from '../../ui/CardDireccion/CardDireccion'
 import './SeleccionarDireccionEstilo.css'
 import { Direccion } from '../../../types/direccion'
@@ -184,24 +184,3 @@ export const SelecionarDireccion = () => {
         </div>
     )
 }
-
-
-
-//    const handleClick = async (direccion: Direccion) => {
-//       const cartItems = carrito.map((item: any) => ({
-//            detail: { id: item.id },
-//            quantity: item.cantidad,
-//            price: item.prizeId.sellingPrice
-//        }));
-//        console.log('Dirección seleccionada:', direccion);
-//        console.log('Carrito de compras:', cartItems);
-//        try {
-//            await createOrdenDetail({
-//                userAdressId: { id: direccion.id },
-//                cartItems
-//            });
-//
-///        } catch (error) {
-//            console.error('Error al crear la orden:', error);
-///        }
-///    }

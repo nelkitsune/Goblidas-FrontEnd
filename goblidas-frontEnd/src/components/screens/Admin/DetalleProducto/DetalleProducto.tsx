@@ -1,23 +1,14 @@
-import React, { useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import { getProductoPorId } from '../../../../service/productsService';
-import { postDetalle, putDetalle, deleteDetalle } from '../../../../service/detailService';
+import { postDetalle, deleteDetalle } from '../../../../service/detailService';
 import { getDescuentos, postDiscountPriceByProductId, getDiscountByProductId } from '../../../../service/discountprice';
 import { Producto } from '../../../../types/producto';
 import './DetalleProductoEstilo.css';
 import { AgregarDetalle } from './AgregarDetalle';
 import { EditarDetalle } from './EditarDetalle';
-import * as Yup from 'yup';
 import Swal from 'sweetalert2';
 
-const detalleSchema = Yup.object().shape({
-    colour: Yup.string().required('El color es obligatorio'),
-    sizeId: Yup.string().required('El talle es obligatorio'),
-    stock: Yup.number().typeError('El stock debe ser un número').required('El stock es obligatorio').min(0, 'El stock no puede ser negativo'),
-    purchasePrice: Yup.number().typeError('El valor de compra debe ser un número').required('El valor de compra es obligatorio').min(0, 'No puede ser negativo'),
-    sellingPrice: Yup.number().typeError('El valor de venta debe ser un número').required('El valor de venta es obligatorio').min(0, 'No puede ser negativo'),
-    brand: Yup.string().nullable(),
-});
 
 export const DetalleProducto = () => {
     const { id } = useParams<{ id: string }>();
@@ -55,36 +46,9 @@ export const DetalleProducto = () => {
         cargarDescuentosPorPrecio();
     }, [producto]);
 
-    const handleAgregarDetalle = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!producto) return;
-        try {
-            await detalleSchema.validate(nuevoDetalle, { abortEarly: false });
-            await postDetalle({ ...nuevoDetalle, productId: producto.id });
-            setMostrarFormDetalle(false);
-            setNuevoDetalle({});
-            // Recargar producto para ver los detalles actualizados
-            const data = await getProductoPorId(Number(id));
-            setProducto(data);
-            Swal.fire('¡Éxito!', 'Detalle agregado correctamente', 'success');
-        } catch (error: any) {
-            if (error.name === 'ValidationError') {
-                Swal.fire('Error de validación', error.errors.join('<br>'), 'error');
-            } else {
-                Swal.fire('Error', error?.message || 'Error desconocido', 'error');
-            }
-        }
-    };
 
-    const handleEditarDetalle = async (e: React.FormEvent) => {
-        e.preventDefault();
-        if (!detalleEditando) return;
-        await putDetalle(detalleEditando.id, detalleEditando);
-        setDetalleEditando(null);
-        // Recargar producto
-        const data = await getProductoPorId(Number(id));
-        setProducto(data);
-    };
+
+
 
     const handleEliminarDetalle = async (detalleId: number) => {
         const result = await Swal.fire({
@@ -110,18 +74,6 @@ export const DetalleProducto = () => {
         setMostrarModalDescuento(true);
     };
 
-    const handleAsignarDescuento = async () => {
-        if (!precioIdSeleccionado || !descuentoSeleccionado) return;
-        await postDiscountPriceByProductId({
-            discountId: descuentoSeleccionado,
-            priceId: precioIdSeleccionado,
-            active: true
-        });
-        setMostrarModalDescuento(false);
-        setDescuentoSeleccionado(null);
-        const data = await getProductoPorId(Number(id));
-        setProducto(data);
-    };
 
     if (!producto) return <div className="detalle-producto-cargando">Cargando...</div>;
 

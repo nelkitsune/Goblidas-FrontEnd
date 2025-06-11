@@ -1,4 +1,4 @@
-import React from 'react'
+
 import './CardDireccionEstilo.css'
 
 type Props = {
@@ -12,7 +12,6 @@ type Props = {
 }
 
 export const CardDireccion = ({
-    id,
     departament,
     locality,
     country,

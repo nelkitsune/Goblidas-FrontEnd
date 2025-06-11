@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useUsuarioStore } from '../../../store/useUsuarioStore'
 import { Usuario } from '../../../types/usuario'
 import { getAdressByUser } from '../../../service/adressService'
@@ -15,7 +15,6 @@ export const VerPerfil = () => {
 
         if (usuarioActivo?.id) {
             getAdressByUser(usuarioActivo.id).then(data => {
-                // El mapeo depende de cómo venga la respuesta, igual que en SelecionarDireccion
                 const direccionesUsuario = data.map((item: any) => ({
                     id: item.adressId.id,
                     departament: item.adressId.departament,

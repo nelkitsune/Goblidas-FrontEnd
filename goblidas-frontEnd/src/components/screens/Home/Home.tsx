@@ -1,11 +1,6 @@
-import React, { useEffect, useState } from 'react'
-import { Detalle } from '../../../types/detalle'
-import CarruselHome from '../../ui/CarruselHome/CarruselHome'
+import { useEffect, useState } from 'react'
 import CarruselCasero from '../../ui/CarruselCasero/CarruselCasero'
-import { CardProducto } from '../../ui/CardProducto/CardProducto'
 import { ContenedorDeProductos } from '../../ui/ContenedorDeProductos/ContenedorDeProductos'
-import { RegistrarSesionModal } from '../../ui/Modals/RegistrarSesionModal/RegistrarSesionModal'
-import { getDetalles } from '../../../service/detailService'
 import { getProductos } from '../../../service/productsService'
 import { Producto } from '../../../types/producto'
 

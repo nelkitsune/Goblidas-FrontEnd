@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import 'bootstrap-icons/font/bootstrap-icons.css';
 import './RegistrarSesionModalEstilo.css';
-import fotoLogo from "../../../img/goblinLogo.png";
 import { useUsuarioStore } from '../../../../store/useUsuarioStore';
 import { createUser } from '../../../../service/userService';
 import { Usuario } from '../../../../types/usuario';

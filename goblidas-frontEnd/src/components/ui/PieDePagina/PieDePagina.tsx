@@ -1,4 +1,4 @@
-import React from 'react'
+
 import './PieDePaginaEstilo.css'
 
 export const PieDePagina = () => {

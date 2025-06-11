@@ -1,5 +1,4 @@
-import React, { useEffect, useState } from 'react'
-import imagenEjemplo from '../../img/descarga.jpg'
+import { useEffect, useState } from 'react'
 import { ItemCount } from '../ItemCount/ItemCount'
 import './CardCarritoEstilo.css'
 import { Detalle } from '../../../types/detalle'
@@ -21,7 +20,7 @@ type Props = {
     color?: string
 }
 
-export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle, talle, color }: Props) => {
+export const CardCarrito = ({ id, nombre, precio, cantidad, detalle, talle, color }: Props) => {
     const quitarProducto = useCarritoStore((state) => state.quitarProducto)
 
     const handleDeleteProducto = () => {
@@ -91,4 +90,3 @@ export const CardCarrito = ({ id, nombre, precio, imagen_id, cantidad, detalle, 
         </div>
     )
 }
-// <img src={imagen_id?.url || imagenEjemplo} alt={nombre} />

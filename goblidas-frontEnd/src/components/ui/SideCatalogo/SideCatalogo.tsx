@@ -1,5 +1,5 @@
 //inicio importaciones
-import React, { useEffect, useState } from 'react'
+import { useEffect, useState } from 'react'
 import "./SideCatalogo.css"
 import { getCategory } from '../../../service/categoryService'
 import { getSize } from '../../../service/sizeService';

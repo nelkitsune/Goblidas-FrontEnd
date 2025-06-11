@@ -3,7 +3,7 @@
 // =======================
 
 import { create } from 'zustand'
-import { persist, PersistOptions } from 'zustand/middleware'
+import { persist } from 'zustand/middleware'
 import { Detalle } from '../types/detalle'
 
 // =======================
@@ -23,7 +23,7 @@ type CarritoState = {
 }
 
 // Tipado para persistencia
-type MyPersist = PersistOptions<CarritoState>
+
 
 // =======================
 // Store del carrito con persistencia en localStorage

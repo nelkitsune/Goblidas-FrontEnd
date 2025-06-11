@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react'
+
 import { CardProducto } from '../CardProducto/CardProducto'
 import './MenuCategoriaEstilo.css'
 import { useDetalleStore } from '../../../store/useDetalleStore';

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import { getUsers, createUser, updateUser, deleteUser } from '../../../service/userService';
+import { getUsers, createUser, deleteUser } from '../../../service/userService';
 import { getAdressByUser } from '../../../service/adressService';
 import { Usuario } from '../../../types/usuario';
 import Swal from 'sweetalert2';

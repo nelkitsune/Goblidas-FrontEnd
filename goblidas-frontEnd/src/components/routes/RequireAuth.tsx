@@ -1,4 +1,4 @@
-import React, { ReactNode } from 'react';
+import { ReactNode } from 'react';
 import { useUsuarioStore } from '../../store/useUsuarioStore';
 import { Navigate } from 'react-router-dom';
 
