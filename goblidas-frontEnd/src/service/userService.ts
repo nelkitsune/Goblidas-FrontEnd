@@ -1,4 +1,6 @@
+import auth from '../components/api/auth';
 import api from '../components/api/axios';
+
 
 export const getUsers = async () => {
     const response = await api.get('/user');
@@ -13,7 +15,7 @@ export const getUserById = async (id: number) => {
 export const createUser = async (user: any) => {
     try {
         console.log('🟢 [createUser] Usuario que se enviará al backend:', user);
-        const response = await api.post('/user', user);
+        const response = await auth.post('/register', user);
         console.log('🟢 [createUser] Respuesta recibida del backend:', response.data);
         return response.data;
     } catch (error: any) {

@@ -1,12 +1,13 @@
 import React, { useState } from 'react';
 import "./CarruselCaseroEstilo.css";
-import fotoMetal from "../../img/descarga.jpg";
+
 import fotocompleta from "../../img/images (1).jpg";
 import fotomedias from "../../img/UTB8SVphXwnJXKJkSaelq6xUzXXaI.jpg_720x720q50.avif";
+import fotoBaner1 from "../../img/raw.png"
 
 const CarruselCasero = () => {
     const slides = [
-        fotoMetal,
+        fotoBaner1,
         fotocompleta,
         fotomedias,
     ];

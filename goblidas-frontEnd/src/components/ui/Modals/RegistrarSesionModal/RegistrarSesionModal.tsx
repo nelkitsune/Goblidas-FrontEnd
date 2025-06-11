@@ -73,7 +73,7 @@ export const RegistrarSesionModal = ({ onClose }: { onClose: () => void }) => {
             dni: documento,
             email,
             password,
-            rol: "CUSTOMER"
+            //rol: "CUSTOMER"
         };
         createUser(nuevoUsuario).then((usuarioCreado) => {
             const usuario: Usuario = {

@@ -140,112 +140,136 @@ export const VerProducto = () => {
     // Deshabilitar añadir al carrito si falta selección
     const puedeAgregar = !!(colorSeleccionado && talleSeleccionado && detalleActivo);
 
-    return (
-        <div className='VerProducto'>
-            <div className='fotosVerProducto'>
-                <img
-                    src={imagenesDetalle[fotoPrincipalIdx] || imgEj}
-                    alt=""
-                    className='ImagenPrincipalFotos'
-                />
-                <div className='ImagenesSecundarias'>
-                    {imagenesDetalle.map((url, idx) => (
-                        <img
-                            key={idx}
-                            src={url}
-                            alt=""
-                            style={{
-                                border: fotoPrincipalIdx === idx ? '2px solid #007bff' : 'none',
-                                cursor: 'pointer',
-                                opacity: fotoPrincipalIdx === idx ? 1 : 0.7,
-                            }}
-                            onClick={() => setFotoPrincipalIdx(idx)}
-                        />
-                    ))}
-                </div>
-            </div>
-            <div className='CuerpoVerProducto'>
-                <h3>{productoActivo?.name}</h3>
-                <h4>
-                    {precioConDescuento ? (
-                        <>
-                            <span style={{ textDecoration: 'line-through', color: 'red', marginRight: 8 }}>
-                                ${detalleActivo?.prizeId.sellingPrice}
-                            </span>
-                            <span style={{ color: 'green', fontWeight: 'bold', marginRight: 8 }}>
-                                ${precioConDescuento.toFixed(2)}
-                            </span>
-                        </>
-                    ) : (
-                        <>${detalleActivo?.prizeId.sellingPrice}</>
-                    )}
-                </h4>
-                {productoActivo && detalleActivo && (
-                    <ItemCount
-                        stock={detalleActivo.stock}
-                        initial={1}
-                        onAdd={() => { }}
-                        detalle={detalleActivo}
-                        cosa={true}
-                        disabled={!puedeAgregar}
-                        producto={productoActivo}
-                        precioConDescuento={precioConDescuento}
+    React.useEffect(() => {
+        return () => {
+            setDetalleActivo(null);
+        };
+    }, [setDetalleActivo]);
+
+    let contenido;
+    try {
+        contenido = (
+            <>
+                <div className='fotosVerProducto'>
+                    <img
+                        src={imagenesDetalle[fotoPrincipalIdx] || imgEj}
+                        alt=""
+                        className='ImagenPrincipalFotos'
                     />
-                )}
-                <h4 className='verProductoColores'>Color:
-                    {coloresUnicos.map((color) => {
-                        const cssColor = colorMap[color.toLowerCase()] || color;
-                        const isLight = ['amarillo', 'blanco', 'verde lima'].includes(color.toLowerCase());
-                        return (
-                            <button
-                                key={color}
-                                className={`ColorBtn${colorSeleccionado === color ? ' ColorBtn-activo' : ''}`}
-                                onClick={() => {
-                                    setColorSeleccionado(color);
-                                    setTalleSeleccionado(null);
-                                }}
+                    <div className='ImagenesSecundarias'>
+                        {imagenesDetalle.map((url, idx) => (
+                            <img
+                                key={idx}
+                                src={url}
+                                alt=""
                                 style={{
-                                    backgroundColor: cssColor,
-                                    color: isLight ? '#222' : '#fff',
+                                    border: fotoPrincipalIdx === idx ? '2px solid #007bff' : 'none',
+                                    cursor: 'pointer',
+                                    opacity: fotoPrincipalIdx === idx ? 1 : 0.7,
                                 }}
-                            >
-                                {color}
-                            </button>
-                        )
-                    })}
-                </h4>
-                <h4 className='verProductoTamanioBoton'>Tamaño:
-                    {tallesFiltrados.map((talle) => (
-                        <button
-                            key={talle}
-                            className={`TalleBtn${talleSeleccionado === talle ? ' TalleBtn-activo' : ''}`}
-                            onClick={() => setTalleSeleccionado(talle)}
-                        >
-                            {talle}
-                        </button>
-                    ))}
-                </h4>
-                {!puedeAgregar && (
-                    <div style={{ color: 'red' }}>
-                        Selecciona un color y un talle para añadir al carrito.
+                                onClick={() => setFotoPrincipalIdx(idx)}
+                            />
+                        ))}
                     </div>
-                )}
-            </div>
-            <div className='ProductosRecomendados'>
-                <h5>Productos recomendados</h5>
-                <div className='ContenedorDeProductosRecomendados'>
-                    {recomendados.length === 0 && <p>No hay productos recomendados.</p>}
-                    {recomendados.map((producto) => (
-                        <CardProducto
-                            key={producto.id}
-                            id={producto.id}
-                            nombreProducto={producto.name}
-                            precio={producto.details?.[0]?.prizeId?.sellingPrice ?? 0}
-                            producto={producto}
-                        />
-                    ))}
                 </div>
-            </div>
-        </div>
-    )
+                <div className='CuerpoVerProducto'>
+                    <h3>{productoActivo?.name}</h3>
+                    <h4>
+                        {detalleActivo && detalleActivo.prizeId ? (
+                            <>
+                                {precioConDescuento !== null && precioConDescuento !== undefined && (
+                                    <span style={{ textDecoration: 'line-through', color: 'red', marginRight: 8 }}>
+                                        ${detalleActivo.prizeId.sellingPrice}
+                                    </span>
+                                )}
+                                <span style={{
+                                    color: precioConDescuento !== null && precioConDescuento !== undefined ? 'green' : 'inherit',
+                                    fontWeight: precioConDescuento !== null && precioConDescuento !== undefined ? 'bold' : 'normal',
+                                    marginRight: 8
+                                }}>
+                                    ${precioConDescuento !== null && precioConDescuento !== undefined
+                                        ? precioConDescuento.toFixed(2)
+                                        : detalleActivo.prizeId.sellingPrice}
+                                </span>
+                            </>
+                        ) : (
+                            <span>Selecciona color y talle</span>
+                        )}
+                    </h4>
+                    {productoActivo && detalleActivo && detalleActivo.prizeId && (
+                        <ItemCount
+                            stock={detalleActivo.stock}
+                            initial={1}
+                            onAdd={() => { }}
+                            detalle={detalleActivo}
+                            cosa={true}
+                            disabled={!puedeAgregar}
+                            producto={productoActivo}
+                            precioConDescuento={precioConDescuento}
+                        />
+                    )}
+                    <h4 className='verProductoColores'>Color:
+                        {coloresUnicos.map((color) => {
+                            const cssColor = colorMap[color.toLowerCase()] || color;
+                            const isLight = ['amarillo', 'blanco', 'verde lima'].includes(color.toLowerCase());
+                            return (
+                                <button
+                                    key={color}
+                                    className={`ColorBtn${colorSeleccionado === color ? ' ColorBtn-activo' : ''}`}
+                                    onClick={() => {
+                                        setColorSeleccionado(color);
+                                        setTalleSeleccionado(null);
+                                    }}
+                                    style={{
+                                        backgroundColor: cssColor,
+                                        color: isLight ? '#222' : '#fff',
+                                    }}
+                                >
+                                    {color}
+                                </button>
+                            )
+                        })}
+                    </h4>
+                    <h4 className='verProductoTamanioBoton'>Tamaño:
+                        {tallesFiltrados.map((talle) => (
+                            <button
+                                key={talle}
+                                className={`TalleBtn${talleSeleccionado === talle ? ' TalleBtn-activo' : ''}`}
+                                onClick={() => setTalleSeleccionado(talle)}
+                            >
+                                {talle}
+                            </button>
+                        ))}
+                    </h4>
+                    {!puedeAgregar && (
+                        <div style={{ color: 'red' }}>
+                            Selecciona un color y un talle para añadir al carrito.
+                        </div>
+                    )}
+                </div>
+                <div className='ProductosRecomendados'>
+                    <h5>Productos recomendados</h5>
+                    <div className='ContenedorDeProductosRecomendados'>
+                        {recomendados.length === 0 && <p>No hay productos recomendados.</p>}
+                        {recomendados.map((producto) => (
+                            <CardProducto
+                                key={producto.id}
+                                id={producto.id}
+                                nombreProducto={producto.name}
+                                precio={producto.details?.[0]?.prizeId?.sellingPrice ?? 0}
+                                producto={producto}
+                            />
+                        ))}
+                    </div>
+                </div>
+            </>
+        );
+    } catch (e) {
+        console.error("Error en render VerProducto:", e);
+        contenido = <div style={{ color: 'red' }}>Error al mostrar el producto</div>;
+    }
+    console.log("detalleActivo:", detalleActivo);
+    console.log("detalleActivo?.prizeId:", detalleActivo?.prizeId);
+    console.log("precioConDescuento:", precioConDescuento);
+    return <div className='VerProducto'>{contenido}</div>;
 }

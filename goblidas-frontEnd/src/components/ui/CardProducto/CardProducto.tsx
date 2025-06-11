@@ -5,6 +5,7 @@ import { Link } from 'react-router-dom';
 import { Producto } from '../../../types/producto';
 import { useProductoStore } from '../../../store/useProductoStore';
 import { getImagesByDetail } from '../../../service/cloudinaryService';
+import { useDetalleStore } from '../../../store/useDetalleStore';
 
 
 
@@ -18,14 +19,13 @@ type Props = {
 
 
 export const CardProducto = ({ nombreProducto, precio, img, id, producto }: Props) => {
-    const productoActivo = useProductoStore((state) => state.productoActivo);
     const setProductoActivo = useProductoStore((state) => state.setProductoActivo);
+    const setDetalleActivo = useDetalleStore((state) => state.setDetalleActivo);
     const [imgUrl, setImgUrl] = useState<string | undefined>(img);
 
     useEffect(() => {
         const fetchImg = async () => {
             if (!img && producto && producto.details && producto.details.length > 0) {
-                // Busca el detalle activo (el mismo que para el precio)
                 const detalleActivo = producto.details.find((detalle) => detalle.state === true);
                 if (detalleActivo) {
                     const imagenes = await getImagesByDetail(detalleActivo.id);
@@ -40,9 +40,18 @@ export const CardProducto = ({ nombreProducto, precio, img, id, producto }: Prop
         fetchImg();
     }, [img, producto]);
 
+    const handleClick = () => {
+        if (producto) {
+            setProductoActivo(producto);
+            // Selecciona el primer detalle disponible
+            const primerDetalle = producto.details?.find((detalle) => detalle.state === true) || producto.details?.[0] || null;
+            setDetalleActivo(primerDetalle ?? null);
+        }
+    };
+
     return (
         <>
-            <Link to="/verproducto" className='CardProducto__link'>
+            <Link to="/verproducto" className='CardProducto__link' onClick={handleClick}>
                 <div className='CardProducto'>
                     <div className='CardProducto__img'>
                         <img src={imgUrl || fotomedias} alt="nombreProducto" />
